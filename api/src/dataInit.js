@@ -5,7 +5,7 @@ const {
     UserType,
     ComponentClass,
     ComponentType,
-    Component
+    Component,
     } = require('./db');
 
 async function managementCoInit(){
@@ -179,8 +179,8 @@ async function componentTypeInit() {
 };
 
 async function componentInit() {
-    const count = Component.count();
-    if (count === 0) {
+    const count = await Component.count();
+    if (!count) {
         const components = [
             {
                 name: 'Parque de niños 01',
