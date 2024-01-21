@@ -7,6 +7,16 @@ module.exports = (sequelize) => {
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
         },
+        propertyType: {
+            type: DataTypes.ENUM(
+                'Casa',
+                'Departamento',
+                'Comercio',
+                'Estacionamiento',
+                'Terreno'
+            ),
+            allownull:false,            
+        },
         mainGrouper: {
             type: DataTypes.ENUM(
                 'Avenida',

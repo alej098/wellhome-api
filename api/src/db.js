@@ -54,4 +54,14 @@ User.belongsToMany(UserType, { through: "UserTypeUser", timestamps: false, onDel
 User.belongsToMany(Property, { through: "UserProperty", timestamps: false, onDelete: 'CASCADE' });
 Property.belongsToMany(User, { through: "UserProperty", timestamps: false });
 
-module.exports = { ManagementCo, MainPlace, Property, ComponentClass, ComponentType, Component, UserClass, UserType, User, conn: sequelize };
+module.exports = { 
+  ManagementCo, 
+  MainPlace, 
+  Property, 
+  ComponentClass, 
+  ComponentType, 
+  Component, 
+  UserClass, 
+  UserType, 
+  User, 
+  conn: sequelize };

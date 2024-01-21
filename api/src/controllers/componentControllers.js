@@ -7,14 +7,12 @@ const createNewClass = async(name) => {
     return createClass;
 };
 
-
 const createNewType = async (name, ComponentClassId) => {
     const createType = await ComponentType.create(
         {name, ComponentClassId}
     )
     return createType;
 };
-
 
 const createNewComponent = async(
     name,
@@ -37,7 +35,6 @@ const createNewComponent = async(
     return createComponent;
 };
 
-
 const updateClassComponent = async(
     idClassComponent,
     name,
@@ -57,7 +54,6 @@ const updateClassComponent = async(
         return updatedClassComponent;
     }
 };
-
 
 const updateTypeComponent = async(
     idTypeComponent,
@@ -80,7 +76,6 @@ const updateTypeComponent = async(
         return updatedTypeComponent;
     }
 };
-
 
 const updateComponent = async (
     idComponent,
@@ -114,7 +109,6 @@ const updateComponent = async (
     }
 };
 
-
 const deleteClassComponent = async(idClassComponent) =>{
     const deletedClass = await ComponentClass.destroy({
         where: {id: idClassComponent}
@@ -124,7 +118,6 @@ const deleteClassComponent = async(idClassComponent) =>{
     }
     return 'La clase ha sido eliminada';
 };
-
 
 const deleteTypeComponent = async (idTypeComponent) => {
     const deletedType = await ComponentType.destroy({
@@ -136,7 +129,6 @@ const deleteTypeComponent = async (idTypeComponent) => {
     return 'El Tipo fue eliminado';
 };
 
-
 const deleteComponent = async(idComponent) => {
     const deletedComponent = await Component.destroy({
         where: {id: idComponent}
@@ -147,7 +139,6 @@ const deleteComponent = async(idComponent) => {
     return 'El componente fue eliminado'
 };
 
-
 const getAllClassComponent = async() => {
     return await ComponentClass.findAll({
         where:{
@@ -155,7 +146,6 @@ const getAllClassComponent = async() => {
         }
     });
 };
-
 
 const getAllTypeComponent = async() => {
     return await ComponentType.findAll({
@@ -168,7 +158,6 @@ const getAllTypeComponent = async() => {
         }],
     });
 };
-
 
 const getAllComponent = async() => {
     return await Component.findAll({
@@ -186,7 +175,6 @@ const getAllComponent = async() => {
     });
 };
 
-
 const getClassComponentById = async (idClassComponent) => {
     const classComponentById = await ComponentClass.findOne({
         where: {
@@ -198,7 +186,6 @@ const getClassComponentById = async (idClassComponent) => {
     return classComponentById;
 };
 
-
 const getTypeComponentById = async (idTypeComponent) => {
     const typeComponentById = await ComponentType.findOne({
         where: {
@@ -209,7 +196,6 @@ const getTypeComponentById = async (idTypeComponent) => {
     if(!typeComponentById) throw Error('No existen Tipos con ese Id');
     return typeComponentById;
 };
-
 
 const getComponentById = async(idComponent) => {
     const componentById = await Component.findOne({

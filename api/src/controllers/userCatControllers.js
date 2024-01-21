@@ -14,7 +14,6 @@ const createClassUser = async(name, userTypeId) =>{
     return createClass;
 };
 
-
 const createTypeUser = async(name, userClassId) =>{
 
     let arrayOfClass = [];
@@ -28,7 +27,6 @@ const createTypeUser = async(name, userClassId) =>{
     await createType.setUserClasses(arrayOfClass);
     return createType;
 };
-
 
 const updateClassUser = async (idClassUser, name, isSuspended, userTypeId) => {
     const [numUpdated] = await UserClass.update(
@@ -63,7 +61,6 @@ const updateClassUser = async (idClassUser, name, isSuspended, userTypeId) => {
     return updatedClassUser;
 };
 
-
 const updateTypeUser = async(idTypeUser, name, isSuspended, userClassId) => {
         const [numUpdated] = await UserType.update(
             {
@@ -95,7 +92,6 @@ const updateTypeUser = async(idTypeUser, name, isSuspended, userClassId) => {
         return updatedTypeUser;
     };
 
-    
 const deleteClassUser = async(idClassUser) => {
     const deletedClass = await UserClass.destroy({
         where: {id: idClassUser}
@@ -105,7 +101,6 @@ const deleteClassUser = async(idClassUser) => {
     }
     return 'La Clase ha sido eliminada';
 };
-
 
 const deleteTypeUser =  async(idTypeUser) => {
     const deletedType = await UserType.destroy({
@@ -117,7 +112,6 @@ const deleteTypeUser =  async(idTypeUser) => {
     return 'El tipo ha sido eliminado';
 };
 
-
 const getClassUser = async() => {
     return await UserClass.findAll({
         where: {isSuspended: false},
@@ -128,7 +122,6 @@ const getClassUser = async() => {
     });
 };
 
-
 const getTypeUser = async() => {
     return await UserType.findAll({
         where: {isSuspended: false},
@@ -136,7 +129,6 @@ const getTypeUser = async() => {
         attributes: ['name']}]
     });
 };
-
 
 const getClassUserById = async(idClassUser) => {
     const classUserById = await UserClass.findOne({
@@ -155,7 +147,6 @@ const getClassUserById = async(idClassUser) => {
     if(!classUserById) throw Error('No existen Clases con ese Id');
     return classUserById;
 };
-
 
 const getTypeUserById = async(idTypeUser) =>{
     const typeUserById = await UserType.findOne({

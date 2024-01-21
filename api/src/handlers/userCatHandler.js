@@ -52,7 +52,6 @@ const updateClassUserHandler = async(req, res) => {
     }
 };
 
-
 const updateTypeUserHandler = async (req, res) => {
     const {idTypeUser} = req.params;
     const {
@@ -73,7 +72,6 @@ const updateTypeUserHandler = async (req, res) => {
     }
 };
 
-
 const deleteClassUserHandler = async (req, res) => {
     const {idClassUser} = req.params;
     try {
@@ -84,7 +82,6 @@ const deleteClassUserHandler = async (req, res) => {
     }
 };
 
-
 const deleteTypeUserHandler =  async(req, res) => {
     const {idTypeUser} = req.params;
     try {
@@ -94,7 +91,6 @@ const deleteTypeUserHandler =  async(req, res) => {
         res.status(400).send({error: error.message});
     }
 };
-
 
 const getClassUserHandler = async(req, res) => {
     try {
@@ -113,7 +109,6 @@ const getTypeUserHandler = async(req, res) => {
         res.status(400).send({error: error.message});
     }
 };
-
 
 const getClassUserByIdHandler =  async(req, res) => {
     const{idClassUser} = req.params;
