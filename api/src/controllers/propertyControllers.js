@@ -6,6 +6,7 @@ const createProperty = async(
     mainGrouperName,
     mainGrouperNumber,
     secondaryGrouper,
+    secondaryGrouperNumber,
     status,
     subStatus,
     isSuspended,
@@ -26,14 +27,15 @@ const createProperty = async(
             mainGrouperName,
             mainGrouperNumber,
             secondaryGrouper,
+            secondaryGrouperNumber,
             status,
             subStatus,
             isSuspended,
             MainPlaceId,
             userDni
         }
-    )
-    await createProperty.setUsers(arrayOfUserDni);
+    );
+    await newProperty.setUsers(arrayOfUserDni);
     return newProperty;
 };
 
@@ -44,6 +46,7 @@ const updateProperty = async (
     mainGrouperName,
     mainGrouperNumber,
     secondaryGrouper,
+    secondaryGrouperNumber,
     status,
     subStatus,
     isSuspended,
@@ -57,6 +60,7 @@ const updateProperty = async (
             mainGrouperName,
             mainGrouperNumber,
             secondaryGrouper,
+            secondaryGrouperNumber,
             status,
             subStatus,
             isSuspended,

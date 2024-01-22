@@ -81,7 +81,7 @@ const deleteUserHandler = async (req, res) => {
 
 const getUserHandler = async(req, res) => {
     try {
-        const user =  await getAllUsers();
+        const user =  await getAllUsers()
         res.status(200).json(user);
     } catch (error) {
         res.status(400).send({error: error.message});

@@ -86,8 +86,7 @@ const deleteUser = async (idUser) => {
 };
 
 const getAllUsers = async () => {
-    try {
-        const allUsers = await User.findAll({
+    return await User.findAll({
             where : {isSuspended: false},
             include: [
                 {
@@ -100,13 +99,6 @@ const getAllUsers = async () => {
                 // },
             ],
         });
-        if (!allUsers || allUsers.length === 0) {
-            throw new Error('No existen Usuarios registrados');
-        }
-        return allUsers;
-    } catch (error) {
-        throw new Error('Error al obtener todos los usuarios.');
-    }
 };
 
 const getUserById = async (userId) => {
