@@ -3,8 +3,9 @@ const {DataTypes} = require("sequelize");
 module.exports = (sequelize) => {
     const MainPlace = sequelize.define('MainPlace', {
         id:{
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
             primaryKey: true
         },
         name:{

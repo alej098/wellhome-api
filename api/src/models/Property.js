@@ -3,9 +3,10 @@ const {DataTypes} = require('sequelize');
 module.exports = (sequelize) => {
     const Property = sequelize.define('Property', {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             primaryKey: true,
-            autoIncrement: true
+            allownull: false,
+            unique: true
         },
         propertyType: {
             type: DataTypes.ENUM(

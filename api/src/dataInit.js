@@ -1,8 +1,10 @@
 const {
     ManagementCo,
     MainPlace,
+    Property,
     UserClass,
     UserType,
+    User,
     ComponentClass,
     ComponentType,
     Component,
@@ -13,11 +15,11 @@ async function managementCoInit(){
     if (!count) {
         const managementCo = [
             {
-                companyRUC: '20000000001',
-                companyName: 'Administradora de Condominios SAC',
+                companyRUC: '20604859205',
+                companyName: 'Castrum Gestión y Servicios SAC',
                 companyContact: 'Angelo Luján',
-                companyPhone: '+51950000000',
-                companyEmail: 'condoadmin@example.com',
+                companyPhone: '+51924707719',
+                companyEmail: 'castrumperu@gmail.com',
                 logo: 'https://img.freepik.com/vector-premium/trabajador-oficina-tomando-carpeta-archivo-administracion-gestion-gestion-archivos-icono-base-datos-catalogo-documentos-diseno-plano-ilustracion-vectorial-aislado-sobre-fondo-blanco_153097-1171.jpg',
                 isSuspended: 'false'
             },
@@ -40,19 +42,21 @@ async function mainPlaceInit(){
     if (!count) {
         const mainPlace = [
             {
-              name: 'Residencial WellHomeApp',
-              country: 'Perú',
-              state: 'Arequipa',
-              city: 'Arequipa',
-              district: 'Cercado',
-              placeDescription: 'Urbanización Privada',
-              placeImage: 'https://images.adsttc.com/media/images/5c7b/5574/284d/d1e0/d300/0126/slideshow/_Featuredimage.jpg?1551586648',
-              phone: '+51950000001',
-              email: 'wellhomeapp@example.com',
-              isSuspended: false,
-              ManagementCoCompanyRUC: '20000000001'
+                id: 'PE-AQP-00000',
+                name: 'Condo WellHomeApp',
+                country: 'Perú',
+                state: 'Arequipa',
+                city: 'Arequipa',
+                district: 'Cercado',
+                placeDescription: 'Urbanización Privada',
+                placeImage: 'https://images.adsttc.com/media/images/5c7b/5574/284d/d1e0/d300/0126/slideshow/_Featuredimage.jpg?1551586648',
+                phone: '+51950000001',
+                email: 'wellhomeapp@example.com',
+                isSuspended: false,
+                ManagementCoCompanyRUC: '20604859205'
             },
             {
+                id: 'PE-AQP-00001',
                 name: 'Residencial RestHome',
                 country: 'Perú',
                 state: 'Arequipa',
@@ -63,8 +67,8 @@ async function mainPlaceInit(){
                 phone: '+51950000002',
                 email: 'resthome@example.com',
                 isSuspended: false,
-                ManagementCoCompanyRUC: '20000000001'
-              },
+                ManagementCoCompanyRUC: '20604859205'
+            },
           ];
         await MainPlace.bulkCreate(mainPlace);
     }
@@ -188,7 +192,7 @@ async function componentInit() {
                 location: 'Salida 1',
                 description: 'Parque principal de niños',
                 ComponentTypeId: 1,
-                MainPlaceId: 1,
+                MainPlaceId: "PE-AQP-00000",
                 isSuspended: false 
             },
             {
@@ -197,7 +201,7 @@ async function componentInit() {
                 location: 'Zona Central',
                 description: 'Parque de juegos Infantiles',
                 ComponentTypeId: 1,
-                MainPlaceId: 1,
+                MainPlaceId: "PE-AQP-00000",
                 isSuspended: false  
             },
             {
@@ -206,7 +210,7 @@ async function componentInit() {
                 location: 'Zona Central',
                 description: 'Loza Multideportiva',
                 ComponentTypeId: 2,
-                MainPlaceId: 1,
+                MainPlaceId: "PE-AQP-00000",
                 isSuspended: false 
             },
             {
@@ -215,7 +219,7 @@ async function componentInit() {
                 location: 'Edificio3',
                 description: 'Elevador Marca Weiss N/S 25741A25',
                 ComponentTypeId: 6,
-                MainPlaceId: 1,
+                MainPlaceId: "PE-AQP-00000",
                 isSuspended: false 
             },
             {
@@ -224,7 +228,7 @@ async function componentInit() {
                 location: 'Edificio6',
                 description: 'Elevador Marca Weiss N/S 25851A32',
                 ComponentTypeId: 6,
-                MainPlaceId: 1,
+                MainPlaceId: "PE-AQP-00000",
                 isSuspended: false 
             },
             {
@@ -233,7 +237,7 @@ async function componentInit() {
                 location: 'Sótano',
                 description: 'Cuarto de bombas',
                 ComponentTypeId: 8,
-                MainPlaceId: 1,
+                MainPlaceId: "PE-AQP-00000",
                 isSuspended: false 
             },
             {
@@ -242,11 +246,96 @@ async function componentInit() {
                 location: 'Patio',
                 description: 'Cuarto de bombas',
                 ComponentTypeId: 8,
-                MainPlaceId: 1,
+                MainPlaceId: "PE-AQP-00000",
                 isSuspended: false 
             }
         ];
         await Component.bulkCreate(components);
+    }
+};
+
+async function propertyInit() {
+    const count = await Property.count();
+    if (!count) {
+        const property = [
+            {
+                id: 'PE-AQP-WH-0001',
+                propertyType: 'Casa',
+                mainGrouper: 'Calle',
+                mainGrouperName: 'Los Gladiolos',
+                mainGrouperNumber: '201',
+                status: 'Ocupado',
+                subStatus: 'Regular',
+                MainPlaceId: 'PE-AQP-00000',
+                userDni: []
+            },
+            {
+                id: 'PE-AQP-WH-0002',
+                propertyType: 'Casa',
+                mainGrouper: 'Calle',
+                mainGrouperName: 'Los Gladiolos',
+                mainGrouperNumber: '202',
+                status: 'Ocupado',
+                subStatus: 'Regular',
+                MainPlaceId: 'PE-AQP-00000',
+                userDni: []
+            },
+            {
+                id: 'PE-AQP-WH-0003',
+                propertyType: 'Casa',
+                mainGrouper: 'Calle',
+                mainGrouperName: 'Los Gladiolos',
+                mainGrouperNumber: '203',
+                status: 'Ocupado',
+                subStatus: 'Regular',
+                MainPlaceId: 'PE-AQP-00000',
+                userDni: []
+            },
+
+        ];
+        await Property.bulkCreate(property);
+    }
+};
+
+async function userInit() {
+    const count = await User.count();
+    if (!count) {
+        const users = [
+            {
+                dni: '10000001',
+                foreName: 'Oscar',
+                lastName: 'Mangur',
+                phone: '+51900000010',
+                email: 'oscar@example.com',
+                status: 'Habilitado',
+                isSuspended: false,
+                userTypeId: [1],
+                propertyId: ['PE-AQP-WH-0001']
+            },
+            {
+                dni: '10000002',
+                foreName: 'Jorge',
+                lastName: 'Manzano',
+                phone: '+51900000011',
+                email: 'jorge@example.com',
+                status: 'Habilitado',
+                isSuspended: false,
+                userTypeId: [2],
+                propertyId: ['PE-AQP-WH-0002', 'PE-AQP-WH-0003']
+            },
+            {
+                dni: '10000003',
+                foreName: 'Maria',
+                lastName: 'Anaya',
+                phone: '+51900000012',
+                email: 'maria@example.com',
+                status: 'Habilitado',
+                isSuspended: false,
+                userTypeId: [3],
+                propertyId: []
+            },
+        ];
+        await User.bulkCreate(users);
     }
 };
 
@@ -257,5 +346,7 @@ module.exports = {
     userTypeInit,
     componentClassInit,
     componentTypeInit,
-    componentInit
+    componentInit,
+    propertyInit, 
+    userInit
 };

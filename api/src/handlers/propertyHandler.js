@@ -8,6 +8,7 @@ const {
 
 const createPropertyHandler = async (req, res) => {
     const {
+        id,
         propertyType,
         mainGrouper,
         mainGrouperName,
@@ -22,6 +23,7 @@ const createPropertyHandler = async (req, res) => {
     } = req.body;
     try {
         const newProperty = await createProperty(
+            id,
             propertyType,
             mainGrouper,
             mainGrouperName,

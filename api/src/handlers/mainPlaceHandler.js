@@ -9,6 +9,7 @@ const {
 
 const createMainPlaceHandler = async (req, res) => {
     const {
+        id,
         name,
         country,
         state,
@@ -24,6 +25,7 @@ const createMainPlaceHandler = async (req, res) => {
 
     try{
         const newMainPlace = await createMainPlace (
+        id,
         name,
         country,
         state,

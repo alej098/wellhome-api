@@ -1,6 +1,7 @@
 const {Property, MainPlace, User} = require ('../db');
 
 const createProperty = async(
+    id,
     propertyType,
     mainGrouper,
     mainGrouperName,
@@ -22,6 +23,7 @@ const createProperty = async(
     
     const newProperty = await Property.create(
         {
+            id,
             propertyType,
             mainGrouper,
             mainGrouperName,

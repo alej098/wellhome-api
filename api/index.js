@@ -7,7 +7,10 @@ const {
   userTypeInit,
   componentClassInit,
   componentTypeInit,
-  componentInit
+  componentInit,
+  propertyInit,
+  userInit
+  
 } = require('./src/dataInit');
 
 const PORT = process.env.PORT || 3001;
@@ -23,6 +26,8 @@ async function startServer(){
         await componentClassInit();
         await componentTypeInit();
         await componentInit();
+        await propertyInit();
+        await userInit();
         
         app.listen(PORT, () => {
             console.log(`Server is running at Port:${PORT}`);

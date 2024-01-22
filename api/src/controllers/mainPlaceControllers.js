@@ -1,6 +1,7 @@
 const {MainPlace} = require('../db');
 
 const createMainPlace = async (
+    id,
     name,
     country,
     state,
@@ -15,6 +16,7 @@ const createMainPlace = async (
 ) => {
     const newMainPlace = await MainPlace.create(
         {
+            id,
             name,
             country,
             state,
