@@ -22,17 +22,6 @@ const createNewUser = async (
     const arrayOfUserType = await getArrayByIds(UserType, userTypeId);
     const arrayOfProperty = await getArrayByIds(Property, propertyId);
 
-
-    console.log(
-        dni,
-        foreName,
-        lastName,
-        phone,
-        email,
-        status,
-        isSuspended,
-        userTypeId,
-        propertyId);
     const newUser = await User.create({
         dni,
         foreName,
@@ -48,7 +37,6 @@ const createNewUser = async (
 
     return newUser;
 };
-
 
 const updateUser = async (
     idUser,
@@ -85,7 +73,6 @@ const updateUser = async (
     return user;
 };
 
-
 const deleteUser = async (idUser) => {
     const user = await User.findByPk(idUser);
 
@@ -98,29 +85,29 @@ const deleteUser = async (idUser) => {
     return { message: "Usuario eliminado exitosamente" };
 };
 
-
 const getAllUsers = async () => {
     try {
-        const users = await User.findAll({
+        const allUsers = await User.findAll({
             where : {isSuspended: false},
             include: [
                 {
                     model: UserType,
                     attributes: ['name'],
                 },
-                {
-                    model: Property,
-                    attributes: ['maingrouper', 'mainGrouperName', 'mainGrouperNumber'],
-                },
+                // {
+                //     model: Property,
+                //     attributes: ['maingrouper', 'mainGrouperName', 'mainGrouperNumber'],
+                // },
             ],
         });
-
-        return users;
+        if (!allUsers || allUsers.length === 0) {
+            throw new Error('No existen Usuarios registrados');
+        }
+        return allUsers;
     } catch (error) {
         throw new Error('Error al obtener todos los usuarios.');
     }
 };
-
 
 const getUserById = async (userId) => {
     try {
@@ -130,10 +117,10 @@ const getUserById = async (userId) => {
                     model: UserType,
                     attributes: ['name'],
                 },
-                {
-                    model: Property,
-                    attributes: ['maingrouper', 'mainGrouperName', 'mainGrouperNumber'],
-                },
+                // {
+                //     model: Property,
+                //     attributes: ['maingrouper', 'mainGrouperName', 'mainGrouperNumber'],
+                // },
             ],
         });
 

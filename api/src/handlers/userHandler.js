@@ -39,7 +39,6 @@ const createUserHandler = async (req, res) => {
     }
 };
 
-
 const updateUserHandler = async (req, res) => {
     const {idUser} = req.params;
     const {
@@ -70,7 +69,6 @@ const updateUserHandler = async (req, res) => {
     }
 };
 
-
 const deleteUserHandler = async (req, res) => {
     const {idUser} = req.params;
     try {
@@ -81,10 +79,9 @@ const deleteUserHandler = async (req, res) => {
     }
 };
 
-
 const getUserHandler = async(req, res) => {
     try {
-        const user =  getAllUsers()
+        const user =  await getAllUsers();
         res.status(200).json(user);
     } catch (error) {
         res.status(400).send({error: error.message});
