@@ -49,6 +49,7 @@ const createComponentHandler =  async(req, res) => {
         code,
         location,
         description,
+        acceptCost,
         ComponentTypeId,
         MainPlaceId
 
@@ -59,6 +60,7 @@ const createComponentHandler =  async(req, res) => {
             code,
             location,
             description,
+            acceptCost,
             ComponentTypeId,
             MainPlaceId
         )
@@ -116,6 +118,7 @@ const updateComponentHandler = async(req, res) => {
         code,
         location,
         description,
+        acceptCost,
         isSuspended,
         ComponentTypeId,
         MainPlaceId
@@ -127,6 +130,7 @@ const updateComponentHandler = async(req, res) => {
         code,
         location,
         description,
+        acceptCost,
         isSuspended,
         ComponentTypeId,
         MainPlaceId

@@ -15,7 +15,8 @@ async function managementCoInit(){
     if (!count) {
         const managementCo = [
             {
-                companyRUC: '20604859205',
+                country: 'Perú',
+                companyTaxId: '20604859205',
                 companyName: 'Castrum Gestión y Servicios SAC',
                 companyContact: 'Angelo Luján',
                 companyPhone: '+51924707719',
@@ -24,7 +25,8 @@ async function managementCoInit(){
                 isSuspended: 'false'
             },
             {
-                companyRUC: '20000000002',
+                country: 'Perú',
+                companyTaxId: '20000000002',
                 companyName: 'Administradora de Residenciales SAC',
                 companyContact: 'Marchelo Torontino',
                 companyPhone: '+51960000000',
@@ -53,7 +55,7 @@ async function mainPlaceInit(){
                 phone: '+51950000001',
                 email: 'wellhomeapp@example.com',
                 isSuspended: false,
-                ManagementCoCompanyRUC: '20604859205'
+                ManagementCocompanyTaxId: '20604859205'
             },
             {
                 id: 'PE-AQP-00001',
@@ -67,7 +69,7 @@ async function mainPlaceInit(){
                 phone: '+51950000002',
                 email: 'resthome@example.com',
                 isSuspended: false,
-                ManagementCoCompanyRUC: '20604859205'
+                ManagementCocompanyTaxId: '20604859205'
             },
           ];
         await MainPlace.bulkCreate(mainPlace);

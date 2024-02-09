@@ -28,7 +28,7 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const {ManagementCo, MainPlace, Property, ComponentClass, ComponentType, Component, UserClass, UserType, User} = sequelize.models;
+const {ManagementCo, MainPlace, Property, ComponentClass, ComponentType, Component, UserClass, UserType, User, Fee} = sequelize.models;
 
 ManagementCo.hasMany(MainPlace);
 MainPlace.belongsTo(ManagementCo);
@@ -44,6 +44,12 @@ Component.belongsTo(ComponentType);
 
 MainPlace.hasMany(Component);
 Component.belongsTo(MainPlace);
+
+Fee.hasMany(Property);
+Property.belongsTo(Fee);
+
+Fee.hasMany(Component);
+Component.belongsTo(Fee);
 
 UserClass.belongsToMany(UserType, { through: "UserClassType", timestamps: false });
 UserType.belongsToMany(UserClass, { through: "UserClassType", timestamps: false });
@@ -63,5 +69,6 @@ module.exports = {
   Component, 
   UserClass, 
   UserType, 
-  User, 
+  User,
+  Fee, 
   conn: sequelize };

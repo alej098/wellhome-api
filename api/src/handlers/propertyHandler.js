@@ -17,8 +17,10 @@ const createPropertyHandler = async (req, res) => {
         secondaryGrouperNumber,
         status,
         subStatus,
+        acceptCost,
         isSuspended,
         MainPlaceId,
+        FeeId,
         userDni
     } = req.body;
     try {
@@ -32,8 +34,10 @@ const createPropertyHandler = async (req, res) => {
             secondaryGrouperNumber,
             status,
             subStatus,
+            acceptCost,
             isSuspended,
             MainPlaceId,
+            FeeId,
             userDni
         )
         res.status(201).json(newProperty);
@@ -53,8 +57,10 @@ const updatePropertyHandler = async (req, res) => {
         secondaryGrouperNumber,
         status,
         subStatus,
+        acceptCost,
         isSuspended,
         MainPlaceId,
+        FeeId,
         userDni
     } = req.body;
     try {
@@ -68,8 +74,10 @@ const updatePropertyHandler = async (req, res) => {
             secondaryGrouperNumber,
             status,
             subStatus,
+            acceptCost,
             isSuspended,
             MainPlaceId,
+            FeeId,
             userDni
         );
         res.status(200).json(updateNewProperty);
