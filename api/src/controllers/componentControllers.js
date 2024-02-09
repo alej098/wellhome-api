@@ -1,4 +1,4 @@
-const {ComponentClass, ComponentType, Component, MainPlace} = require ('../db');
+const {ComponentClass, ComponentType, Component, MainPlace, Fee} = require ('../db');
 
 const createNewClass = async(name) => {
     const createClass = await ComponentClass.create(
@@ -19,8 +19,10 @@ const createNewComponent = async(
     code,
     location,
     description,
+    acceptCost,
     ComponentTypeId,
-    MainPlaceId
+    MainPlaceId,
+    FeedId
 ) => {
     const createComponent = await Component.create(
         {
@@ -28,8 +30,10 @@ const createNewComponent = async(
             code,
             location,
             description,
+            acceptCost,
             ComponentTypeId,
-            MainPlaceId
+            MainPlaceId,
+            FeedId
         }
     )
     return createComponent;
@@ -83,9 +87,11 @@ const updateComponent = async (
     code,
     location,
     description,
+    acceptCost,
     isSuspended,
     ComponentTypeId,
-    MainPlaceId
+    MainPlaceId,
+    FeedId
 ) => {
     const component = await Component.update(
         {
@@ -93,9 +99,11 @@ const updateComponent = async (
             code,
             location,
             description,
+            acceptCost,
             isSuspended,
             ComponentTypeId,
-            MainPlaceId
+            MainPlaceId,
+            FeedId
         },
         {
             where:{id: idComponent}
@@ -171,6 +179,10 @@ const getAllComponent = async() => {
         include: [{
             model: MainPlace,
             attributes: ['name']
+        }],
+        include: [{
+            model: Fee,
+            attributes: ['feeDescription']
         }],
     });
 };

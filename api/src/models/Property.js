@@ -60,6 +60,10 @@ module.exports = (sequelize) => {
             ),
             allownull: false
         },
+        acceptCost: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true,
+        },
         isSuspended: {
             type: DataTypes.BOOLEAN,
             defaultValue: false, //Borrado Lógico

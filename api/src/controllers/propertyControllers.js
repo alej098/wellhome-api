@@ -1,4 +1,4 @@
-const {Property, MainPlace, User} = require ('../db');
+const {Property, MainPlace, User, Fee} = require ('../db');
 
 const createProperty = async(
     id,
@@ -10,8 +10,10 @@ const createProperty = async(
     secondaryGrouperNumber,
     status,
     subStatus,
+    acceptCost,
     isSuspended,
     MainPlaceId,
+    FeeId,
     userDni
 ) => {
 
@@ -32,8 +34,10 @@ const createProperty = async(
             secondaryGrouperNumber,
             status,
             subStatus,
+            acceptCost,
             isSuspended,
             MainPlaceId,
+            FeeId,
             userDni
         }
     );
@@ -51,8 +55,10 @@ const updateProperty = async (
     secondaryGrouperNumber,
     status,
     subStatus,
+    acceptCost,
     isSuspended,
     MainPlaceId,
+    FeeId,
     userDni
 ) => {
     const [numUpdated] = await Property.update(
@@ -65,8 +71,10 @@ const updateProperty = async (
             secondaryGrouperNumber,
             status,
             subStatus,
+            acceptCost,
             isSuspended,
             MainPlaceId,
+            FeeId,
             userDni
         },
         {where: {id: propertyId}}
@@ -107,6 +115,10 @@ const getProperty = async () => {
             model: MainPlace,
             attributes: ['name']
         }],
+        include:[{
+            model: Fee,
+            attributes: ['feeDescription']
+        }]
     });
 };
 
