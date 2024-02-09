@@ -1,7 +1,8 @@
 const {ManagementCo} = require("../db");
 
 const createManagementCo = async (
-    companyRUC,
+    country,
+    companyTaxId,
     companyName,
     companyContact,
     companyPhone,
@@ -11,7 +12,8 @@ const createManagementCo = async (
 ) => {
     const newCompany = await ManagementCo.create(
         {
-            companyRUC,
+            country,
+            companyTaxId,
             companyName,
             companyContact,
             companyPhone,
@@ -26,6 +28,7 @@ const createManagementCo = async (
 
 const updateManagementCo = async (
     idCompany,
+    country,
     companyName,
     companyContact,
     companyPhone,
@@ -34,14 +37,16 @@ const updateManagementCo = async (
     isSuspended
 ) => {
     const companyById = await ManagementCo.update(
-        {   companyName,
+        {   country,
+            companyName,
             companyContact,
             companyPhone,
             companyEmail,
             logo, 
             isSuspended
         },
-        {where: { companyRUC: idCompany }}
+        {where: { 
+            companyTaxId: idCompany }}
         )
     if(!companyById) {
         throw Error ("No se encontraron Compañías")
@@ -54,7 +59,8 @@ const updateManagementCo = async (
 
 const deleteManagementCo = async (idCompany) => {
     const deletedCompany = await ManagementCo.destroy({
-        where: {companyRUC: idCompany},
+        where: {
+            companyTaxId: idCompany},
     });
     if (!deletedCompany) {
         throw new Error ("No existen Compañías con ese id");
@@ -75,7 +81,8 @@ const getAllManagementCo = async () =>{
 
 const getManagementCoById = async(idCompany) =>{
     const company = await ManagementCo.findOne({
-        where: {companyRUC: idCompany}
+        where: {
+            companyTaxId: idCompany}
     });
     if (!company) throw Error("No existe la Compañía");
     return company;

@@ -8,7 +8,8 @@ const {
 
 const createManagementCoHandler = async (req, res) => {
     const {
-        companyRUC,
+        country,
+        companyTaxId,
         companyName,
         companyContact,
         companyPhone,
@@ -19,7 +20,8 @@ const createManagementCoHandler = async (req, res) => {
 
     try{
         const newManagementCo = await createManagementCo (
-        companyRUC,
+        country,
+        companyTaxId,
         companyName,
         companyContact,
         companyPhone,
@@ -37,6 +39,7 @@ const createManagementCoHandler = async (req, res) => {
 const updateManagementCoHandler = async (req, res) => {
     const {idCompany} = req.params;
     const {
+        country,
         companyName,
         companyContact,
         companyPhone,
@@ -47,6 +50,7 @@ const updateManagementCoHandler = async (req, res) => {
     try{
         const managementCo = await updateManagementCo (
         idCompany,
+        country,
         companyName,
         companyContact,
         companyPhone,
