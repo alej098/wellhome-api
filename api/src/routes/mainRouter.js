@@ -6,6 +6,7 @@ const userCatRouter = require ("./userCatRouter");
 const userRouter = require ("./userRouter");
 const propertyRouter =  require ("./propertyRouter");
 const componentRouter = require ("./componentRouter");
+const feeRouter = require ("./feeRouter");
 
 
 const mainRouter = Router();
@@ -16,6 +17,7 @@ mainRouter.use("/component", componentRouter);
 mainRouter.use("/usercat", userCatRouter);
 mainRouter.use("/users", userRouter);
 mainRouter.use("/property", propertyRouter);
+mainRouter.use("/fee", feeRouter);
 
 
 module.exports = mainRouter;
