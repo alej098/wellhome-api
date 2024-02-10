@@ -36,6 +36,9 @@ MainPlace.belongsTo(ManagementCo);
 MainPlace.hasMany(Property);
 Property.belongsTo(MainPlace);
 
+MainPlace.hasMany(User);
+User.belongsTo(MainPlace);
+
 ComponentClass.hasMany(ComponentType);
 ComponentType.belongsTo(ComponentClass);
 
