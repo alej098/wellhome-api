@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         acceptCost: {
-            type: DataTypes.STRING,
+            type: DataTypes.BOOLEAN,
             defaultValue: true,
         },
         isSuspended: {
