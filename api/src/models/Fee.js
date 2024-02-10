@@ -7,10 +7,7 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             primaryKey: true
         },
-        mainPlace: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
+
         feeDescription: {
             type: DataTypes.STRING,
             allowNull: false

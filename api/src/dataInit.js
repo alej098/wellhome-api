@@ -8,6 +8,7 @@ const {
     ComponentClass,
     ComponentType,
     Component,
+    Fee,
     } = require('./db');
 
 async function managementCoInit(){
@@ -76,6 +77,8 @@ async function mainPlaceInit(){
     }
 };
 
+
+
 async function userClassInit() {
     const count = await UserClass.count();
     if (!count) {
@@ -129,6 +132,27 @@ async function userTypeInit() {
         await UserType.bulkCreate(userTypes);
     }
 
+};
+
+async function feeInit() {
+    const count = await Fee.count();
+    if (!count) {
+        const fees = [
+            {
+                feeDescription: 'Cuota de mantenimiento mensual',
+                currency:'Pesos',
+                amount: 35000,
+                MainPlaceId: "PE-AQP-00000"
+            },
+            {
+                feeDescription: 'Cuota de reserva de amenities',
+                currency:'Pesos',
+                amount: 10000,
+                MainPlaceId: "PE-AQP-00000"
+            },
+        ];
+        await Fee.bulkCreate(fees);
+    }
 };
 
 async function componentClassInit() {
@@ -193,63 +217,78 @@ async function componentInit() {
                 code: 'PN001',
                 location: 'Salida 1',
                 description: 'Parque principal de niños',
+                acceptCost: true,
+                isSuspended: false, 
                 ComponentTypeId: 1,
                 MainPlaceId: "PE-AQP-00000",
-                isSuspended: false 
+                FeeId: 2
+                
             },
             {
                 name: 'Parque de niños 02',
                 code: 'PN002',
                 location: 'Zona Central',
                 description: 'Parque de juegos Infantiles',
+                acceptCost: true,
+                isSuspended: false,
                 ComponentTypeId: 1,
                 MainPlaceId: "PE-AQP-00000",
-                isSuspended: false  
+                FeeId: 2
             },
             {
                 name: 'Loza Deportiva',
                 code: 'LD001',
                 location: 'Zona Central',
                 description: 'Loza Multideportiva',
+                acceptCost: true,
+                isSuspended: false,
                 ComponentTypeId: 2,
                 MainPlaceId: "PE-AQP-00000",
-                isSuspended: false 
+                FeeId: 2
             },
             {
                 name: 'Ascensor 001',
                 code: 'AS001',
                 location: 'Edificio3',
                 description: 'Elevador Marca Weiss N/S 25741A25',
+                acceptCost: true,
+                isSuspended: false ,
                 ComponentTypeId: 6,
                 MainPlaceId: "PE-AQP-00000",
-                isSuspended: false 
+                FeeId: 2
             },
             {
                 name: 'Ascensor 002',
                 code: 'AS002',
                 location: 'Edificio6',
                 description: 'Elevador Marca Weiss N/S 25851A32',
+                acceptCost: true,
+                isSuspended: false,
                 ComponentTypeId: 6,
                 MainPlaceId: "PE-AQP-00000",
-                isSuspended: false 
+                FeeId: 2
             },
             {
                 name: 'Cuarto de Bombeo Subterráneo',
                 code: 'CB001',
                 location: 'Sótano',
                 description: 'Cuarto de bombas',
+                acceptCost: true,
+                isSuspended: false,
                 ComponentTypeId: 8,
                 MainPlaceId: "PE-AQP-00000",
-                isSuspended: false 
+                FeeId: 2
             },
             {
                 name: 'Cuarto de Bombeo Tanque Elevado',
                 code: 'CB002',
                 location: 'Patio',
                 description: 'Cuarto de bombas',
+                acceptCost: true,
+                isSuspended: false,
                 ComponentTypeId: 8,
                 MainPlaceId: "PE-AQP-00000",
-                isSuspended: false 
+                FeeId: 2
             }
         ];
         await Component.bulkCreate(components);
@@ -269,6 +308,7 @@ async function propertyInit() {
                 status: 'Ocupado',
                 subStatus: 'Regular',
                 MainPlaceId: 'PE-AQP-00000',
+                FeedId: 1,
                 userDni: []
             },
             {
@@ -280,6 +320,7 @@ async function propertyInit() {
                 status: 'Ocupado',
                 subStatus: 'Regular',
                 MainPlaceId: 'PE-AQP-00000',
+                FeedId: 1,
                 userDni: []
             },
             {
@@ -291,6 +332,7 @@ async function propertyInit() {
                 status: 'Ocupado',
                 subStatus: 'Regular',
                 MainPlaceId: 'PE-AQP-00000',
+                FeedId: 1,
                 userDni: []
             },
 
@@ -309,8 +351,12 @@ async function userInit() {
                 lastName: 'Mangur',
                 phone: '+51900000010',
                 email: 'oscar@example.com',
+                password: 'Password1',
                 status: 'Habilitado',
+                isAdmin: false,
+                acceptCost: false,
                 isSuspended: false,
+                MainPlaceId: 'PE-AQP-00000',
                 userTypeId: [1],
                 propertyId: ['PE-AQP-WH-0001']
             },
@@ -320,8 +366,12 @@ async function userInit() {
                 lastName: 'Manzano',
                 phone: '+51900000011',
                 email: 'jorge@example.com',
+                password: 'Password1',
                 status: 'Habilitado',
+                isAdmin: false,
+                acceptCost: false,
                 isSuspended: false,
+                MainPlaceId: 'PE-AQP-00000',
                 userTypeId: [2],
                 propertyId: ['PE-AQP-WH-0002', 'PE-AQP-WH-0003']
             },
@@ -331,8 +381,12 @@ async function userInit() {
                 lastName: 'Anaya',
                 phone: '+51900000012',
                 email: 'maria@example.com',
+                password: 'Password1',
                 status: 'Habilitado',
+                isAdmin: false,
+                acceptCost: false,
                 isSuspended: false,
+                MainPlaceId: 'PE-AQP-00000',
                 userTypeId: [3],
                 propertyId: []
             },
@@ -346,6 +400,7 @@ module.exports = {
     managementCoInit,
     userClassInit,
     userTypeInit,
+    feeInit,
     componentClassInit,
     componentTypeInit,
     componentInit,

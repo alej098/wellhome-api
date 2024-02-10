@@ -14,8 +14,12 @@ const createUserHandler = async (req, res) => {
         lastName,
         phone,
         email,
+        password,
         status,
+        isAdmin,
+        acceptCost,
         isSuspended,
+        MainPlaceId,
         userTypeId,
         propertyId
     } = req.body;
@@ -27,8 +31,12 @@ const createUserHandler = async (req, res) => {
             lastName,
             phone,
             email,
+            password,
             status,
+            isAdmin,
+            acceptCost,
             isSuspended,
+            MainPlaceId,
             userTypeId,
             propertyId
         );
@@ -46,8 +54,12 @@ const updateUserHandler = async (req, res) => {
         lastName,
         phone,
         email,
+        password,
         status,
+        isAdmin,
+        acceptCost,
         isSuspended,
+        MainPlaceId,
         userTypeId,
         propertyId
     } = req.body;
@@ -58,8 +70,12 @@ const updateUserHandler = async (req, res) => {
             lastName,
             phone,
             email,
+            password,
             status,
+            isAdmin,
+            acceptCost,
             isSuspended,
+            MainPlaceId,
             userTypeId,
             propertyId
         );

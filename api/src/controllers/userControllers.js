@@ -1,4 +1,4 @@
-const { User, UserType, Property } = require("../db");
+const { User, UserType, Property, MainPlace } = require("../db");
 
 const getArrayByIds = async (Model, ids) => {
     if (!ids || ids.length === 0) {
@@ -14,8 +14,12 @@ const createNewUser = async (
     lastName,
     phone,
     email,
+    password,
     status,
+    isAdmin,
+    acceptCost,
     isSuspended,
+    MainPlaceId,
     userTypeId,
     propertyId
 ) => {
@@ -28,8 +32,14 @@ const createNewUser = async (
         lastName,
         phone,
         email,
+        password,
         status,
+        isAdmin,
+        acceptCost,
         isSuspended,
+        MainPlaceId,
+        userTypeId,
+        propertyId
     });
 
     await newUser.setUserTypes(arrayOfUserType);
@@ -44,8 +54,12 @@ const updateUser = async (
     lastName,
     phone,
     email,
+    password,
     status,
+    isAdmin,
+    acceptCost,
     isSuspended,
+    MainPlaceId,
     userTypeId,
     propertyId
 ) => {
@@ -59,7 +73,10 @@ const updateUser = async (
     user.lastName = lastName;
     user.phone = phone;
     user.email = email;
+    user.password = password;
     user.status = status;
+    user.isAdmin = isAdmin;
+    user.acceptCost = acceptCost;
     user.isSuspended = isSuspended;
 
     await user.save();
