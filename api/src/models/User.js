@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt');
 
 module.exports = (sequelize) => {
     const User = sequelize.define('User', {
@@ -35,18 +36,54 @@ module.exports = (sequelize) => {
             },
             allowNull: false,
         },
+        password: {
+            type: DataTypes.TEXT,
+            validate: {
+              len: [7, 20]
+            },
+            allowNull: false,
+          },
         status: {
             type: DataTypes.ENUM(
                 'Habilitado',
                 'Inhabilitado'
             ),
+            defaultValue: 'Habilitado',
             allowNull: false
+        },
+        isAdmin:{
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
+        acceptCost: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
         },
         isSuspended: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
         },
-    });
+    },
+        {
+            hooks: {
+                beforeCreate: async (user) => {
+                  if (user.password) {
+                    const salt = await bcrypt.genSaltSync(10);
+                    user.password = await bcrypt.hashSync(user.password, salt);
+                  }
+                },
+                beforeUpdate: async (user) => {
+                  if (user.password) {
+                    const salt = await bcrypt.genSaltSync(10);
+                    user.password = await bcrypt.hashSync(user.password, salt);
+                  }
+                }
+              }
+        });
+
+        User.prototype.validPassword = async function(password) {
+            return await bcrypt.compare(password, this.password);
+        };
 
     return User;
 };

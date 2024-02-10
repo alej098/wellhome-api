@@ -8,18 +8,18 @@ const {
 
 const createFeeHandler = async (req, res) => {
     const {
-        mainPlace,
         feeDescription,
         currency,
-        amount
+        amount,
+        MainPlaceId
     } = req.body;
 
     try{
         const newFee = await createFee (
-        mainPlace,
         feeDescription,
         currency,
-        amount
+        amount,
+        MainPlaceId
         );
         res.status(201).json(newFee);
     }   catch (error) {
@@ -30,18 +30,18 @@ const createFeeHandler = async (req, res) => {
 const updateFeeHandler = async(req, res) =>{
     const {feeId} = req.params;
     const {
-        mainPlace,
         feeDescription,
         currency,
-        amount
+        amount,
+        MainPlaceId
     } = req.body;
     try {
         const fee = await updateFee(
             feeId,
-            mainPlace,
             feeDescription,
             currency,
-            amount
+            amount,
+            MainPlaceId
         );
         res.status(200).json(fee);
     }   catch (error) {

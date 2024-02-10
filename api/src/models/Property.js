@@ -50,6 +50,7 @@ module.exports = (sequelize) => {
                 'Ocupado',
                 'Desocupado'
             ),
+            defaultValue: 'Ocupado',
             allownull: false
         },
         subStatus: {
@@ -58,6 +59,7 @@ module.exports = (sequelize) => {
                 'Disponible para Alquiler',
                 'Regular'
             ),
+            defaultValue: 'Regular',
             allownull: false
         },
         acceptCost: {

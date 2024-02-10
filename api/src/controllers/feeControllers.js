@@ -1,17 +1,17 @@
-const {Fee} = require ('../db');
+const {Fee, MainPlace} = require ('../db');
 
 const createFee = async(
-    mainPlace,
     feeDescription,
     currency,
-    amount
+    amount,
+    MainPlaceId
 ) => {
     const createNewFee = await Fee.create(
         {
-            mainPlace,
             feeDescription,
             currency,
-            amount
+            amount,
+            MainPlaceId
         }
     )
     return createNewFee;
@@ -19,17 +19,17 @@ const createFee = async(
 
 const updateFee = async(
     feeId,
-    mainPlace,
     feeDescription,
     currency,
-    amount
+    amount,
+    MainPlaceId
 ) => {
     const fee = await Fee.update(
         {
-            mainPlace,
             feeDescription,
             currency,
-            amount
+            amount,
+            MainPlaceId
         },
         {where:{id: feeId}}
     )

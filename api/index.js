@@ -5,6 +5,7 @@ const {
   managementCoInit,
   userClassInit,
   userTypeInit,
+  feeInit,
   componentClassInit,
   componentTypeInit,
   componentInit,
@@ -23,6 +24,7 @@ async function startServer(){
         await mainPlaceInit();
         await userClassInit();
         await userTypeInit();
+        await feeInit();
         await componentClassInit();
         await componentTypeInit();
         await componentInit();

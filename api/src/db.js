@@ -48,6 +48,9 @@ Component.belongsTo(ComponentType);
 MainPlace.hasMany(Component);
 Component.belongsTo(MainPlace);
 
+MainPlace.hasMany(Fee);
+Fee.belongsTo(MainPlace);
+
 Fee.hasMany(Property);
 Property.belongsTo(Fee);
 
