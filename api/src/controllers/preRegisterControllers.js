@@ -36,7 +36,7 @@ const createPreRegisterForm = async (
 };
 
 const getPreRegisterForm = async () =>{
-    return await PreRegister.findAll()
+    const allPreRegisterForm = await PreRegister.findAll();
 
 };
 
