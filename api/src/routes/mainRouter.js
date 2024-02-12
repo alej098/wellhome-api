@@ -2,6 +2,7 @@ const { Router } = require("express");
 
 
 //Pre Registro
+const contactFormRouter = require("./contactFormRouter");
 const preRegisterRouter = require("./preRegisterRouter");
 
 //Configuración y funcionales
@@ -21,6 +22,7 @@ const loginRouter = require ("./loginRouter");
 const mainRouter = Router();
 
 //Pre Registro
+mainRouter.use("/contactform", contactFormRouter);
 mainRouter.use("/preregister", preRegisterRouter);
 
 //Configuración y funcionales
