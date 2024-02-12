@@ -28,7 +28,7 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const {ManagementCo, MainPlace, Property, ComponentClass, ComponentType, Component, UserClass, UserType, User, Fee} = sequelize.models;
+const {ManagementCo, MainPlace, Property, ComponentClass, ComponentType, Component, UserClass, UserType, User, Fee, PreRegister} = sequelize.models;
 
 ManagementCo.hasMany(MainPlace);
 MainPlace.belongsTo(ManagementCo);
@@ -77,4 +77,5 @@ module.exports = {
   UserType, 
   User,
   Fee, 
+  PreRegister,
   conn: sequelize };

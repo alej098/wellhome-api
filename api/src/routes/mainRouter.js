@@ -1,27 +1,39 @@
 const { Router } = require("express");
 
+
+//Pre Registro
+const preRegisterRouter = require("./preRegisterRouter");
+
+//Configuración y funcionales
 const managementCoRouter = require ("./managementCoRouter");
 const mainPlaceRouter = require ("./mainPlaceRouter");
-const userCatRouter = require ("./userCatRouter");
-const signUpRouter = require ("./signUpRouter");
-const userRouter = require ("./userRouter");
-const loginRouter = require ("./loginRouter");
 const propertyRouter =  require ("./propertyRouter");
-const componentRouter = require ("./componentRouter");
 const feeRouter = require ("./feeRouter");
+const componentRouter = require ("./componentRouter");
+const userCatRouter = require ("./userCatRouter");
+const userRouter = require ("./userRouter");
+
+//Autenticacion
+const signUpRouter = require ("./signUpRouter");
+const loginRouter = require ("./loginRouter");
 
 
 const mainRouter = Router();
 
+//Pre Registro
+mainRouter.use("/preregister", preRegisterRouter);
+
+//Configuración y funcionales
 mainRouter.use("/managementco", managementCoRouter);
 mainRouter.use("/mainplace", mainPlaceRouter);
-mainRouter.use("/component", componentRouter);
-mainRouter.use("/usercat", userCatRouter);
-mainRouter.use("/signup", signUpRouter);
-mainRouter.use("/users", userRouter);
-mainRouter.use("/login", loginRouter);
 mainRouter.use("/property", propertyRouter);
 mainRouter.use("/fee", feeRouter);
+mainRouter.use("/component", componentRouter);
+mainRouter.use("/usercat", userCatRouter);
+mainRouter.use("/users", userRouter);
 
+//Autenticacion
+mainRouter.use("/signup", signUpRouter);
+mainRouter.use("/login", loginRouter);
 
 module.exports = mainRouter;

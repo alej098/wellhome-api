@@ -1,4 +1,5 @@
 const {Router} = require("express");
+const {verifyToken} = require ('../controllers/authTokenControllers');
 
 const {
     createManagementCoHandler,
@@ -10,11 +11,11 @@ const {
 
 const managementCoRouter = Router();
 
-managementCoRouter.post('/', createManagementCoHandler);
+managementCoRouter.post('/',createManagementCoHandler);
 managementCoRouter.put('/:idCompany', updateManagementCoHandler);
 managementCoRouter.delete('/:idCompany', deleteManagementCoHandler);
 
-managementCoRouter.get('/',getManagementCoHandler);
+managementCoRouter.get('/', verifyToken, getManagementCoHandler);
 managementCoRouter.get('/:idCompany', getManagementCoByIdHandler);
 
 

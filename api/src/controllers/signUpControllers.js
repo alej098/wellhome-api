@@ -1,4 +1,6 @@
-const {User} = require("../db")
+const {User, MainPlace} = require("../db")
+const jwt = require('jsonwebtoken');
+const {JWT_SECRET} = process.env;
 
 const signUp = async(
     dni,
@@ -20,7 +22,8 @@ const signUp = async(
     };
 
     const newUserSignUp = await User.create(newSignUp);
-    return newUserSignUp;
+    const token = jwt.sign({dni: newUserSignUp.dni}, JWT_SECRET, {expiresIn: "1d"})
+    return {newUserSignUp, token};
 };
 
 module.exports={signUp};

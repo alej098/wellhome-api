@@ -11,9 +11,13 @@ const userLogin = async (login, password) => {
             isSuspended: false,
         }
     });
+    if (!user) {
+        throw new Error("Usuario no encontrado");      
+    }
+
     const isMatch =  await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        throw new Error("Usuario o contraseña inválida");
+        throw new Error("Contraseña inválida");
     }
     const token = jwt.sign({dni: user.dni}, JWT_SECRET, {expiresIn: "1d"})
     return {user, token};
