@@ -11,7 +11,7 @@ const singUpHandler = async (req, res) => {
         MainPlaceId
     } = req.body;
     try {
-        const newSignUp = await signUp (
+        const {newUserSignUp, token} = await signUp (
             dni,
             foreName,
             lastName,
@@ -20,7 +20,7 @@ const singUpHandler = async (req, res) => {
             password,
             MainPlaceId
         );
-        res.status(201).json(newSignUp);
+        res.status(201).json({newUserSignUp, token});
     } catch (error) {
         res.status(400).json({error: error.message});
         

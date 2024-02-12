@@ -1,5 +1,5 @@
 const {Router} = require("express");
-const {verifyToken} = require ('../controllers/authTokenControllers');
+
 
 const {singUpHandler} = require ('../handlers/signUpHandler');
 
