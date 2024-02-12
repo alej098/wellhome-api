@@ -1,5 +1,10 @@
 const { Router } = require("express");
 
+
+//Pre Registro
+const preRegisterRouter = require("./preRegisterRouter");
+
+//Configuración y funcionales
 const managementCoRouter = require ("./managementCoRouter");
 const mainPlaceRouter = require ("./mainPlaceRouter");
 const propertyRouter =  require ("./propertyRouter");
@@ -15,6 +20,10 @@ const loginRouter = require ("./loginRouter");
 
 const mainRouter = Router();
 
+//Pre Registro
+mainRouter.use("/preregister", preRegisterRouter);
+
+//Configuración y funcionales
 mainRouter.use("/managementco", managementCoRouter);
 mainRouter.use("/mainplace", mainPlaceRouter);
 mainRouter.use("/property", propertyRouter);
