@@ -3,6 +3,7 @@ const {conn} = require("./src/db");
 const {
   mainPlaceInit,
   managementCoInit,
+  userRolInit,
   userClassInit,
   userTypeInit,
   feeInit,
@@ -22,6 +23,7 @@ async function startServer(){
         
         await managementCoInit();
         await mainPlaceInit();
+        await userRolInit();
         await userClassInit();
         await userTypeInit();
         await feeInit();

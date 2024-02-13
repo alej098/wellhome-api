@@ -20,6 +20,7 @@ const createUserHandler = async (req, res) => {
         acceptCost,
         isSuspended,
         MainPlaceId,
+        UserRolId,
         userTypeId,
         propertyId
     } = req.body;
@@ -37,6 +38,7 @@ const createUserHandler = async (req, res) => {
             acceptCost,
             isSuspended,
             MainPlaceId,
+            UserRolId,
             userTypeId,
             propertyId
         );
@@ -60,9 +62,23 @@ const updateUserHandler = async (req, res) => {
         acceptCost,
         isSuspended,
         MainPlaceId,
+        UserRolId,
         userTypeId,
         propertyId
     } = req.body;
+    console.log(foreName,
+        lastName,
+        phone,
+        email,
+        password,
+        status,
+        isAdmin,
+        acceptCost,
+        isSuspended,
+        MainPlaceId,
+        UserRolId,
+        userTypeId,
+        propertyId)
     try {
         const user =  await updateUser (
             idUser,
@@ -76,6 +92,7 @@ const updateUserHandler = async (req, res) => {
             acceptCost,
             isSuspended,
             MainPlaceId,
+            UserRolId,
             userTypeId,
             propertyId
         );

@@ -1,4 +1,4 @@
-const { User, UserType, Property, MainPlace } = require("../db");
+const { User, UserType, Property } = require("../db");
 
 const getArrayByIds = async (Model, ids) => {
     if (!ids || ids.length === 0) {
@@ -20,6 +20,7 @@ const createNewUser = async (
     acceptCost,
     isSuspended,
     MainPlaceId,
+    UserRolId,
     userTypeId,
     propertyId
 ) => {
@@ -38,6 +39,7 @@ const createNewUser = async (
         acceptCost,
         isSuspended,
         MainPlaceId,
+        UserRolId,
         userTypeId,
         propertyId
     });
@@ -60,6 +62,7 @@ const updateUser = async (
     acceptCost,
     isSuspended,
     MainPlaceId,
+    UserRolId,
     userTypeId,
     propertyId
 ) => {
@@ -78,6 +81,9 @@ const updateUser = async (
     user.isAdmin = isAdmin;
     user.acceptCost = acceptCost;
     user.isSuspended = isSuspended;
+    user.MainPlaceId = MainPlaceId;
+    user.UserRolId = UserRolId;
+    user.propertyId = propertyId;
 
     await user.save();
 
@@ -126,10 +132,10 @@ const getUserById = async (userId) => {
                     model: UserType,
                     attributes: ['name'],
                 },
-                // {
-                //     model: Property,
-                //     attributes: ['maingrouper', 'mainGrouperName', 'mainGrouperNumber'],
-                // },
+                {
+                    model: Property,
+                    attributes: ['mainGrouper', 'mainGrouperName', 'mainGrouperNumber'],
+                },
             ],
         });
 
