@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3001;
 
 async function startServer(){
     try {
-        await conn.sync({force: true}); // True Desarrollo - False Produccion
+        await conn.sync({force: false}); // True Desarrollo - False Produccion
         
         await managementCoInit();
         await mainPlaceInit();

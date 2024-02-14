@@ -3,7 +3,8 @@ const {
     updateUser,
     deleteUser,
     getAllUsers,
-    getUserById
+    getUserById,
+    changePassword
 
 } = require ("../controllers/userControllers.js");
 
@@ -132,10 +133,30 @@ const getUserByIdHandler = async (req, res) => {
     }
 };
 
+const changePasswordHandler = async (req, res) => {
+    const {
+        login,
+        currentPassword,
+        newPassword
+    }= req.body;
+    try {
+        const password = await changePassword (
+            login,
+            currentPassword,
+            newPassword
+        ); 
+        res.status(200).json(password);
+    } catch (error) {
+        res.status(400).send({error: error.message});
+        
+    }
+};
+
 module.exports = {
     createUserHandler,
     updateUserHandler,
     deleteUserHandler,
     getUserHandler,
-    getUserByIdHandler
+    getUserByIdHandler,
+    changePasswordHandler
 };
