@@ -72,14 +72,6 @@ module.exports = (sequelize) => {
                     const salt = await bcrypt.genSaltSync(10);
                     user.password = await bcrypt.hashSync(user.password, salt);
                   }
-                  
-                  const defaultUserRole = await sequelize.models.UserRol.findOne({
-                    where: { id: '03-User' },
-                  });
-                
-                  if (defaultUserRole) {
-                    user.UserRolId = defaultUserRole.id;
-                  }
 
                 },
                 beforeUpdate: async (user) => {

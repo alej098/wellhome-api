@@ -1,4 +1,4 @@
-const { User, UserType, Property } = require("../db");
+const { User, UserType, Property, UserRol } = require("../db");
 
 const getArrayByIds = async (Model, ids) => {
     if (!ids || ids.length === 0) {
@@ -24,8 +24,13 @@ const createNewUser = async (
     userTypeId,
     propertyId
 ) => {
+    console.log(UserRolId);
     const arrayOfUserType = await getArrayByIds(UserType, userTypeId);
     const arrayOfProperty = await getArrayByIds(Property, propertyId);
+
+    const defaultUserRole = UserRolId ? undefined : await UserRol.findOne({
+        where: { id: '03-User' },
+    });
 
     const newUser = await User.create({
         dni,
@@ -39,7 +44,7 @@ const createNewUser = async (
         acceptCost,
         isSuspended,
         MainPlaceId,
-        UserRolId,
+        UserRolId: UserRolId || (defaultUserRole ? defaultUserRole.id : undefined),
         userTypeId,
         propertyId
     });

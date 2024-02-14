@@ -140,7 +140,7 @@ const changePasswordHandler = async (req, res) => {
         newPassword
     }= req.body;
     try {
-        const password = await changePassword (
+        const password = await changePassword(
             login,
             currentPassword,
             newPassword
