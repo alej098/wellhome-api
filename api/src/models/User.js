@@ -39,7 +39,7 @@ module.exports = (sequelize) => {
         password: {
             type: DataTypes.TEXT,
             validate: {
-              len: [7, 20]
+              len: [7]
             },
             allowNull: false,
           },
@@ -63,6 +63,7 @@ module.exports = (sequelize) => {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
         },
+      
     },
         {
             hooks: {
@@ -71,6 +72,15 @@ module.exports = (sequelize) => {
                     const salt = await bcrypt.genSaltSync(10);
                     user.password = await bcrypt.hashSync(user.password, salt);
                   }
+                  
+                  const defaultUserRole = await sequelize.models.UserRol.findOne({
+                    where: { id: '03-User' },
+                  });
+                
+                  if (defaultUserRole) {
+                    user.UserRolId = defaultUserRole.id;
+                  }
+
                 },
                 beforeUpdate: async (user) => {
                   if (user.password) {

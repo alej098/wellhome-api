@@ -3,6 +3,7 @@ const {conn} = require("./src/db");
 const {
   mainPlaceInit,
   managementCoInit,
+  userRolInit,
   userClassInit,
   userTypeInit,
   feeInit,
@@ -18,10 +19,11 @@ const PORT = process.env.PORT || 3001;
 
 async function startServer(){
     try {
-        await conn.sync({force: true}); // True Desarrollo - False Produccion
+        await conn.sync({force: false}); // True Desarrollo - False Produccion
         
         await managementCoInit();
         await mainPlaceInit();
+        await userRolInit();
         await userClassInit();
         await userTypeInit();
         await feeInit();

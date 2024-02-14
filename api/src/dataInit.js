@@ -2,6 +2,7 @@ const {
     ManagementCo,
     MainPlace,
     Property,
+    UserRol,
     UserClass,
     UserType,
     User,
@@ -19,7 +20,7 @@ async function managementCoInit(){
                 country: 'Perú',
                 companyTaxId: '20604859205',
                 companyName: 'Castrum Gestión y Servicios SAC',
-                companyContact: 'Angelo Luján',
+                companyContact: 'Angelo A. Luján',
                 companyPhone: '+51924707719',
                 companyEmail: 'castrumperu@gmail.com',
                 logo: 'https://img.freepik.com/vector-premium/trabajador-oficina-tomando-carpeta-archivo-administracion-gestion-gestion-archivos-icono-base-datos-catalogo-documentos-diseno-plano-ilustracion-vectorial-aislado-sobre-fondo-blanco_153097-1171.jpg',
@@ -77,7 +78,34 @@ async function mainPlaceInit(){
     }
 };
 
-
+async function userRolInit() {
+    const count = await UserRol.count();
+    if (!count) {
+        const userRoles = [
+            {
+                id: '00-SuperAdmin',
+                name: 'WebApp Admin'
+            },
+            {
+                id: '01-LocalAdmin',
+                name: 'Administrador'
+            },
+            {
+                id:'02-Moderator',
+                name: 'Moderador'
+            },
+            {
+                id: '03-User',
+                name: 'Usuario'
+            },
+            {
+                id: '04-External',
+                name: 'Externo'
+            }
+        ];
+        await UserRol.bulkCreate(userRoles);
+    }
+};
 
 async function userClassInit() {
     const count = await UserClass.count();
@@ -85,8 +113,7 @@ async function userClassInit() {
         const userClasses = [
             'Directivo',
             'Residente',
-            'Trabajador',
-            'Proveedor'
+            'Colaborador'
         ].map(name => ({name}));
         await UserClass.bulkCreate(userClasses);
     }
@@ -109,6 +136,10 @@ async function userTypeInit() {
                 userClassId: [1, 2]
             },
             {
+                name: 'Administrador Externo',
+                userClassId: [1, 3]
+            },
+            {
                 name: 'Propietario',
                 userClassId: [1, 2, 3]
             },
@@ -118,15 +149,23 @@ async function userTypeInit() {
             },
             {
                 name: 'Administrador',
-                userClassId: [2, 3, 4]
+                userClassId: [1, 2, 3]
             },
             {
                 name: 'Personal de Vigilancia',
-                userClassId: [2, 3, 4]
+                userClassId: [2, 3]
             },
             {
                 name: 'Personal de Limpieza',
-                userClassId: [2, 3, 4]
+                userClassId: [2, 3]
+            },
+            {
+                name: 'Personal de Servicios Múltiples',
+                userClassId: [2, 3]
+            },
+            {
+                name: 'Personal de Terceros',
+                userClassId: [3]
             },
         ];
         await UserType.bulkCreate(userTypes);
@@ -357,6 +396,7 @@ async function userInit() {
                 acceptCost: false,
                 isSuspended: false,
                 MainPlaceId: 'PE-AQP-00000',
+                UserRolId: '03-User',
                 userTypeId: [1],
                 propertyId: ['PE-AQP-WH-0001']
             },
@@ -372,6 +412,7 @@ async function userInit() {
                 acceptCost: false,
                 isSuspended: false,
                 MainPlaceId: 'PE-AQP-00000',
+                UserRolId: '03-User',
                 userTypeId: [2],
                 propertyId: ['PE-AQP-WH-0002', 'PE-AQP-WH-0003']
             },
@@ -387,6 +428,7 @@ async function userInit() {
                 acceptCost: false,
                 isSuspended: false,
                 MainPlaceId: 'PE-AQP-00000',
+                UserRolId: '03-User',
                 userTypeId: [3],
                 propertyId: []
             },
@@ -398,6 +440,7 @@ async function userInit() {
 module.exports = {
     mainPlaceInit,
     managementCoInit,
+    userRolInit,
     userClassInit,
     userTypeInit,
     feeInit,

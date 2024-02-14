@@ -5,7 +5,8 @@ const {
     updateUserHandler,
     deleteUserHandler,
     getUserHandler,
-    getUserByIdHandler
+    getUserByIdHandler,
+    changePasswordHandler
 } = require ('../handlers/userHandler');
 
 const userRouter = Router();
@@ -13,9 +14,10 @@ const userRouter = Router();
 userRouter.post('/', createUserHandler);
 userRouter.put('/:idUser', updateUserHandler);
 userRouter.delete('/:idUser', deleteUserHandler);
-userRouter.get('/', getUserHandler);
 
+userRouter.get('/', getUserHandler);
 userRouter.get('/:idUser', getUserByIdHandler);
 
+userRouter.patch('/change-password', changePasswordHandler);
 
 module.exports = userRouter;

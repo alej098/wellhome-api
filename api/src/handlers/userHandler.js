@@ -3,7 +3,8 @@ const {
     updateUser,
     deleteUser,
     getAllUsers,
-    getUserById
+    getUserById,
+    changePassword
 
 } = require ("../controllers/userControllers.js");
 
@@ -20,6 +21,7 @@ const createUserHandler = async (req, res) => {
         acceptCost,
         isSuspended,
         MainPlaceId,
+        UserRolId,
         userTypeId,
         propertyId
     } = req.body;
@@ -37,6 +39,7 @@ const createUserHandler = async (req, res) => {
             acceptCost,
             isSuspended,
             MainPlaceId,
+            UserRolId,
             userTypeId,
             propertyId
         );
@@ -60,9 +63,23 @@ const updateUserHandler = async (req, res) => {
         acceptCost,
         isSuspended,
         MainPlaceId,
+        UserRolId,
         userTypeId,
         propertyId
     } = req.body;
+    console.log(foreName,
+        lastName,
+        phone,
+        email,
+        password,
+        status,
+        isAdmin,
+        acceptCost,
+        isSuspended,
+        MainPlaceId,
+        UserRolId,
+        userTypeId,
+        propertyId)
     try {
         const user =  await updateUser (
             idUser,
@@ -76,6 +93,7 @@ const updateUserHandler = async (req, res) => {
             acceptCost,
             isSuspended,
             MainPlaceId,
+            UserRolId,
             userTypeId,
             propertyId
         );
@@ -115,10 +133,30 @@ const getUserByIdHandler = async (req, res) => {
     }
 };
 
+const changePasswordHandler = async (req, res) => {
+    const {
+        login,
+        currentPassword,
+        newPassword
+    }= req.body;
+    try {
+        const password = await changePassword (
+            login,
+            currentPassword,
+            newPassword
+        ); 
+        res.status(200).json(password);
+    } catch (error) {
+        res.status(400).send({error: error.message});
+        
+    }
+};
+
 module.exports = {
     createUserHandler,
     updateUserHandler,
     deleteUserHandler,
     getUserHandler,
-    getUserByIdHandler
+    getUserByIdHandler,
+    changePasswordHandler
 };
