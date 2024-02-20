@@ -1,8 +1,9 @@
-require ("dotenv").config();
-const express = require("express");
-const morgan = require("morgan");
-const mainRouter = require("./routes/mainRouter");
+require ('dotenv').config();
+const express = require('express');
+const morgan = require('morgan');
+const mainRouter = require('./routes/mainRouter');
 const cookieParser = require('cookie-parser');
+const logger = require ('./logger');
 
 const {FRONT_DOMAIN} = process.env;
 
@@ -31,9 +32,9 @@ app.use(mainRouter);
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => { 
+logger.error(`Error: ${err.message}`);
 const status = err.status || 500;
-const message = err.message || err;
-console.error(err);
+const message = err.message || 'Internal Server Error';
 res.status(status).send(message);
 });
 

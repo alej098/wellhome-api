@@ -1,17 +1,26 @@
-require ("dotenv").config();
-const {Sequelize} = require("sequelize");
+// require ("dotenv").config();
+const sequelize = require('./sequelizeConfig');
 const fs = require('fs');
 const path = require('path');
+const logger = require('./logger');
 
-const {
-    DB_USER,
-    DB_PASSWORD,
-    DB_HOST,
-    DB_NAME,
-    DB_PORT,
-} = process.env;
+// const {
+//     DB_USER,
+//     DB_PASSWORD,
+//     DB_HOST,
+//     DB_NAME,
+//     DB_PORT,
+// } = process.env;
 
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`, {logging: false});
+// const sequelize = new Sequelize({
+//   dialect: 'postgres',
+//   host: DB_HOST,
+//   port: DB_PORT,
+//   username: DB_USER,
+//   password: DB_PASSWORD,
+//   database: DB_NAME,
+//   logging: false, 
+// });
 
 const basename = path.basename(__filename);
 const modelDefiners = [];
@@ -22,7 +31,12 @@ fs.readdirSync(path.join(__dirname, '/models'))
     modelDefiners.push(require(path.join(__dirname, '/models', file)));
   });
 
-modelDefiners.forEach(model => model(sequelize));
+try {
+  modelDefiners.forEach(model => model(sequelize));
+  logger.info('Database synchronized succesfuly');
+} catch (error) {
+  logger.error('Error during model definition:', error);
+}  
 
 let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);

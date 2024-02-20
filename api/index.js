@@ -1,5 +1,7 @@
-const app = require("./src/app");
-const {conn} = require("./src/db");
+const app = require('./src/app');
+const {conn} = require('./src/db');
+const logger = require('./src/logger');
+
 const {
   mainPlaceInit,
   managementCoInit,
@@ -34,12 +36,14 @@ async function startServer(){
         await userInit();
         
         app.listen(PORT, () => {
-            console.log(`Server is running at Port:${PORT}`);
+            logger.info(`Server is running at Port:${PORT}`);
           }).on('error', (err) => {
-            console.error("Failed to start the server", err);
+            logger.error(`Failed to start the server: ${err.message}`);
+            
           });
         } catch (error) {
-          console.error("Error initializing the server", error);
+          logger.error(`Error initializing the server: ${error.message}`);
+          
         }
       }
 
