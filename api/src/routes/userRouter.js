@@ -1,4 +1,14 @@
-const {Router} = require("express");
+const {Router} = require('express');
+const { verifyToken,
+        isSuperAdmin,
+        isLocalAdmin, 
+        isModerator, 
+        isUser,
+        allAccess,
+        adminLocalAccess,
+        ownerLocalAccess,
+        productOwnerAccess
+    } = require ('../controllers/authTokenControllers');
 
 const {
     createUserHandler,
@@ -12,11 +22,11 @@ const {
 const userRouter = Router();
 
 userRouter.post('/', createUserHandler);
-userRouter.put('/:idUser', updateUserHandler);
-userRouter.delete('/:idUser', deleteUserHandler);
+userRouter.put('/:userId', updateUserHandler);
+userRouter.delete('/:userId', deleteUserHandler);
 
 userRouter.get('/', getUserHandler);
-userRouter.get('/:idUser', getUserByIdHandler);
+userRouter.get('/:userId', getUserByIdHandler);
 
 userRouter.patch('/change-password', changePasswordHandler);
 

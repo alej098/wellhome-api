@@ -1,34 +1,15 @@
-// require ("dotenv").config();
 const sequelize = require('./sequelizeConfig');
 const fs = require('fs');
 const path = require('path');
-const logger = require('./logger');
-
-// const {
-//     DB_USER,
-//     DB_PASSWORD,
-//     DB_HOST,
-//     DB_NAME,
-//     DB_PORT,
-// } = process.env;
-
-// const sequelize = new Sequelize({
-//   dialect: 'postgres',
-//   host: DB_HOST,
-//   port: DB_PORT,
-//   username: DB_USER,
-//   password: DB_PASSWORD,
-//   database: DB_NAME,
-//   logging: false, 
-// });
+const logger = require('./utils/logger');
 
 const basename = path.basename(__filename);
 const modelDefiners = [];
 
-fs.readdirSync(path.join(__dirname, '/models'))
+fs.readdirSync(path.join(__dirname, '/modelsSQL'))
   .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
   .forEach((file) => {
-    modelDefiners.push(require(path.join(__dirname, '/models', file)));
+    modelDefiners.push(require(path.join(__dirname, '/modelsSQL', file)));
   });
 
 try {

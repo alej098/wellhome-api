@@ -11,7 +11,7 @@ const {
     ComponentType,
     Component,
     Fee,
-    } = require('./db');
+    } = require('../db');
 
 async function managementCoInit(){
     try {
@@ -136,10 +136,19 @@ async function userClassInit() {
         const count = await UserClass.count();
         if (!count) {
         const userClasses = [
-            'Directivo',
-            'Residente',
-            'Colaborador'
-        ].map(name => ({name}));
+            {
+                name: 'Directivo',
+                UserTypeId: []
+            },
+            {
+                name: 'Residente',
+                UserTypeId: []
+            },
+            {
+                name: 'Colaborador',
+                UserTypeId: []
+            },
+        ];
         await UserClass.bulkCreate(userClasses);
         }
     logger.info('UserClassInit data initialized successfully.');  
@@ -153,51 +162,51 @@ async function userTypeInit() {
         logger.info('Initializing UserTypeInit data...');
 
         const count = await UserType.count();
-        if (count === 0) {
+        if (!count) {
             const userTypes = [
                 {
                     name: 'Presidente',
-                    userClassId: [1, 2]
+                    UserClassId: [1, 2]
                 },
                 {
                     name: 'Secretario',
-                    userClassId: [1, 2]
+                    UserClassId: [1, 2]
                 },
                 {
                     name: 'Tesorero',
-                    userClassId: [1, 2]
+                    UserClassId: [1, 2]
                 },
                 {
                     name: 'Administrador Externo',
-                    userClassId: [1, 3]
+                    UserClassId: [1, 3]
                 },
                 {
                     name: 'Propietario',
-                    userClassId: [1, 2, 3]
+                    UserClassId: [1, 2, 3]
                 },
                 {
                     name: 'Inquilino',
-                    userClassId: [2, 3]
+                    UserClassId: [2, 3]
                 },
                 {
                     name: 'Administrador',
-                    userClassId: [1, 2, 3]
+                    UserClassId: [1, 2, 3]
                 },
                 {
                     name: 'Personal de Vigilancia',
-                    userClassId: [2, 3]
+                    UserClassId: [2, 3]
                 },
                 {
                     name: 'Personal de Limpieza',
-                    userClassId: [2, 3]
+                    UserClassId: [2, 3]
                 },
                 {
                     name: 'Personal de Servicios Múltiples',
-                    userClassId: [2, 3]
+                    UserClassId: [2, 3]
                 },
                 {
                     name: 'Personal de Terceros',
-                    userClassId: [3]
+                    UserClassId: [3]
                 },
             ];
             await UserType.bulkCreate(userTypes);
@@ -415,7 +424,7 @@ async function propertyInit() {
                 subStatus: 'Regular',
                 MainPlaceId: 'PE-AQP-00000',
                 FeedId: 1,
-                userDni: []
+                UserDni: []
             },
             {
                 id: 'PE-AQP-WH-0002',
@@ -427,7 +436,7 @@ async function propertyInit() {
                 subStatus: 'Regular',
                 MainPlaceId: 'PE-AQP-00000',
                 FeedId: 1,
-                userDni: []
+                UserDni: []
             },
             {
                 id: 'PE-AQP-WH-0003',
@@ -439,7 +448,7 @@ async function propertyInit() {
                 subStatus: 'Regular',
                 MainPlaceId: 'PE-AQP-00000',
                 FeedId: 1,
-                userDni: []
+                UserDni: []
             },
 
         ];
@@ -471,8 +480,8 @@ async function userInit() {
                 isSuspended: false,
                 MainPlaceId: 'PE-AQP-00000',
                 UserRolId: '03-User',
-                userTypeId: [1],
-                propertyId: ['PE-AQP-WH-0001']
+                UserTypeId: [1],
+                PropertyId: ['PE-AQP-WH-0001']
             },
             {
                 dni: '10000002',
@@ -487,8 +496,8 @@ async function userInit() {
                 isSuspended: false,
                 MainPlaceId: 'PE-AQP-00000',
                 UserRolId: '03-User',
-                userTypeId: [2],
-                propertyId: ['PE-AQP-WH-0002', 'PE-AQP-WH-0003']
+                UserTypeId: [2],
+                PropertyId: ['PE-AQP-WH-0002', 'PE-AQP-WH-0003']
             },
             {
                 dni: '10000003',
@@ -503,8 +512,8 @@ async function userInit() {
                 isSuspended: false,
                 MainPlaceId: 'PE-AQP-00000',
                 UserRolId: '03-User',
-                userTypeId: [3],
-                propertyId: []
+                UserTypeId: [3],
+                PropertyId: []
             },
         ];
         await User.bulkCreate(users);

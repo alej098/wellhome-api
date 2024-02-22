@@ -1,7 +1,7 @@
 const app = require('./src/app');
 const {conn} = require('./src/db');
 const mongoose = require('./src/mongooseConfig')
-const logger = require('./src/logger');
+const logger = require('./src/utils/logger');
 
 const {
   mainPlaceInit,
@@ -16,13 +16,13 @@ const {
   propertyInit,
   userInit
   
-} = require('./src/dataInit');
+} = require('./src/utils/dataInit');
 
 const PORT = process.env.PORT || 3001;
 
 async function startServer(){
     try {
-        await conn.sync({force: true}); // True Desarrollo - False Produccion
+        await conn.sync({force: false}); // True Desarrollo - False Produccion
         
         await managementCoInit();
         await mainPlaceInit();

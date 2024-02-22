@@ -1,3 +1,6 @@
+const logger = require('../utils/logger.js');
+const {handleSuccessResponse, handleErrorResponse} = require('../utils/utils.js')
+
 const {signUp} = require('../controllers/signUpControllers');
 
 const singUpHandler = async (req, res) => {
@@ -20,10 +23,10 @@ const singUpHandler = async (req, res) => {
             password,
             MainPlaceId
         );
-        res.status(201).json({newUserSignUp, token});
+        logger.info(`Registro exitoso de ${foreName} ${lastName} (${email})`);
+        handleSuccessResponse(res, {newUserSignUp,token}, 201);
     } catch (error) {
-        res.status(400).json({error: error.message});
-        
+        handleErrorResponse(res, error);
     }
 };
 

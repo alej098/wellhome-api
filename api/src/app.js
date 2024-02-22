@@ -3,7 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const mainRouter = require('./routes/mainRouter');
 const cookieParser = require('cookie-parser');
-const logger = require ('./logger');
+const logger = require ('./utils/logger');
 
 const {FRONT_DOMAIN} = process.env;
 
