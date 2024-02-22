@@ -1,3 +1,4 @@
+const {handleSuccessResponse, handleErrorResponse} =require('../utils/utils');
 const {
     createClassUser,
     createTypeUser,
@@ -13,120 +14,120 @@ const {
 } =  require('../controllers/userCatControllers');
 
 const createClassUserHandler = async(req, res) => {
-    const {name, userTypeId} = req.body;
+    const {name, UserTypeId} = req.body;
     try {
-        const newUserClass = await createClassUser(name, userTypeId)
-        res.status(201).json(newUserClass);
+        const newUserClass = await createClassUser(name, UserTypeId)
+        handleSuccessResponse(res, newUserClass, 201);
     } catch (error) {
-        res.status(400).json({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const createTypeUserHandler = async(req, res) => {
-    const {name, userClassId} = req.body;
+    const {name, UserClassId} = req.body;
     try {
-        const newUserType = await createTypeUser(name, userClassId)
-        res.status(201).json(newUserType);
+        const newUserType = await createTypeUser(name, UserClassId)
+        handleSuccessResponse(res, newUserType, 201);
     } catch (error) {
-        res.status(400).json({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const updateClassUserHandler = async(req, res) => {
-    const {idClassUser} = req.params;
+    const {classId} = req.params;
     const {
         name,
         isSuspended,
-        userTypeId
+        UserTypeId
     } = req.body;
     try {
         const updateUserClass = await updateClassUser(
-            idClassUser,
+            classId,
             name, 
             isSuspended, 
-            userTypeId
+            UserTypeId
             );
-        res.status(200).json(updateUserClass);
+        handleSuccessResponse(res, updateUserClass);
     } catch (error) {
-        res.status(400).send({error: error.message});      
+        handleErrorResponse(res, error);
     }
 };
 
 const updateTypeUserHandler = async (req, res) => {
-    const {idTypeUser} = req.params;
+    const {typeId} = req.params;
     const {
         name,
         isSuspended,
-        userClassId
+        UserClassId
     } = req.body;
     try {
         const updateUserType = await updateTypeUser(
-            idTypeUser,
+            typeId,
             name,
             isSuspended,
-            userClassId
+            UserClassId
         );
-        res.status(200).json(updateUserType);
+        handleSuccessResponse(res, updateUserType);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const deleteClassUserHandler = async (req, res) => {
-    const {idClassUser} = req.params;
+    const {classId} = req.params;
     try {
-        const deleteClass = await deleteClassUser(idClassUser);
-        res.status(200).json(deleteClass);
+        const deleteClass = await deleteClassUser(classId);
+        handleSuccessResponse(res, deleteClass);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const deleteTypeUserHandler =  async(req, res) => {
-    const {idTypeUser} = req.params;
+    const {typeId} = req.params;
     try {
-        const deleteType = await deleteTypeUser(idTypeUser);
-        res.status(200).json(deleteType);
+        const deleteType = await deleteTypeUser(typeId);
+        handleSuccessResponse(res, deleteType);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const getClassUserHandler = async(req, res) => {
     try {
         const classUser = await getClassUser()
-        res.status(200).json(classUser);
+        handleSuccessResponse(res, classUser);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const getTypeUserHandler = async(req, res) => {
     try {
         const typeUser = await getTypeUser()
-        res.status(200).json(typeUser);
+        handleSuccessResponse(res, typeUser);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const getClassUserByIdHandler =  async(req, res) => {
-    const{idClassUser} = req.params;
+    const{classId} = req.params;
     try {
-        const classUserById = await getClassUserById(idClassUser);
-        res.status(200).json(classUserById);
-    }   catch (error) {
-        res.status(400).send({error: error.message});
+        const classUserById = await getClassUserById(classId);
+        handleSuccessResponse(res, classUserById);
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
 };
 
 const getTypeUserByIdHandler = async(req, res) => {
-    const{idTypeUser} = req.params;
+    const{typeId} = req.params;
     try {
-        const typeUserById = await getTypeUserById(idTypeUser);
-        res.status(200).json(typeUserById);
-    }   catch (error) {
-        res.status(400).send({error: error.message});
+        const typeUserById = await getTypeUserById(typeId);
+        handleSuccessResponse(res, typeUserById);
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
 };
 

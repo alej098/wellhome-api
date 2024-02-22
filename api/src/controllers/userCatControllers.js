@@ -1,169 +1,203 @@
 const {UserClass, UserType} = require('../db');
+const {getArrayByIds, checkExistence} =require('../utils/utils');
+const logger = require('../utils/logger');
 
-const createClassUser = async(name, userTypeId) =>{
-
-    let arrayOfType = [];
-    for (const id of userTypeId) {
-        let addType = await UserType.findByPk(id);
-        arrayOfType.push(addType);
-    }
-    const createClass = await UserClass.create(
-        {name, userTypeId}
-    )
-    await createClass.setUserTypes(arrayOfType);
-    return createClass;
-};
-
-const createTypeUser = async(name, userClassId) =>{
-
-    let arrayOfClass = [];
-    for (const id of userClassId) {
-        let addClass = await UserClass.findByPk(id);
-        arrayOfClass.push(addClass);
-    }
-    const createType = await UserType.create(
-        {name, userClassId}
-    )
-    await createType.setUserClasses(arrayOfClass);
-    return createType;
-};
-
-const updateClassUser = async (idClassUser, name, isSuspended, userTypeId) => {
-    const [numUpdated] = await UserClass.update(
-        {
-            name,
-            isSuspended,
-            userTypeId,
-        },
-        { where: { id: idClassUser } }
-    );
-
-    if (numUpdated === 0) {
-        throw Error('No se encontró la Clase requerida');
-    }
-
-    // Obtener la instancia actualizada
-    const updatedClassUser = await UserClass.findByPk(idClassUser);
-
-    await updatedClassUser.setUserTypes([]);
-
-    if (userTypeId && userTypeId.length > 0) {
-        let arrayOfType = [];
-        for (const id of userTypeId) {
-            let addType = await UserType.findByPk(id);
-            if (addType) {
-                arrayOfType.push(addType);
-            }
-        }
-        await updatedClassUser.setUserTypes(arrayOfType);
-    }
-
-    return updatedClassUser;
-};
-
-const updateTypeUser = async(idTypeUser, name, isSuspended, userClassId) => {
-        const [numUpdated] = await UserType.update(
-            {
-            name, 
-            isSuspended, 
-            userClassId
-            },
-            {where: {id: idTypeUser}}
-        );
-
-        if(numUpdated ===0) {
-            throw Error ('No se econtró el Tipo con este Id')
-        }   
+const createClassUser = async(name, UserTypeId) =>{
+    try {
         
-        const updatedTypeUser = await UserType.findByPk(idTypeUser);
+        const arrayOfUserType = await getArrayByIds(UserType, UserTypeId);
 
-        await updatedTypeUser.setUserClasses([]);
+        const createClass = await UserClass.create(
+            {name, UserTypeId}
+        )
+        await createClass.setUserTypes(arrayOfUserType);
+        logger.info('Nueva Clase de usuario creada con éxito')
+        return createClass;
 
-        if (userClassId && userClassId.length > 0) {
-            let arrayOfClass = [];
-            for (const id of userClassId) {
-                let addClass = await UserClass.findByPk(id);
-                if (addType) {
-                    arrayOfClass.push(addClass);
-                }
-            } 
-            await updatedTypeUser.setUserClasses(arrayOfClass);
-        }
-        return updatedTypeUser;
-    };
-
-const deleteClassUser = async(idClassUser) => {
-    const deletedClass = await UserClass.destroy({
-        where: {id: idClassUser}
-    });
-    if(!deletedClass){
-        throw new Error('No se encontraron Clases con ese Id');
+    } catch (error) {
+        logger.error(`Error al crear una clase de usuario desde el controlador: ${error.message}`);
+        throw new Error('Error interno al crear una clase de usuario');
     }
-    return 'La Clase ha sido eliminada';
+    
 };
 
-const deleteTypeUser =  async(idTypeUser) => {
-    const deletedType = await UserType.destroy({
-        where: {id: idTypeUser}
-    });
-    if(!deletedType){
-        throw new Error('No se encontraron Tipos con ese Id');
+const createTypeUser = async(name, UserClassId) =>{
+    try {
+
+        const arrayOfUserClass = await getArrayByIds(UserClass, UserClassId);
+
+        const createType = await UserType.create(
+            {name, UserClassId}
+        )
+        await createType.setUserClasses(arrayOfUserClass);
+        logger.info('Nuevo Tipo de usuario creado con éxito')
+        return createType;
+
+    } catch (error) {
+        logger.error(`Error al crear un tipo de usuario desde el controlador: ${error.message}`);
+        throw new Error('Error interno al crear un tipo de usuario');
     }
-    return 'El tipo ha sido eliminado';
+    
+};
+
+const updateClassUser = async (
+    classId, 
+    name, 
+    isSuspended, 
+    UserTypeId
+) => {
+    try {
+        const userClass = await checkExistence(UserClass, classId)
+        userClass.name = name;
+        userClass.isSuspended = isSuspended;
+        userClass.UserTypeId = UserTypeId;
+
+        await userClass.save();
+
+        const arrayOfUserType = await getArrayByIds(UserType, UserTypeId);
+        await userClass.setUserTypes(arrayOfUserType);
+
+        logger.info('Clase de usuario actualizada con éxito');
+        return userClass;
+
+    } catch (error) {
+        logger.error(`Error al actualizar la clase de usuario desde el controlador: ${error.message}`);
+        throw new Error('Error interno al actualizar la clase de usuario');
+    }
+};
+
+const updateTypeUser = async(
+    typeId, 
+    name, 
+    isSuspended, 
+    UserClassId
+) => {
+    try {
+        const userType = await checkExistence(UserType, typeId)
+        userType.name = name;
+        userType.isSuspended = isSuspended;
+        userType.UserClassId = UserClassId;
+
+        await userType.save();
+
+        const arrayOfUserClass = await getArrayByIds(UserClass, UserClassId);
+        await userType.setUserClasses(arrayOfUserClass);
+
+        logger.info('Tipo de usuario actualizada con éxito');
+        return userType;
+
+    } catch (error) {
+        logger.error(`Error al actualizar el Tipo de usuario desde el controlador: ${error.message}`);
+        throw new Error('Error interno al actualizar el Tipo de usuario');
+    }
+        
+};
+
+const deleteClassUser = async(classId) => {
+    try {
+        const deletedClass = await checkExistence(UserClass, classId)
+
+        await deletedClass.destroy();
+        logger.info('Clase de usuario eliminada con éxito');
+        return {message: "Clase de Usuario eiminada exitosamente"};
+
+    } catch (error) {
+        logger.error(`Error al eliminar una Clase de usuario desde el controlador: ${error.message}`);
+        throw new Error('Error interno al eliminar una Clase de usuario');
+    }
+};
+
+const deleteTypeUser =  async(typeId) => {
+    try {
+        const deletedType = await checkExistence(UserType, typeId)
+
+        await deletedType.destroy();
+        logger.info('Tipo de usuario eliminado con éxito');
+        return {message: "Tipo de Usuario eiminado exitosamente"};
+
+    } catch (error) {
+        logger.error(`Error al eliminar un Tipo de usuario desde el controlador: ${error.message}`);
+        throw new Error('Error interno al eliminar un Tipo de usuario');
+    }
+    
 };
 
 const getClassUser = async() => {
-    return await UserClass.findAll({
-        where: {isSuspended: false},
-        include: [{
-            model: UserType,
-            attributes: ['name']
-        }],
-    });
+    try {
+        return await UserClass.findAll({
+            where: {isSuspended: false},
+            include: [{
+                model: UserType,
+                attributes: ['name']
+            }],
+        });
+    } catch (error) {
+        logger.error(`Error al traer a todas las Clases de usuarios desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer a todas las Clases de usuarios');
+    }
+    
 };
 
 const getTypeUser = async() => {
-    return await UserType.findAll({
-        where: {isSuspended: false},
-        include: [{model: UserClass,
-        attributes: ['name']}]
-    });
+    try {
+        return await UserType.findAll({
+            where: {isSuspended: false},
+            include: [{model: UserClass,
+            attributes: ['name']}]
+        });
+    } catch (error) {
+        logger.error(`Error al traer a todos los tipos de usuarios desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer a todos los tipos de usuarios');
+    }
+    
 };
 
-const getClassUserById = async(idClassUser) => {
-    const classUserById = await UserClass.findOne({
-        where: {
-            id: idClassUser,
-            isSuspended: false
-        },
-        include: [{
-            model: UserType,
-            attributes: ['id', 'name'],
-            through: {
-                attributes: [],
-            }
-        }]
-    });
-    if(!classUserById) throw Error('No existen Clases con ese Id');
-    return classUserById;
+const getClassUserById = async(classId) => {
+    try {
+        const classUserById = await UserClass.findOne({
+            where: {
+                id: classId,
+                isSuspended: false
+            },
+            include: [{
+                model: UserType,
+                attributes: ['id', 'name'],
+                through: {
+                    attributes: [],
+                }
+            }]
+        });
+        if(!classUserById) throw Error('No existen Clases con ese Id');
+        return classUserById;
+    } catch (error) {
+        logger.error(`Error al traer a una Clase de usuario por Id desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer a una Clase de usuario por Id');
+    }
+    
 };
 
-const getTypeUserById = async(idTypeUser) =>{
-    const typeUserById = await UserType.findOne({
-        where: {
-            id: idTypeUser,
-            isSuspended: false
-        },
-        include: [{
-            model: UserClass,
-            attributes: ['id', 'name'],
-            through: {
-                attributes:[]
-            }
-        }]
-    });
-    if(!typeUserById) throw Error('No existen Tipos con ese Id');
-    return typeUserById;
+const getTypeUserById = async(typeId) =>{
+    try {
+        const typeUserById = await UserType.findOne({
+            where: {
+                id: typeId,
+                isSuspended: false
+            },
+            include: [{
+                model: UserClass,
+                attributes: ['id', 'name'],
+                through: {
+                    attributes:[]
+                }
+            }]
+        });
+        if(!typeUserById) throw Error('No existen Tipos con ese Id');
+        return typeUserById;
+    } catch (error) {
+        logger.error(`Error al traer a un Tipo de usuario por Id desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer a un Tipo de usuario por Id');
+    }
+    
 }
 
 module.exports = {

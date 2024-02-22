@@ -1,12 +1,14 @@
-const { userLogin } = require("../controllers/userLoginControllers");
+const logger = require('../utils/logger')
+const { userLogin } = require('../controllers/userLoginControllers');
 
 const userLoginHandler = async (req, res) => {
     const {login, password} = req.body;
     try {
         const {user, token} = await userLogin(login, password);
-        res.status(200).json({user, token})
+        handleSuccessResponse(res, {user, token});
     } catch (error) {
-        res.status(400).json({error: error.message});
+        logger.error(`Error durante el proceso de Login`);
+        handleErrorResponse(res, error);
     }
 };
 
