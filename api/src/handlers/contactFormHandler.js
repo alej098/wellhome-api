@@ -7,7 +7,7 @@ const {
 const createContactFormHandler = async (req, res) => {
     const {
         country,
-        name,
+        foreName,
         lastName,
         email,
         phone,
@@ -17,7 +17,7 @@ const createContactFormHandler = async (req, res) => {
     try {
         const newContactForm = await createContactForm (
             country,
-            name,
+            foreName,
             lastName,
             email,
             phone,

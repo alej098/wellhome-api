@@ -21,11 +21,11 @@ const {
 const managementCoRouter = Router();
 
 managementCoRouter.post('/',createManagementCoHandler);
-managementCoRouter.put('/:idCompany', updateManagementCoHandler);
-managementCoRouter.delete('/:idCompany', deleteManagementCoHandler);
+managementCoRouter.put('/:companyId', updateManagementCoHandler);
+managementCoRouter.delete('/:companyId', deleteManagementCoHandler);
 
 managementCoRouter.get('/', getManagementCoHandler);
-managementCoRouter.get('/:idCompany', getManagementCoByIdHandler);
+managementCoRouter.get('/:companyId', getManagementCoByIdHandler);
 
 
 module.exports = managementCoRouter;

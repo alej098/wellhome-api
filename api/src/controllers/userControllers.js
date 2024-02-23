@@ -148,7 +148,6 @@ const getAllUsers = async () => {
         logger.error(`Error al traer a todos los usuarios desde el controlador: ${error.message}`);
         throw new Error('Error interno al traer a todos los usuarios');
     }
-    
 };
 
 const getUserById = async (userId) => {

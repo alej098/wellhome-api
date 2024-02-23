@@ -1,3 +1,6 @@
+const logger = require('../utils/logger.js');
+const {handleSuccessResponse, handleErrorResponse} = require('../utils/utils.js');
+
 const {
     createMainPlace,
     updateMainPlace,
@@ -38,15 +41,16 @@ const createMainPlaceHandler = async (req, res) => {
         isSuspended,
         ManagementCoCompanyRUC
         );
-        res.status(201).json(newMainPlace);
-    }   catch (error) {
-        res.status(400).json({error: error.message});
+        logger.info('Creación Exitosa de Condominio');
+        handleSuccessResponse(res, newMainPlace, 201);
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
 };
 
 
 const updateMainPlaceHandler = async (req, res) =>{
-    const {idMainPlace} = req.params;
+    const {mainPlaceId} = req.params;
     const {
         name,
         country,
@@ -62,7 +66,7 @@ const updateMainPlaceHandler = async (req, res) =>{
     } = req.body;
     try {
         const mainPlace = await updateMainPlace (
-        idMainPlace,
+        mainPlaceId,
         name,
         country,
         state,
@@ -75,20 +79,22 @@ const updateMainPlaceHandler = async (req, res) =>{
         isSuspended,
         managementCoId
         );
-        res.status(200).json(mainPlace);
+        logger.info('Creación Exitosa de Condominio');
+        handleSuccessResponse(res, mainPlace);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 
 const deleteMainPlaceHandler =  async (req, res) => {
-    const{idMainPlace} = req.params;
+    const{mainPlaceId} = req.params;
     try{
-        const deletePlace = await deleteMainPlace(idMainPlace);
-        res.status(200).json(deletePlace);
-    }   catch (error) {
-        res.status(400).send({error: error.message});
+        const deletePlace = await deleteMainPlace(mainPlaceId);
+        logger.info('El condominio se eliminó exitosamente');
+        handleSuccessResponse(res, deletePlace);
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
 };
 
@@ -96,22 +102,25 @@ const deleteMainPlaceHandler =  async (req, res) => {
 const getMainPlaceHandler =  async (req, res) => {
     try {
         const allPlaces = await getAllMainPlace();
-        res.status(200).json(allPlaces);
+        logger.info('Se trajeron todos los condominios exitosamente');
+        handleSuccessResponse(res, allPlaces);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 
 const getMainPlaceByIdHandler = async (req, res) => {
-    const {idMainPlace} = req.params;
+    const {mainPlaceId} = req.params;
     try {
-        const mainPlaceById = await getMainPlaceById(idMainPlace);
-        res.status(200).json(mainPlaceById);
-    }   catch (error) {
-        res.status(400).send({error: error.message});
+        const mainPlaceById = await getMainPlaceById(mainPlaceId);
+        logger.info('Creación Exitosa de Condominio');
+        handleSuccessResponse(res, mainPlaceById);
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
 };
+
 
 module.exports = {
     createMainPlaceHandler,
