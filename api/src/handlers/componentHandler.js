@@ -1,3 +1,6 @@
+const logger = require('../utils/logger.js');
+const {handleSuccessResponse, handleErrorResponse} = require('../utils/utils.js');
+
 const {
     createNewClass,
     createNewType,
@@ -25,9 +28,10 @@ const createClassComponentHandler = async(req, res) => {
     const {name} = req.body;
     try{
         const newClass = await createNewClass(name)
-        res.status(201).json(newClass);
-    }   catch (error) {
-        res.status(400).json({error: error.message});
+        logger.info('Creación exitosa de Clase de Componente');
+        handleSuccessResponse(res, newClass, 201);
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
 };
 
@@ -36,9 +40,10 @@ const createTypeComponentHandler = async(req, res) => {
     const {name, ComponentClassId} = req.body;
     try{
         const newType = await createNewType(name, ComponentClassId);
-        res.status(201).json(newType);
-    }   catch (error) {
-        res.status(400).json({error: error.message});
+        logger.info('Creación Exitosa de Tipo de Componente');
+        handleSuccessResponse(res, newType, 201);
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
 };
 
@@ -64,34 +69,36 @@ const createComponentHandler =  async(req, res) => {
             ComponentTypeId,
             MainPlaceId
         )
-        res.status(201).json(newComponent);
-    }   catch (error) {
-        res.status(400).json({error: error.message});
+        logger.info('Creación Exitosa de Componente');
+        handleSuccessResponse(res, newComponent, 201);
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
 };
 
 
 const updateClassComponentHandler = async(req, res) => {
-    const {idClassComponent} = req.params;
+    const {classComponentId} = req.params;
     const {
         name,
         isSuspended
     } = req.body;
     try {
         const classComponent = await updateClassComponent(
-            idClassComponent,
+            classComponentId,
             name,
             isSuspended
         );
-        res.status(200).json(classComponent);
-    }   catch (error) {
-        res.status(400).send({error: error.message});
+        logger.info('Actualización Exitosa de Clase de Componente');
+        handleSuccessResponse(res, classComponent);
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
 };
 
 
 const updateTypeComponentHandler = async(req, res) => {
-    const {idTypeComponent} = req.params;
+    const {typeComponentId} = req.params;
     const {
         name,
         isSuspended,
@@ -99,20 +106,21 @@ const updateTypeComponentHandler = async(req, res) => {
     } = req.body;
     try {
         const typeComponent = await updateTypeComponent(
-            idTypeComponent,
+            typeComponentId,
             name,
             isSuspended,
             ComponentClassId
         );
-        res.status(200).json(typeComponent);
+        logger.info('Actualización Exitosa del Tipo de Componente');
+        handleSuccessResponse(res, typeComponent);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 
 const updateComponentHandler = async(req, res) => {
-    const {idComponent} = req.params;
+    const {componentId} = req.params;
     const {
         name,
         code,
@@ -125,7 +133,7 @@ const updateComponentHandler = async(req, res) => {
     } = req.body;
     try {
         const component = await updateComponent(
-        idComponent,
+        componentId,
         name,
         code,
         location,
@@ -135,42 +143,46 @@ const updateComponentHandler = async(req, res) => {
         ComponentTypeId,
         MainPlaceId
         )
-        res.status(200).json(component);
+        logger.info('Actualización Exitosa de un Componente');
+        handleSuccessResponse(res, component);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 
 const deleteClassComponentHandler = async (req, res) => {
-    const {idClassComponent} = req.params;
+    const {ComponentClassId} = req.params;
     try {
-        const deleteClass = await deleteClassComponent(idClassComponent);
-        res.status(200).json(deleteClass);
+        const deleteClass = await deleteClassComponent(ComponentClassId);
+        logger.info('Se eliminó exitosamente la Clase de Componente');
+        handleSuccessResponse(res, deleteClass);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 
 const deleteTypeComponentHandler = async(req, res) => {
-    const {idTypeComponent} = req.params;
+    const {typeComponentId} = req.params;
     try {
-        const deleteType = await deleteTypeComponent(idTypeComponent);
-        res. status(200).json(deleteType);
+        const deleteType = await deleteTypeComponent(typeComponentId);
+        logger.info('Se eliminó exitosamente el Tipo de Componente');
+        handleSuccessResponse(res, deleteType);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 
 const deleteComponentHandler = async(req, res) => {
-    const {idComponent} = req.params;
+    const {componentId} = req.params;
     try {
-        const component = await deleteComponent(idComponent)
-        res.status(200).json(component);
+        const component = await deleteComponent(componentId)
+        logger.info('Se eliminó exitosamente el Componente');
+        handleSuccessResponse(res, component);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
@@ -178,9 +190,10 @@ const deleteComponentHandler = async(req, res) => {
 const getClassComponentHandler = async(req, res) =>{
     try {
         const classComponent = await getAllClassComponent()
-        res.status(200).json(classComponent);
+        logger.info('Se trajeron a todas las Clases de Componentes');
+        handleSuccessResponse(res, classComponent);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
@@ -188,9 +201,10 @@ const getClassComponentHandler = async(req, res) =>{
 const getTypeComponentHandler = async(req, res) =>{
     try {
         const typeComponent = await getAllTypeComponent()
-        res.status(200).json(typeComponent);
+        logger.info('Se trajeron a todos los Tipos de Componentes');
+        handleSuccessResponse(res, typeComponent);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
@@ -198,42 +212,46 @@ const getTypeComponentHandler = async(req, res) =>{
 const getComponentHandler = async(req, res) =>{
     try {
         const allComponent = await getAllComponent()
-        res.status(200).json(allComponent);
+        logger.info('Se trajeron a todos los Componentes');
+        handleSuccessResponse(res, allComponent);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 
 const getClassComponentByIdHandler = async(req, res) => {
-    const {idClassComponent} = req.params;
+    const {classComponentId} = req.params;
     try {
-        const classComponentById = await getClassComponentById(idClassComponent);
-        res.status(200).json(classComponentById);
+        const classComponentById = await getClassComponentById(classComponentId);
+        logger.info('Se trajo exitosamente a una Clase de Componente por Id');
+        handleSuccessResponse(res, classComponentById);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 
 const getTypeComponentByIdHandler = async(req, res) => {
-    const {idTypeComponent} = req.params;
+    const {typeComponentId} = req.params;
     try {
-        const typeComponentById = await getTypeComponentById(idTypeComponent);
-        res.status(200).json(typeComponentById);
+        const typeComponentById = await getTypeComponentById(typeComponentId);
+        logger.info('Se trajo un Tipo de Componente por Id');
+        handleSuccessResponse(res, typeComponentById);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 
 const getComponentByIdHandler = async (req, res) => {
-    const {idComponent} = req.params;
+    const {componentId} = req.params;
     try {
-        const componentById = await getComponentById(idComponent);
-        res.status(200).json(componentById);
+        const componentById = await getComponentById(componentId);
+        logger.info('Se trajo un componente por Id');
+        handleSuccessResponse(res, componentById);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 

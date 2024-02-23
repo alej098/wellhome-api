@@ -1,40 +1,51 @@
-const {Contact} = require ('../db');
+const ContactForm = require('../modelsNoSql/contactForm');
 
 const createContactForm = async(
     country,
-    name,
+    foreName,
     lastName,
     email,
     phone,
     subject,
     message
 ) => {
-    const newContactForm = await Contact.create(
-        {
-            country,
-            name,
-            lastName,
-            email,
-            phone,
-            subject,
-            message
-        }
-    )
-    return newContactForm;
+    try {
+        const newContactForm = await ContactForm(
+            {
+                country,
+                foreName,
+                lastName,
+                email,
+                phone,
+                subject,
+                message
+            }
+        );
+        await newContactForm.save();
+        return newContactForm; 
+    } catch (error) {
+        throw newError('Error creando el formulario de contacto');
+    }
 };
 
+
 const getContactForm = async() =>{
-    return await Contact.findAll()
+    try {
+       const contactForms = await ContactForm.find();
+       return contactForms; 
+    } catch (error) {
+        throw newError('Error trayendo los formularios de contacto');
+    }
 };
 
 const deleteContactForm = async(contactFormId) =>{
-    const deletedForm = await Contact.destroy({
-        where: {id: contactFormId}
-    });
-    if(!deletedForm) {
-        throw new Error ('No existen Registros de Contactos')
+    try {
+        const deletedForm = await ContactForm.findByIdAndDelete(contactFormId);
+        return deletedForm;
+
+    } catch (error) {
+        throw newError('Error eliminando los formularios de contacto');
     }
-    return "el contacto se ha eliminado"
 };
 
 module.exports = {
