@@ -1,3 +1,6 @@
+const logger = require('../utils/logger.js');
+const {handleSuccessResponse, handleErrorResponse} = require('../utils/utils.js')
+
 const {
     createContactForm,
     getContactForm,
@@ -24,18 +27,20 @@ const createContactFormHandler = async (req, res) => {
             subject,
             message
         );
-        res.status(201).json(newContactForm);
+        logger.info('Creación Exitosa de Formulario de Contacto');
+        handleSuccessResponse(res, newContactForm, 201);
     } catch (error) {
-        res.status(400).json({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const getContactFormHandler = async (req,res) => {
     try {
         const contactForm = await getContactForm()
-        res.status(200).json(contactForm);
+        logger.info('Se trajeron todos los Formularios');
+        handleSuccessResponse(res, contactForm);
     } catch (error) {
-        res.status(400).send({error:error.message});
+        handleErrorResponse(res, error);
     }
 };
 
@@ -43,9 +48,10 @@ const deleteContactFormHandler = async (req, res) => {
     const {contactFormId} = req.params;
     try {
         const destroyContactForm = await deleteContactForm(contactFormId)
-        res.status(200).json({destroyContactForm})
+        logger.info('Se eliminó exitosamente el Formulario');
+        handleSuccessResponse(res, destroyContactForm);
     } catch (error) {
-        res.status(400).send({error:error.message});
+        handleErrorResponse(res, error);
     }
 };
 
