@@ -1,4 +1,6 @@
 const {ManagementCo} = require("../db");
+const logger = require('../utils/logger');
+const { checkExistence } = require("../utils/utils");
 
 const createManagementCo = async (
     country,
@@ -10,24 +12,30 @@ const createManagementCo = async (
     logo, 
     isSuspended
 ) => {
-    const newCompany = await ManagementCo.create(
-        {
-            country,
-            companyTaxId,
-            companyName,
-            companyContact,
-            companyPhone,
-            companyEmail,
-            logo, 
-            isSuspended 
-        }
-    )
-    return newCompany;
+    try {
+        const newCompany = await ManagementCo.create(
+            {
+                country,
+                companyTaxId,
+                companyName,
+                companyContact,
+                companyPhone,
+                companyEmail,
+                logo, 
+                isSuspended 
+            }
+        );
+        logger.info('Nueva Compañía creada con éxito');
+        return newCompany;
+    } catch (error) {
+        logger.error(`Error al crear una nueva Empresa Administradora desde el controlador: ${error.message}`);
+        throw new Error('Error interno al crear una nueva Empresa Administradora');
+    }
 };
 
 
 const updateManagementCo = async (
-    idCompany,
+    companyId,
     country,
     companyName,
     companyContact,
@@ -36,56 +44,65 @@ const updateManagementCo = async (
     logo, 
     isSuspended
 ) => {
-    const companyById = await ManagementCo.update(
-        {   country,
-            companyName,
-            companyContact,
-            companyPhone,
-            companyEmail,
-            logo, 
-            isSuspended
-        },
-        {where: { 
-            companyTaxId: idCompany }}
-        )
-    if(!companyById) {
-        throw Error ("No se encontraron Compañías")
-    } else{
-        const updatedCompany  = await ManagementCo.findByPk(idCompany)
-        return updatedCompany;
+    try {
+        const companyById = await ManagementCo.update(
+            {   country,
+                companyName,
+                companyContact,
+                companyPhone,
+                companyEmail,
+                logo, 
+                isSuspended
+            },
+            {where: { 
+                companyTaxId: companyId }}
+            )
+        if(!companyById) {
+            throw Error ("No se encontraron Compañías")
+        } else{
+            const updatedCompany  = await ManagementCo.findByPk(companyId)
+            logger.info('Empresa actualizada con ésxito.');
+            return updatedCompany;
+        }
+    } catch (error) {
+        logger.error(`Error al actualizar una Empresa desde el controlador: ${error.message}`);
+        throw new Error('Error interno al actualizar una Empresa');
     }
 };
 
 
-const deleteManagementCo = async (idCompany) => {
-    const deletedCompany = await ManagementCo.destroy({
-        where: {
-            companyTaxId: idCompany},
-    });
-    if (!deletedCompany) {
-        throw new Error ("No existen Compañías con ese id");
+const deleteManagementCo = async (companyId) => {
+    try {
+        const deletedCompany =  await checkExistence(ManagementCo, companyId)
+        await deletedCompany.destroy();
+        logger.info('Empresa eliminada con éxito');
+        return{message: 'La empresa se eliminó exitosamente'};
+    } catch (error) {
+        logger.error(`Error al eliminar una Empresa desde el controlador: ${error.message}`);
+        throw new Error('Error interno al eliminar la Empresa');
     }
-    return "La Compañía se eliminó exitosamente";
 };
 
 
 const getAllManagementCo = async () =>{
-    return await ManagementCo.findAll({
-        where: {
-            isSuspended: false
-        },
-
-    });
+    try {
+        return await ManagementCo.findAll();
+    } catch (error) {
+        logger.error(`Error al traer a todas las empresas desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer a todas las Empresas');
+    }
 };
 
 
-const getManagementCoById = async(idCompany) =>{
-    const company = await ManagementCo.findOne({
-        where: {
-            companyTaxId: idCompany}
-    });
-    if (!company) throw Error("No existe la Compañía");
-    return company;
+const getManagementCoById = async(companyId) =>{
+    try {
+        const company = await checkExistence(ManagementCo, companyId)
+        return company;
+    } catch (error) {
+        logger.error(`Error al traer una Empresa por Id desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer una Empresa por Id');
+    }
+    
 };
 
 module.exports ={
