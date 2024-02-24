@@ -13,13 +13,15 @@ const { verifyToken,
 const {
     createPreRegisterFormHandler,
     getPreRegisterFormHandler,
-    deletePreRegisterFormHandler
+    deletePreRegisterFormHandler,
+
 } = require('../handlers/preRegisterHandler');
 
 const preRegisterRouter = Router();
 
 preRegisterRouter.post('/', createPreRegisterFormHandler);
 preRegisterRouter.get('/', getPreRegisterFormHandler);
-preRegisterRouter.delete('/:formId', deletePreRegisterFormHandler);
+preRegisterRouter.delete('/:preRegisterId', deletePreRegisterFormHandler);
+
 
 module.exports = preRegisterRouter;
