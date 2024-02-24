@@ -1,7 +1,7 @@
 const PreMainPlace =  require('../modelsNoSql/PreMainPlace');
 const logger = require ('../utils/logger');
 
-const createMainPlaceRegister = async (
+const createRegister = async (
     name,
     country,
     state,
@@ -9,10 +9,15 @@ const createMainPlaceRegister = async (
     district,
     placeDescription,
     phone,
-    email
+    email,
+    dni,
+    foreName,
+    lastName,
+    ownerPhone,
+    ownerEmail
 ) => {
     try {
-        const newMainPlaceRegister = await PreMainPlace(
+        const newRegister = await PreMainPlace(
             {
                 name,
                 country,
@@ -21,12 +26,17 @@ const createMainPlaceRegister = async (
                 district,
                 placeDescription,
                 phone,
-                email
+                email,
+                dni,
+                foreName,
+                lastName,
+                ownerPhone,
+                ownerEmail
             }
         );
-        await newMainPlaceRegister.save();
+        await newRegister.save();
         logger.info('Nuevo Pre-Registro de condominio creado con éxito');
-        return newMainPlaceRegister;
+        return newRegister;
     } catch (error) {
         logger.error(`Error al llenar el Formulario de Pre-Registro de condominio desde el controlador: ${error.message}`);
         throw new Error('Error creando el formulario de Pre-Registro de condominio');
@@ -34,7 +44,7 @@ const createMainPlaceRegister = async (
 };
 
 
-const getMainPlaceRegister = async () =>{
+const getRegister = async () =>{
     try {
         const allMainPlace = await PreMainPlace.find();
         return allMainPlace;
@@ -45,11 +55,11 @@ const getMainPlaceRegister = async () =>{
 };
 
 
-const deleteMainPlaceRegister = async(mainPlaceFormId) =>{
+const deleteRegister = async(preRegisterId) =>{
     try {
-        const deletedMainPlaceRegister = await PreMainPlace.findByIdAndDelete (mainPlaceFormId);
+        const deletedRegister = await PreMainPlace.findByIdAndDelete (preRegisterId);
         logger.info('Pre-Registro de Condominio eliminado con éxito');
-        return deletedMainPlaceRegister;
+        return deletedRegister;
     } catch (error) {
         logger.error(`Error al eliminar un Pre-Registro de Condominio desde el controlador: ${error.message}`);
         throw new Error('Error interno al eliminar un Pre-Registro de Condominio');
@@ -57,7 +67,7 @@ const deleteMainPlaceRegister = async(mainPlaceFormId) =>{
 };
 
 module.exports={
-    createMainPlaceRegister,
-    getMainPlaceRegister,
-    deleteMainPlaceRegister
+    createRegister,
+    getRegister,
+    deleteRegister
 }
