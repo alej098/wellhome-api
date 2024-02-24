@@ -1,5 +1,4 @@
-const { Router } = require('express');
-
+const {Router} = require('express');
 
 //Pre Registro
 const contactFormRouter = require("./contactFormRouter");

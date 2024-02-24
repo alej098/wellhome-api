@@ -11,15 +11,23 @@ const { verifyToken,
     } = require ('../controllers/authTokenControllers');
 
 const {
-    createPreRegisterFormHandler,
-    getPreRegisterFormHandler,
-    deletePreRegisterFormHandler
+    createPreRegisterMainPlaceFormHandler,
+    getPreRegisterMainPlaceFormHandler,
+    deletePreRegisterMainPlaceFormHandler,
+
+    // createPreRegisterOwnerFormHandler,
+    // getPreRegisterOwnerFormHandler,
+    // deletePreRegisterOwnerFormHandler
 } = require('../handlers/preRegisterHandler');
 
 const preRegisterRouter = Router();
 
-preRegisterRouter.post('/', createPreRegisterFormHandler);
-preRegisterRouter.get('/', getPreRegisterFormHandler);
-preRegisterRouter.delete('/:formId', deletePreRegisterFormHandler);
+preRegisterRouter.post('/mainplace', createPreRegisterMainPlaceFormHandler);
+preRegisterRouter.get('/mainplace', getPreRegisterMainPlaceFormHandler);
+preRegisterRouter.delete('/mainplace/:mainPlaceFormId', deletePreRegisterMainPlaceFormHandler);
+
+// preRegisterRouter.post('/owner', createPreRegisterOwnerFormHandler);
+// preRegisterRouter.get('/owner', getPreRegisterOwnerFormHandler);
+// preRegisterRouter.delete('/owner/mainPlaceId:ownerFormId', deletePreRegisterOwnerFormHandler);
 
 module.exports = preRegisterRouter;

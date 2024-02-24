@@ -1,70 +1,67 @@
+const logger = require('../utils/logger.js');
+const {handleSuccessResponse, handleErrorResponse} = require('../utils/utils.js')
+
 const {
-    createPreRegisterForm,
-    getPreRegisterForm,
-    deletePreRegisterForm
+    createMainPlaceRegister,
+    getMainPlaceRegister,
+    deleteMainPlaceRegister
 } = require('../controllers/preRegisterControllers');
 
-const createPreRegisterFormHandler = async (req, res) =>{
+const createPreRegisterMainPlaceFormHandler = async (req, res) =>{
     const { 
-        condoName,
+        name,
         country,
         state,
         city,
         district,
         placeDescription,
-        condoPhone,
-        condoEmail,
-        ownerId,
-        foreName,
-        lastName,
         phone,
         email
     } = req.body;
 
     try{
-        const newPreRegisterForm = await createPreRegisterForm (
-            condoName,
+        const mainPlaceForm = await createMainPlaceRegister (
+            name,
             country,
             state,
             city,
             district,
             placeDescription,
-            condoPhone,
-            condoEmail,
-            ownerId,
-            foreName,
-            lastName,
             phone,
             email
         );
-        res.status(201).json(newPreRegisterForm);
-    }   catch (error) {
-        res.status(400).json({error: error.message});
+        logger.info('Creación Exitosa de Pre-Regisro de Condominio');
+        handleSuccessResponse(res, mainPlaceForm, 201);
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
 };
 
-const getPreRegisterFormHandler = async (req, res) => {
+const getPreRegisterMainPlaceFormHandler = async (req, res) => {
     try {
-        const allPreRegisterForm = await getPreRegisterForm ();
-        res.status(200).json(allPreRegisterForm);
-    }   catch (error) {
-        res.status(400).send({error: error.message});
+        const allMainPlaceRegister = await getMainPlaceRegister ();
+        logger.info('Se trajeron todos los Pre-Regisros de Condominios');
+        handleSuccessResponse(res, allMainPlaceRegister);
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
  };
 
-const deletePreRegisterFormHandler = async (req, res) => {
-    const {formId} = req.params;
+
+const deletePreRegisterMainPlaceFormHandler = async (req, res) => {
+    const {mainPlaceFormId} = req.params;
     try {
-        const deletePreRegister = await deletePreRegisterForm(formId);
-        res.status(200).json(deletePreRegister);
+        const deletePreRegister = await deleteMainPlaceRegister(mainPlaceFormId);
+        logger.info('Se eliminó exitosamente el Pre-Regisro de Condominio');
+        handleSuccessResponse(res, deletePreRegister);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 
 module.exports = {
-    createPreRegisterFormHandler,
-    getPreRegisterFormHandler,
-    deletePreRegisterFormHandler
+    createPreRegisterMainPlaceFormHandler,
+    getPreRegisterMainPlaceFormHandler,
+    deletePreRegisterMainPlaceFormHandler
 };
