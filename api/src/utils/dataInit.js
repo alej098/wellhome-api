@@ -13,6 +13,7 @@ const {
     Fee,
     } = require('../db');
 
+
 async function managementCoInit(){
     try {
         logger.info('Initializing ManagementCo data...');
@@ -49,6 +50,7 @@ async function managementCoInit(){
     }
 };
 
+
 async function mainPlaceInit(){
     try {
         logger.info('Initializing MainPlaceInit data...');
@@ -68,7 +70,7 @@ async function mainPlaceInit(){
                 phone: '+51950000001',
                 email: 'wellhomeapp@example.com',
                 isSuspended: false,
-                ManagementCocompanyTaxId: '20604859205'
+                ManagementCoCompanyTaxId: '20604859205'
             },
             {
                 id: 'PE-AQP-00001',
@@ -82,7 +84,7 @@ async function mainPlaceInit(){
                 phone: '+51950000002',
                 email: 'resthome@example.com',
                 isSuspended: false,
-                ManagementCocompanyTaxId: '20604859205'
+                ManagementCoCompanyTaxId: '20604859205'
             },
           ];
         await MainPlace.bulkCreate(mainPlace);
@@ -92,6 +94,7 @@ async function mainPlaceInit(){
         logger.error('Error during mainPlaceInit initialization:', error);
     }
 };
+
 
 async function userRolInit() {
     try {
@@ -129,6 +132,7 @@ async function userRolInit() {
     } 
 };
 
+
 async function userClassInit() {
     try {
         logger.info('Initializing UserClassInit data...');
@@ -136,19 +140,10 @@ async function userClassInit() {
         const count = await UserClass.count();
         if (!count) {
         const userClasses = [
-            {
-                name: 'Directivo',
-                UserTypeId: []
-            },
-            {
-                name: 'Residente',
-                UserTypeId: []
-            },
-            {
-                name: 'Colaborador',
-                UserTypeId: []
-            },
-        ];
+                'Directivo',
+                'Residente',
+                'Colaborador'
+        ].map(name => ({name}));
         await UserClass.bulkCreate(userClasses);
         }
     logger.info('UserClassInit data initialized successfully.');  
@@ -156,6 +151,7 @@ async function userClassInit() {
         logger.error('Error during UserClassInit initialization:', error);
     }
 };
+
 
 async function userTypeInit() {
     try {
@@ -166,11 +162,11 @@ async function userTypeInit() {
             const userTypes = [
                 {
                     name: 'Presidente',
-                    UserClassId: [1, 2]
+                    UserClassId:[1,2]
                 },
                 {
                     name: 'Secretario',
-                    UserClassId: [1, 2]
+                    UserClassId:[1,2]
                 },
                 {
                     name: 'Tesorero',
@@ -209,13 +205,20 @@ async function userTypeInit() {
                     UserClassId: [3]
                 },
             ];
-            await UserType.bulkCreate(userTypes);
+            for (const userTypeData of userTypes) {
+                const userClassId = userTypeData.UserClassId;
+                const userClasses = await UserClass.findAll({ where: { id: userClassId } });
+
+                const userType = await UserType.create(userTypeData);
+                await userType.setUserClasses(userClasses);
+            }
         }
     logger.info('UserTypeInit data initialized successfully.');  
     } catch (error) {
         logger.error('Error during UserTypeInit initialization:', error);
     }
 };
+
 
 async function feeInit() {
     try {
@@ -423,8 +426,7 @@ async function propertyInit() {
                 status: 'Ocupado',
                 subStatus: 'Regular',
                 MainPlaceId: 'PE-AQP-00000',
-                FeedId: 1,
-                UserDni: []
+                FeedId: 1
             },
             {
                 id: 'PE-AQP-WH-0002',
@@ -435,8 +437,7 @@ async function propertyInit() {
                 status: 'Ocupado',
                 subStatus: 'Regular',
                 MainPlaceId: 'PE-AQP-00000',
-                FeedId: 1,
-                UserDni: []
+                FeedId: 1
             },
             {
                 id: 'PE-AQP-WH-0003',
@@ -447,8 +448,7 @@ async function propertyInit() {
                 status: 'Ocupado',
                 subStatus: 'Regular',
                 MainPlaceId: 'PE-AQP-00000',
-                FeedId: 1,
-                UserDni: []
+                FeedId: 1
             },
 
         ];
@@ -516,7 +516,17 @@ async function userInit() {
                 PropertyId: []
             },
         ];
-        await User.bulkCreate(users);
+        for (const userData of users) {
+            const userTypeId = userData.UserTypeId;
+            const userTypes = await UserType.findAll({ where: { id: userTypeId } });
+
+            const propertyIds = userData.PropertyId;
+            const properties = await Property.findAll({ where: { id: propertyIds } });
+
+            const user = await User.create(userData);
+            await user.setUserTypes(userTypes);  // Cambio aquí
+            await user.setProperties(properties);
+        }
     }
     logger.info('UserInit data initialized successfully.');  
     } catch (error) {
