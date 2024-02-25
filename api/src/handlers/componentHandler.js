@@ -56,7 +56,8 @@ const createComponentHandler =  async(req, res) => {
         description,
         acceptCost,
         ComponentTypeId,
-        MainPlaceId
+        MainPlaceId,
+        FeeId
 
     } = req.body;
     try {
@@ -67,7 +68,8 @@ const createComponentHandler =  async(req, res) => {
             description,
             acceptCost,
             ComponentTypeId,
-            MainPlaceId
+            MainPlaceId,
+            FeeId
         )
         logger.info('Creación Exitosa de Componente');
         handleSuccessResponse(res, newComponent, 201);
@@ -129,7 +131,8 @@ const updateComponentHandler = async(req, res) => {
         acceptCost,
         isSuspended,
         ComponentTypeId,
-        MainPlaceId
+        MainPlaceId,
+        FeeId
     } = req.body;
     try {
         const component = await updateComponent(
@@ -141,7 +144,8 @@ const updateComponentHandler = async(req, res) => {
         acceptCost,
         isSuspended,
         ComponentTypeId,
-        MainPlaceId
+        MainPlaceId,
+        FeeId
         )
         logger.info('Actualización Exitosa de un Componente');
         handleSuccessResponse(res, component);
@@ -152,9 +156,9 @@ const updateComponentHandler = async(req, res) => {
 
 
 const deleteClassComponentHandler = async (req, res) => {
-    const {ComponentClassId} = req.params;
+    const {classComponentId} = req.params;
     try {
-        const deleteClass = await deleteClassComponent(ComponentClassId);
+        const deleteClass = await deleteClassComponent(classComponentId);
         logger.info('Se eliminó exitosamente la Clase de Componente');
         handleSuccessResponse(res, deleteClass);
     } catch (error) {

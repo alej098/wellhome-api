@@ -1,4 +1,5 @@
 const {Property, MainPlace, User, Fee} = require ('../db');
+const logger = require('../utils/logger');
 const {getArrayByIds, checkExistence} = require('../utils/utils');
 
 const createProperty = async(

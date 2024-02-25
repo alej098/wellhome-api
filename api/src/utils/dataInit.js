@@ -14,89 +14,6 @@ const {
     Fee,
     } = require('../db');
 
-
-async function managementCoInit(){
-    try {
-        logger.info('Initializing ManagementCo data...');
-        
-        const count = await ManagementCo.count();
-        if (!count) {
-        const managementCo = [
-            {
-                country: 'Perú',
-                companyTaxId: '20604859205',
-                companyName: 'Castrum Gestión y Servicios SAC',
-                companyContact: 'Angelo A. Luján',
-                companyPhone: '+51924707719',
-                companyEmail: 'castrumperu@gmail.com',
-                logo: 'https://img.freepik.com/vector-premium/trabajador-oficina-tomando-carpeta-archivo-administracion-gestion-gestion-archivos-icono-base-datos-catalogo-documentos-diseno-plano-ilustracion-vectorial-aislado-sobre-fondo-blanco_153097-1171.jpg',
-                isSuspended: 'false'
-            },
-            {
-                country: 'Perú',
-                companyTaxId: '20000000002',
-                companyName: 'Administradora de Residenciales SAC',
-                companyContact: 'Marchelo Torontino',
-                companyPhone: '+51960000000',
-                companyEmail: 'residenciales@example.com',
-                logo: 'https://img.freepik.com/vector-premium/trabajador-oficina-tomando-carpeta-archivo-administracion-gestion-gestion-archivos-icono-base-datos-catalogo-documentos-diseno-plano-ilustracion-vectorial-aislado-sobre-fondo-blanco_153097-1171.jpg',
-                isSuspended: 'false'
-            },
-        ];
-        await ManagementCo.bulkCreate(managementCo);
-    }
-    logger.info('ManagementCo data initialized successfully.');
-    } catch (error) {
-        logger.error('Error during managementCo initialization:', error);
-    }
-};
-
-
-async function mainPlaceInit(){
-    try {
-        logger.info('Initializing MainPlaceInit data...');
-
-        const count = await MainPlace.count();
-        if (!count) {
-        const mainPlace = [
-            {
-                id: 'PE-AQP-00000',
-                name: 'Condo WellHomeApp',
-                country: 'Perú',
-                state: 'Arequipa',
-                city: 'Arequipa',
-                district: 'Cercado',
-                placeDescription: 'Urbanización Privada',
-                placeImage: 'https://images.adsttc.com/media/images/5c7b/5574/284d/d1e0/d300/0126/slideshow/_Featuredimage.jpg?1551586648',
-                phone: '+51950000001',
-                email: 'wellhomeapp@example.com',
-                isSuspended: false,
-                ManagementCoCompanyTaxId: '20604859205'
-            },
-            {
-                id: 'PE-AQP-00001',
-                name: 'Residencial RestHome',
-                country: 'Perú',
-                state: 'Arequipa',
-                city: 'Arequipa',
-                district: 'Cercado',
-                placeDescription: 'Urbanización Privada',
-                placeImage: 'https://images.adsttc.com/media/images/5c7b/5574/284d/d1e0/d300/0126/slideshow/_Featuredimage.jpg?1551586648',
-                phone: '+51950000002',
-                email: 'resthome@example.com',
-                isSuspended: false,
-                ManagementCoCompanyTaxId: '20604859205'
-            },
-          ];
-        await MainPlace.bulkCreate(mainPlace);
-    }
-    logger.info('MainPlaceInit data initialized successfully.');  
-    } catch (error) {
-        logger.error('Error during mainPlaceInit initialization:', error);
-    }
-};
-
-
 async function userRolInit() {
     try {
         logger.info('Initializing UserRolInit data...');
@@ -105,7 +22,7 @@ async function userRolInit() {
         if (!count) {
             const userRoles = [
                 {
-                    id: '00-SuperAdmin',
+                    id: '00-SuperAdmin', 
                     name: 'WebApp Admin'
                 },
                 {
@@ -221,35 +138,6 @@ async function userTypeInit() {
 };
 
 
-async function feeInit() {
-    try {
-        logger.info('Initializing FeeInit data...');
-        
-        const count = await Fee.count();
-        if (!count) {
-        const fees = [
-            {
-                feeDescription: 'Cuota de mantenimiento mensual',
-                currency:'Pesos',
-                amount: 35000,
-                MainPlaceId: "PE-AQP-00000"
-            },
-            {
-                feeDescription: 'Cuota de reserva de amenities',
-                currency:'Pesos',
-                amount: 10000,
-                MainPlaceId: "PE-AQP-00000"
-            },
-        ];
-        await Fee.bulkCreate(fees);
-    }
-
-    logger.info('FeeInit data initialized successfully.');  
-    } catch (error) {
-        logger.error('Error during FeeInit initialization:', error);
-    }
-};
-
 async function componentClassInit() {
     try {
         logger.info('Initializing ComponentClassInit data...');
@@ -316,6 +204,118 @@ async function componentTypeInit() {
         logger.error('Error during ComponentTypeInit initialization:', error);
     }  
 };
+
+async function managementCoInit(){
+    try {
+        logger.info('Initializing ManagementCo data...');
+        
+        const count = await ManagementCo.count();
+        if (!count) {
+        const managementCo = [
+            {
+                country: 'Perú',
+                companyTaxId: '20604859205',
+                companyName: 'Castrum Gestión y Servicios SAC',
+                companyContact: 'Angelo A. Luján',
+                companyPhone: '+51924707719',
+                companyEmail: 'castrumperu@gmail.com',
+                logo: 'https://img.freepik.com/vector-premium/trabajador-oficina-tomando-carpeta-archivo-administracion-gestion-gestion-archivos-icono-base-datos-catalogo-documentos-diseno-plano-ilustracion-vectorial-aislado-sobre-fondo-blanco_153097-1171.jpg',
+                isSuspended: 'false'
+            },
+            {
+                country: 'Perú',
+                companyTaxId: '20000000002',
+                companyName: 'Administradora de Residenciales SAC',
+                companyContact: 'Marchelo Torontino',
+                companyPhone: '+51960000000',
+                companyEmail: 'residenciales@example.com',
+                logo: 'https://img.freepik.com/vector-premium/trabajador-oficina-tomando-carpeta-archivo-administracion-gestion-gestion-archivos-icono-base-datos-catalogo-documentos-diseno-plano-ilustracion-vectorial-aislado-sobre-fondo-blanco_153097-1171.jpg',
+                isSuspended: 'false'
+            },
+        ];
+        await ManagementCo.bulkCreate(managementCo);
+    }
+    logger.info('ManagementCo data initialized successfully.');
+    } catch (error) {
+        logger.error('Error during managementCo initialization:', error);
+    }
+};
+
+
+async function mainPlaceInit(){
+    try {
+        logger.info('Initializing MainPlaceInit data...');
+
+        const count = await MainPlace.count();
+        if (!count) {
+        const mainPlace = [
+            {
+                id: 'PE-AQP-00000',
+                name: 'Condo WellHomeApp',
+                country: 'Perú',
+                state: 'Arequipa',
+                city: 'Arequipa',
+                district: 'Cercado',
+                placeDescription: 'Urbanización Privada',
+                placeImage: 'https://images.adsttc.com/media/images/5c7b/5574/284d/d1e0/d300/0126/slideshow/_Featuredimage.jpg?1551586648',
+                phone: '+51950000001',
+                email: 'wellhomeapp@example.com',
+                isSuspended: false,
+                ManagementCoCompanyTaxId: '20604859205'
+            },
+            {
+                id: 'PE-AQP-00001',
+                name: 'Residencial RestHome',
+                country: 'Perú',
+                state: 'Arequipa',
+                city: 'Arequipa',
+                district: 'Cercado',
+                placeDescription: 'Urbanización Privada',
+                placeImage: 'https://images.adsttc.com/media/images/5c7b/5574/284d/d1e0/d300/0126/slideshow/_Featuredimage.jpg?1551586648',
+                phone: '+51950000002',
+                email: 'resthome@example.com',
+                isSuspended: false,
+                ManagementCoCompanyTaxId: '20604859205'
+            },
+          ];
+        await MainPlace.bulkCreate(mainPlace);
+    }
+    logger.info('MainPlaceInit data initialized successfully.');  
+    } catch (error) {
+        logger.error('Error during mainPlaceInit initialization:', error);
+    }
+};
+
+
+async function feeInit() {
+    try {
+        logger.info('Initializing FeeInit data...');
+        
+        const count = await Fee.count();
+        if (!count) {
+        const fees = [
+            {
+                feeDescription: 'Cuota de mantenimiento mensual',
+                currency:'Pesos',
+                amount: 35000,
+                MainPlaceId: "PE-AQP-00000"
+            },
+            {
+                feeDescription: 'Cuota de reserva de amenities',
+                currency:'Pesos',
+                amount: 10000,
+                MainPlaceId: "PE-AQP-00000"
+            },
+        ];
+        await Fee.bulkCreate(fees);
+    }
+
+    logger.info('FeeInit data initialized successfully.');  
+    } catch (error) {
+        logger.error('Error during FeeInit initialization:', error);
+    }
+};
+
 
 async function componentInit() {
     try {
