@@ -1,4 +1,5 @@
 const logger = require('./logger');
+
 const {
     ManagementCo,
     MainPlace,
@@ -524,7 +525,7 @@ async function userInit() {
             const properties = await Property.findAll({ where: { id: propertyIds } });
 
             const user = await User.create(userData);
-            await user.setUserTypes(userTypes);  // Cambio aquí
+            await user.setUserTypes(userTypes);
             await user.setProperties(properties);
         }
     }
