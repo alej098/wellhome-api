@@ -1,6 +1,5 @@
-const {User} = require("../db")
-const jwt = require('jsonwebtoken');
-const {JWT_SECRET} = process.env;
+const {User} = require('../db')
+const securityUtils = require('../utils/security')
 
 const signUp = async(
     dni,
@@ -12,18 +11,19 @@ const signUp = async(
     MainPlaceId
 ) => {
     try {
+        const hashedPassword = await securityUtils.hashPassword(password);
         const newSignUp = {
             dni,
             foreName,
             lastName,
             phone,
             email,
-            password,
+            password: hashedPassword,
             MainPlaceId
         };
     
         const newUserSignUp = await User.create(newSignUp);
-        const token = jwt.sign({dni: newUserSignUp.dni}, JWT_SECRET, {expiresIn: "1d"})
+        const token = securityUtils.generateToken({dni: newUserSignUp.dni}, process.env.JWT_SECRET, 'id');
         return {newUserSignUp, token};
     } catch (error) {
         console.error(`Error durante el registro: ${error.message}`);

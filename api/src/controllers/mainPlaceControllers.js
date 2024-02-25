@@ -89,7 +89,7 @@ const updateMainPlace =  async (
 const deleteMainPlace = async (mainPlaceId) => {
     try {
         const deletedMainPlace = await checkExistence(MainPlace, mainPlaceId)
-        await User.destroy();
+        await deletedMainPlace.destroy();
         logger.info ('Condominio eliminado con éxito')
         return { message: "Condominio eliminado exitosamente" };
     } catch (error) {

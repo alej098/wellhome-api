@@ -36,7 +36,7 @@ const createNewComponent = async(
     acceptCost,
     ComponentTypeId,
     MainPlaceId,
-    FeedId
+    FeedId,
 ) => {
     try {
         const createComponent = await Component.create(

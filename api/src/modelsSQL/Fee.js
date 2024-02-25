@@ -7,10 +7,10 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             primaryKey: true
         },
-
         feeDescription: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: 'uniqueFeePerPlace'
         },
         currency : {
             type: DataTypes.ENUM(
@@ -24,6 +24,16 @@ module.exports = (sequelize) => {
             type: DataTypes.FLOAT,
             allowNull: false
         }
-    });
+    },
+    // {
+    //     indexes:[
+    //         {
+    //             unique: true,
+    //             fields: ['feeDescription, MainPlaceId'],
+    //             name:'uniqueFeePerPlace'
+    //         }
+    //     ]
+    // }
+    );
     return Fee;
 };
