@@ -25,8 +25,8 @@ const createUserHandler = async (req, res) => {
         isSuspended,
         MainPlaceId,
         UserRolId,
-        UserTypeId,
-        PropertyId
+        UserTypeId, //Debe llegar como un array siempre
+        PropertyId  //Debe llegar como un array siempre
     } = req.body;
     
     try {

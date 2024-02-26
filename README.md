@@ -95,4 +95,7 @@ Orden de inicialización:
 11. User: Engloba a todos los usuarios de la app, con o sin privilegios, desde los administradores, usuarios y trabajadores.
 
     ->Pendiente implementar el campo de imágenes: los usuarios pueden subir una foto, imagen o seleccionar iconos estandar de la app (necesitamos 4 iconos), los trabajadores deberían poder tener una foto real que será parte de la card de colaboradores en donde deben salir los datos de los colboradores/trabajadores asociados al mainPlace.
-    ->Rutas CREATE y DELETE Restringida a WebAppAdmmin
+    -> En el modelo, pendiente aplicar validadores a Pssword (requerimientos de seguridad)
+    -> Rutas CREATE y DELETE Restringida a WebAppAdmmin
+    -> 
+
