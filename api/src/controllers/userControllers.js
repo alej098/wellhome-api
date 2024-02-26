@@ -1,5 +1,5 @@
 const { User, UserType, Property, UserRol } = require('../db');
-const securityUtils = require('../utils/security')
+// const securityUtils = require('../utils/security');
 const {checkExistence, getArrayByIds} = require('../utils/utils');
 const logger = require('../utils/logger');
 
@@ -21,7 +21,7 @@ const createNewUser = async (
     PropertyId
 ) => {
     try {
-        const hashedPassword = await securityUtils.hashPassword(password);
+        // const hashedPassword = await securityUtils.hashPassword(password);
         const arrayOfUserType = await getArrayByIds(UserType, UserTypeId);
         const arrayOfProperty = await getArrayByIds(Property, PropertyId);
 
@@ -36,7 +36,7 @@ const createNewUser = async (
             lastName,
             phone,
             email,
-            password: hashedPassword,
+            password,
             status,
             isAdmin,
             acceptCost,
@@ -58,6 +58,7 @@ const createNewUser = async (
         throw new Error('Error interno al crear un nuevo usuario');
     }
 };
+
 
 const updateUser = async (
     userId,
@@ -93,10 +94,6 @@ const updateUser = async (
         user.UserRolId = UserRolId;
         user.UserTypeId = UserTypeId;
         user.PropertyId = PropertyId;
-
-        if(password){
-            user.password = await securityUtils.hashPassword(password);
-        }
 
         await user.save();
 
@@ -196,12 +193,13 @@ const changePassword = async (login, currentPassword, newPassword) => {
         console.log('Contraseña almacenada en la base de datos:', user.password);
         console.log('Contraseña actual proporcionada:', currentPassword);
 
-        const validPassword = await securityUtils.comparePasswords(currentPassword, user.password)
+        // const validPassword = await securityUtils.comparePasswords(currentPassword, user.password)
+        const validPassword = await user.validPassword(currentPassword);
         if (!validPassword) {
             throw new Error('Contraseña actual incorrecta');
         }
 
-        user.password = await securityUtils.hashPassword(newPassword);
+        user.password = newPassword;
         await user.save();
         
         return user;

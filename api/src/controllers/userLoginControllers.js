@@ -4,7 +4,7 @@ const bcrypt =  require ('bcrypt');
 const jwt = require('jsonwebtoken');
 const logger = require('../utils/logger');
 const {JWT_SECRET} = process.env;
-const securityUtils = require('../utils/security')
+// const securityUtils = require('../utils/security')
 
 const userLogin = async (login, password) => {
     try {
@@ -20,8 +20,9 @@ const userLogin = async (login, password) => {
     
         console.log('Contraseña almacenada en la base de datos:', user.password);
         console.log('Contraseña proporcionada para inicio de sesión:', password);
-        
-        const isMatch = await securityUtils.comparePasswords(password, user.password);;
+
+        const isMatch =  await bcrypt.compare(password, user.password);        
+        // const isMatch = await securityUtils.comparePasswords(password, user.password);;
         if (!isMatch) {
             throw new Error('Contraseña inválida');
         }

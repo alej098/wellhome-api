@@ -1,5 +1,7 @@
-const {User} = require('../db')
-const securityUtils = require('../utils/security')
+const {User, UserRol} = require('../db')
+const jwt = require('jsonwebtoken');
+const {JWT_SECRET} = process.env;
+// const securityUtils = require('../utils/security')
 
 const signUp = async(
     dni,
@@ -8,22 +10,27 @@ const signUp = async(
     phone,
     email,
     password,
-    MainPlaceId
+    MainPlaceId,
+    UserRolId
 ) => {
     try {
-        const hashedPassword = await securityUtils.hashPassword(password);
+        const defaultUserRole = UserRolId ? undefined : await UserRol.findOne({
+            where: { id: '03-User' },
+        });
         const newSignUp = {
             dni,
             foreName,
             lastName,
             phone,
             email,
-            password: hashedPassword,
-            MainPlaceId
+            password,
+            MainPlaceId,
+            UserRolId: UserRolId || (defaultUserRole ? defaultUserRole.id : undefined)
         };
     
         const newUserSignUp = await User.create(newSignUp);
-        const token = securityUtils.generateToken({dni: newUserSignUp.dni}, process.env.JWT_SECRET, 'id');
+        const token = jwt.sign({dni: newUserSignUp.dni}, JWT_SECRET, {expiresIn: "1d"})
+        // const token = securityUtils.generateToken({dni: newUserSignUp.dni}, process.env.JWT_SECRET, 'id');
         return {newUserSignUp, token};
     } catch (error) {
         console.error(`Error durante el registro: ${error.message}`);
