@@ -65,26 +65,27 @@ module.exports = (sequelize) => {
         },
       
     },
-        {
-            hooks: {
-                beforeCreate: async (user) => {
-                  if (user.password) {
-                    user.password = await securityUtils.hashPassword(user.password);
-                  }
+        
+    {
+      hooks: {
+          beforeCreate: async (user) => {
+            if (user.password) {
+                  user.password = await securityUtils.hashPassword(user.password);
+            }
 
-                },
-                beforeUpdate: async (user) => {
-                  if (user.changed('password')) {
-                    // Verifica si la contraseña ha sido modificada antes de aplicar el hasheo
-                    user.password = await securityUtils.hashPassword(user.password);
-                  }
-                }
-              }
-        });
+          },
+          beforeUpdate: async (user) => {
+              if (user.changed('password')) {
+              // Verifica si la contraseña ha sido modificada antes de aplicar el hasheo
+              user.password = await securityUtils.hashPassword(user.password);
+            }
+          }
+        }
+    });
 
-        User.prototype.validPassword = async function(password) {
-            return await securityUtils.comparePasswords(password, this.password);
-        };
+     User.prototype.validPassword = async function(password) {
+      return await bcrypt.compare(password, this.password);
+  };
 
     return User;
 };
