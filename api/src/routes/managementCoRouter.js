@@ -24,7 +24,7 @@ managementCoRouter.post('/',createManagementCoHandler);
 managementCoRouter.put('/:companyId', updateManagementCoHandler);
 managementCoRouter.delete('/:companyId', deleteManagementCoHandler);
 
-managementCoRouter.get('/', getManagementCoHandler);
+managementCoRouter.get('/', [verifyToken, isUser], getManagementCoHandler);
 managementCoRouter.get('/:companyId', getManagementCoByIdHandler);
 
 

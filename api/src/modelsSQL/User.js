@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
-// const securityUtils = require('../utils/security');
+const securityUtils = require('../utils/security');
 
 module.exports = (sequelize) => {
     const User = sequelize.define('User', {
@@ -71,15 +70,14 @@ module.exports = (sequelize) => {
       hooks: {
           beforeCreate: async (user) => {
             if (user.password) {
-              const salt = await bcrypt.genSaltSync(10);
-              user.password = await bcrypt.hashSync(user.password, salt);
+                  user.password = await securityUtils.hashPassword(user.password);
             }
 
           },
           beforeUpdate: async (user) => {
-            if (user.password) {
-              const salt = await bcrypt.genSaltSync(10);
-              user.password = await bcrypt.hashSync(user.password, salt);
+              if (user.changed('password')) {
+              // Verifica si la contraseña ha sido modificada antes de aplicar el hasheo
+              user.password = await securityUtils.hashPassword(user.password);
             }
           }
         }
@@ -88,27 +86,6 @@ module.exports = (sequelize) => {
      User.prototype.validPassword = async function(password) {
       return await bcrypt.compare(password, this.password);
   };
-
-        // {
-        //     hooks: {
-        //         beforeCreate: async (user) => {
-        //           if (user.password) {
-        //             user.password = await securityUtils.hashPassword(user.password);
-        //           }
-
-        //         },
-        //         beforeUpdate: async (user) => {
-        //           if (user.changed('password')) {
-        //             // Verifica si la contraseña ha sido modificada antes de aplicar el hasheo
-        //             user.password = await securityUtils.hashPassword(user.password);
-        //           }
-        //         }
-        //       }
-        // });
-
-        // User.prototype.validPassword = async function(password) {
-        //     return await securityUtils.comparePasswords(password, this.password);
-        // };
 
     return User;
 };

@@ -1,5 +1,5 @@
 const { User, UserType, Property, UserRol } = require('../db');
-// const securityUtils = require('../utils/security');
+const securityUtils = require('../utils/security');
 const {checkExistence, getArrayByIds} = require('../utils/utils');
 const logger = require('../utils/logger');
 
@@ -190,11 +190,7 @@ const changePassword = async (login, currentPassword, newPassword) => {
             throw new Error('Usuario no encontrado');
         }
 
-        console.log('Contraseña almacenada en la base de datos:', user.password);
-        console.log('Contraseña actual proporcionada:', currentPassword);
-
-        // const validPassword = await securityUtils.comparePasswords(currentPassword, user.password)
-        const validPassword = await user.validPassword(currentPassword);
+        const validPassword = await securityUtils.comparePasswords(currentPassword, user.password)
         if (!validPassword) {
             throw new Error('Contraseña actual incorrecta');
         }
