@@ -24,7 +24,9 @@ const createPropertyHandler = async (req, res) => {
         isSuspended,
         MainPlaceId,
         FeeId,
-        UserDni
+        UserDni,
+        token
+        
     } = req.body;
     try {
         const newProperty = await createProperty(
@@ -41,10 +43,12 @@ const createPropertyHandler = async (req, res) => {
             isSuspended,
             MainPlaceId,
             FeeId,
-            UserDni
+            UserDni,
+            token
+            
         )
         logger.info('creación Exitosa de Propiedad');
-        handleSuccessResponse(res, newProperty, 201);
+        handleSuccessResponse(res, {newProperty, token}, 201);
     } catch (error) {
         handleErrorResponse(res, error);
     }

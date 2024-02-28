@@ -1,6 +1,7 @@
 const {Property, MainPlace, User, Fee} = require ('../db');
 const logger = require('../utils/logger');
 const {getArrayByIds, checkExistence} = require('../utils/utils');
+const {generateRandomToken} = require('../utils/security');
 
 const createProperty = async(
     id,
@@ -16,9 +17,24 @@ const createProperty = async(
     isSuspended,
     MainPlaceId,
     FeeId,
-    UserDni
+    UserDni,
+    token
+    
 ) => {
     try {
+        let isTokenUnique = false;
+        // Esta lógica para el manejo de colisiones debe cambiar cuando se tenga alta concurrencia
+        while (!isTokenUnique) {
+            token = generateRandomToken();
+            const existingProperty = await Property.findOne({ where: { token } });
+
+            if (!existingProperty) {
+                isTokenUnique = true;
+            } else {
+                token = generateRandomToken();
+            }
+        }
+
         const arrayOfUserDni = await getArrayByIds(User, UserDni);
         const newProperty = await Property.create({
                 id,
@@ -34,12 +50,14 @@ const createProperty = async(
                 isSuspended,
                 MainPlaceId,
                 FeeId,
-                UserDni
+                UserDni,
+                token
+        
             }
         );
         await newProperty.setUsers(arrayOfUserDni);
         logger.info('Nueva Propiedad creada con éxito.');
-        return newProperty;
+        return {newProperty, token};
 
     } catch (error) {
         logger.error(`Error al crear una nueva Propiedad desde el controlador: ${error.message}`);
@@ -72,7 +90,7 @@ const updateProperty = async (
         property.mainGrouper = mainGrouper;
         property.mainGrouperName =  mainGrouperName;
         property.mainGrouperNumber = mainGrouperNumber;
-        property.secondaryGrouper = secondaryGrouperNumber;
+        property.secondaryGrouper = secondaryGrouper;
         property.secondaryGrouperNumber = secondaryGrouperNumber;
         property.status = status;
         property.subStatus = subStatus;
