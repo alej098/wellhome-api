@@ -21,7 +21,6 @@ const createNewUser = async (
     PropertyId
 ) => {
     try {
-        // const hashedPassword = await securityUtils.hashPassword(password);
         const arrayOfUserType = await getArrayByIds(UserType, UserTypeId);
         const arrayOfProperty = await getArrayByIds(Property, PropertyId);
 

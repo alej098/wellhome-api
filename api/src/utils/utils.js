@@ -32,9 +32,22 @@ const getArrayByIds = async (Model, ids) => {
 };
 
 
+const validateFunctionalToken = async (MainModel, functionalToken, ReferenceModel) => {
+    const model = await MainModel.findOne({
+      where: { token: functionalToken },
+      include: [{ model: ReferenceModel, attributes: ['id'] }],
+    });
+    if (!model) {
+        throw new Error('Token de acceso inválido');
+      }
+    
+      return model;
+    };
+
 module.exports = {
     checkExistence,
     handleSuccessResponse,
     handleErrorResponse,
-    getArrayByIds
+    getArrayByIds,
+    validateFunctionalToken
 };

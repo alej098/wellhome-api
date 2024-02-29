@@ -69,7 +69,11 @@ module.exports = (sequelize) => {
         isSuspended: {
             type: DataTypes.BOOLEAN,
             defaultValue: false, //Borrado Lógico
-          }
+        },
+        token: {
+            type: DataTypes.STRING,
+            unique: true
+        }
     });
     return Property;
 };
