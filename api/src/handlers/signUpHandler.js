@@ -6,6 +6,7 @@ const {signUp} = require('../controllers/signUpControllers');
 const singUpHandler = async (req, res) => {
     const {
         propertyToken,
+        UserTypeId,
         dni,
         foreName,
         lastName,
@@ -16,6 +17,7 @@ const singUpHandler = async (req, res) => {
     try {
         const {newUserSignUp, token} = await signUp (
             propertyToken,
+            UserTypeId,
             dni,
             foreName,
             lastName,

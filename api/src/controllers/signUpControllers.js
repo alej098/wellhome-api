@@ -1,10 +1,11 @@
-const {User, UserRol, Property, MainPlace} = require('../db')
+const {User, UserClass, UserType, UserRol, Property, MainPlace} = require('../db')
 const {JWT_SECRET} = process.env;
 const securityUtils = require('../utils/security');
-const { validateFunctionalToken } = require('../utils/utils');
+const { getArrayByIds, validateFunctionalToken } = require('../utils/utils');
 
 const signUp = async(
     propertyToken,
+    UserTypeId,
     dni,
     foreName,
     lastName,
@@ -17,12 +18,14 @@ const signUp = async(
 ) => {
     
     try {
+        const arrayOfUserType = await getArrayByIds(UserType, UserTypeId);
         const defaultUserRole = UserRolId ? undefined : await UserRol.findOne({
             where: { id: '03-User' },
         });
 
         const newSignUp = {
             dni,
+            UserTypeId,
             foreName,
             lastName,
             phone,
@@ -40,8 +43,9 @@ const signUp = async(
         } else {
             throw new Error('Token de acceso requerido');
         }
-        
+    
         const newUserSignUp = await User.create(newSignUp);
+        await newUserSignUp.setUserTypes(arrayOfUserType);
     
         if (newSignUp.PropertyId && newSignUp.PropertyId.length > 0) {
             await newUserSignUp.setProperties(newSignUp.PropertyId);
