@@ -1,4 +1,5 @@
 const sequelize = require('./sequelizeConfig');
+const mongoose = require ('./mongooseConfig');
 const fs = require('fs');
 const path = require('path');
 const logger = require('./utils/logger');
@@ -64,6 +65,20 @@ User.belongsToMany(UserType, { through: "UserTypeUser", timestamps: false, onDel
 User.belongsToMany(Property, { through: "UserProperty", timestamps: false, onDelete: 'CASCADE' });
 Property.belongsToMany(User, { through: "UserProperty", timestamps: false });
 
+try {
+  // Cargar modelos de Mongoose (si tienes modelos en /modelsMongo)
+  fs.readdirSync(path.join(__dirname, '/modelsNoSql'))
+    .filter((file) => file.endsWith('.js'))
+    .forEach((file) => {
+      const modelDefiner = require(path.join(__dirname, '/modelsNoSql', file));
+      modelDefiner(mongoose);
+    });
+
+  logger.info('MongoDB models loaded successfully');
+} catch (error) {
+  logger.error('Error during MongoDB model loading:', error);
+}
+
 module.exports = { 
   ManagementCo, 
   MainPlace, 
@@ -76,4 +91,5 @@ module.exports = {
   UserType, 
   User,
   Fee, 
-  conn: sequelize };
+  conn: sequelize,
+  mongoose: mongoose };

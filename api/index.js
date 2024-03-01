@@ -22,7 +22,16 @@ const PORT = process.env.PORT || 3001;
 
 async function startServer(){
     try {
-        await conn.sync({force: false}); // True Desarrollo - False Produccion
+      if (process.env.NODE_ENV === 'development') {
+        await conn.sync({ force: true });
+      } else {
+        await conn.sync();
+      }
+  
+      // Reiniciar la base de datos de Mongoose (solo si force es true)
+      if (process.env.NODE_ENV === 'development') {
+        await mongoose.connection.dropDatabase();
+      }
         
         await userRolInit();
         await userClassInit();
