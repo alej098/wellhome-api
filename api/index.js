@@ -4,6 +4,8 @@ const mongoose = require('./src/mongooseConfig')
 const logger = require('./src/utils/logger');
 
 const {
+  contactFormInit,
+  preRegisterInit,
   userRolInit,
   userClassInit,
   userTypeInit,
@@ -32,7 +34,8 @@ async function startServer(){
       if (process.env.NODE_ENV === 'development') {
         await mongoose.connection.dropDatabase();
       }
-        
+        await contactFormInit();
+        await preRegisterInit();
         await userRolInit();
         await userClassInit();
         await userTypeInit();
