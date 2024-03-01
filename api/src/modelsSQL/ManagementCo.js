@@ -3,6 +3,12 @@ const {DataTypes} = require ('sequelize');
 module.exports = (sequelize) => {
     const ManagementCo = sequelize.define('ManagementCo',{
         
+        id: {
+            type: DataTypes.STRING,
+            primaryKey: true,
+            allowNull: false,
+            unique: true
+        },
         country:{
             type: DataTypes.ENUM(
                 'Perú',
@@ -20,7 +26,6 @@ module.exports = (sequelize) => {
         },
         companyTaxId: {
             type: DataTypes.STRING,
-            primaryKey: true,
             unique: true,
             allowNull: false
         },

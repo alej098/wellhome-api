@@ -15,6 +15,7 @@ const {
     updateMainPlaceHandler,
     deleteMainPlaceHandler,
     getMainPlaceHandler,
+    getMainPlaceByNameHandler,
     getMainPlaceByIdHandler
 } = require ('../handlers/mainPlaceHandler');
 
@@ -25,6 +26,7 @@ mainPlaceRouter.put('/:mainPlaceId', updateMainPlaceHandler);
 mainPlaceRouter.delete('/:mainPlaceId', deleteMainPlaceHandler);
 
 mainPlaceRouter.get('/', getMainPlaceHandler);
+mainPlaceRouter.get('/name/:mainPlaceName', getMainPlaceByNameHandler); //Es necesaria esta ruta adicional? /name/:name
 mainPlaceRouter.get('/:mainPlaceId', getMainPlaceByIdHandler);
 
 

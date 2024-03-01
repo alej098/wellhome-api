@@ -3,7 +3,6 @@ const logger = require('../utils/logger');
 const { checkExistence } = require('../utils/utils');
 
 const createMainPlace = async (
-    id,
     name,
     country,
     state,
@@ -14,12 +13,12 @@ const createMainPlace = async (
     phone,
     email,
     isSuspended,
-    ManagementCoCompanyRUC
+    ManagementCoId
 ) => {
     try {
         const newMainPlace = await MainPlace.create(
             {
-                id,
+                id: generateId(country, city),
                 name,
                 country,
                 state,
@@ -30,9 +29,28 @@ const createMainPlace = async (
                 phone,
                 email,
                 isSuspended,
-                ManagementCoCompanyRUC
+                ManagementCoId,
             }
-        )
+        );
+
+        function generateId(country, city) {
+            const countryCode = country.substring(0, 3).toUpperCase();
+            const cityCode = city.substring(0, 3).toUpperCase();
+            const correlativo = generateCorrelativo(); 
+            const id = `${countryCode}${cityCode}${correlativo}`;
+            return id;
+        }
+        
+        function generateCorrelativo() {
+            if (typeof global.correlativo === 'undefined') {
+                global.correlativo = 1;
+            } else {
+                global.correlativo++;
+            }
+            const correlativoString = String(global.correlativo).padStart(5, '0');
+            return correlativoString;
+        }
+
         return newMainPlace;
     } catch (error) {
         logger.error(`Error al crear un nuevo Condominio desde el controlador: ${error.message}`);
@@ -115,6 +133,23 @@ const getAllMainPlace = async () =>{
 };
 
 
+const getMainPlaceByName = async (name) => {
+    try {
+      const mainPlaces = await MainPlace.findAll({
+        where: {
+          name: {
+            [Op.iLike]: `%${name}%`,
+          },
+        },
+      });
+      return mainPlaces;
+    } catch (error) {
+      logger.error(`Error al traer los Condominios por nombre desde el controlador: ${error.message}`);
+      throw new Error('Error interno al traer los Condominios por nombre');
+    }
+  };
+
+
 const getMainPlaceById = async(mainPlaceId) =>{
     try {
         const place = await MainPlace.findOne({
@@ -133,5 +168,6 @@ module.exports ={
     updateMainPlace,
     deleteMainPlace,
     getAllMainPlace,
+    getMainPlaceByName,
     getMainPlaceById
 };
