@@ -4,15 +4,15 @@ const mongoose = require('./src/mongooseConfig')
 const logger = require('./src/utils/logger');
 
 const {
-  mainPlaceInit,
-  managementCoInit,
   userRolInit,
   userClassInit,
   userTypeInit,
-  feeInit,
   componentClassInit,
   componentTypeInit,
+  managementCoInit,
+  mainPlaceInit,
   componentInit,
+  feeInit,
   propertyInit,
   userInit
   
@@ -24,14 +24,14 @@ async function startServer(){
     try {
         await conn.sync({force: false}); // True Desarrollo - False Produccion
         
-        await managementCoInit();
-        await mainPlaceInit();
         await userRolInit();
         await userClassInit();
         await userTypeInit();
-        await feeInit();
         await componentClassInit();
         await componentTypeInit();
+        await managementCoInit();
+        await mainPlaceInit();
+        await feeInit();
         await componentInit();
         await propertyInit();
         await userInit();

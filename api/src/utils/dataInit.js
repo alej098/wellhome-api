@@ -1,17 +1,18 @@
 const logger = require('./logger');
 
 const {
-    ManagementCo,
-    MainPlace,
-    Property,
     UserRol,
     UserClass,
     UserType,
-    User,
     ComponentClass,
     ComponentType,
-    Component,
+    ManagementCo,
+    MainPlace,
     Fee,
+    Component,
+    Property,
+    User
+    
     } = require('../db');
 
 async function userRolInit() {
@@ -411,6 +412,7 @@ async function componentInit() {
     }
 };
 
+
 async function propertyInit() {
     try {
         logger.info('Initializing PropertyInit data...');
@@ -426,6 +428,7 @@ async function propertyInit() {
                 mainGrouperNumber: '201',
                 status: 'Ocupado',
                 subStatus: 'Regular',
+                token: '000-000-001',
                 MainPlaceId: 'PE-AQP-00000',
                 FeedId: 1
             },
@@ -437,6 +440,7 @@ async function propertyInit() {
                 mainGrouperNumber: '202',
                 status: 'Ocupado',
                 subStatus: 'Regular',
+                token: '000-000-002',
                 MainPlaceId: 'PE-AQP-00000',
                 FeedId: 1
             },
@@ -448,7 +452,8 @@ async function propertyInit() {
                 mainGrouperNumber: '203',
                 status: 'Ocupado',
                 subStatus: 'Regular',
-                MainPlaceId: 'PE-AQP-00000',
+                token: '000-000-003',
+                MainPlaceId: 'PE-AQP-00001',
                 FeedId: 1
             },
 
@@ -497,7 +502,7 @@ async function userInit() {
                 isSuspended: false,
                 MainPlaceId: 'PE-AQP-00000',
                 UserRolId: '03-User',
-                UserTypeId: [2],
+                UserTypeId: [5],
                 PropertyId: ['PE-AQP-WH-0002', 'PE-AQP-WH-0003']
             },
             {
@@ -513,8 +518,8 @@ async function userInit() {
                 isSuspended: false,
                 MainPlaceId: 'PE-AQP-00000',
                 UserRolId: '03-User',
-                UserTypeId: [3],
-                PropertyId: []
+                UserTypeId: [6],
+                PropertyId: ['PE-AQP-WH-0003']
             },
         ];
         for (const userData of users) {
