@@ -6,10 +6,12 @@ const { error } = require('winston');
 const {
     MONGODB_HOST,
     MONGODB_PORT,
-    MONGODB_DATABASE
+    MONGODB_DATABASE,
+    MONGO_URL,
 } = process.env;
 
-const MONGODB_URI = `mongodb://${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DATABASE}`;
+const MONGODB_URI = MONGO_URL || `mongodb://${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DATABASE}`;
+
 
 try {
     mongoose.connect(MONGODB_URI);
