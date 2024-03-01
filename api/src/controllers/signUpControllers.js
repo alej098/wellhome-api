@@ -24,8 +24,8 @@ const signUp = async(
         });
 
         const newSignUp = {
-            dni,
             UserTypeId,
+            dni,
             foreName,
             lastName,
             phone,

@@ -6,7 +6,11 @@ const {
     updateManagementCo,
     deleteManagementCo,
     getAllManagementCo,
-    getManagementCoById
+    getManagmentCoNoSuspended,
+    getManagementCoByName,
+    getManagementCoById,
+    
+
 } = require ("../controllers/managementCoControllers");
 
 const createManagementCoHandler = async (req, res) => {
@@ -96,6 +100,29 @@ const getManagementCoHandler = async (req, res) => {
 };
 
 
+const getManagmentCoNoSuspendedHandler = async (req, res) => {
+    try {
+        const nonSuspendedCompanies = await getManagmentCoNoSuspended();
+        logger.info('Se trajeron exitosamente todas las Empresas Administradoras no suspendidas');
+        handleSuccessResponse(res, nonSuspendedCompanies);
+    } catch (error) {
+        handleErrorResponse(res, error);
+    }
+};
+
+const  getManagementCoByNameHandler= async (req,res)=>{
+    const { companyname } = req.params;
+    try {
+        const companiesByName= await getManagementCoByName(companyname);
+        logger.info('Se trajo exitosamente la Empresa Administradora por nombre');
+        handleSuccessResponse(res, companiesByName)
+    } catch (error) {
+        handleErrorResponse(res, error);
+    }
+
+};
+
+
 const getManagementCoByIdHandler = async (req, res) => {
     const {companyId} = req.params;
     try {
@@ -107,10 +134,15 @@ const getManagementCoByIdHandler = async (req, res) => {
     }
 };
 
+
+
+
 module.exports = {
     createManagementCoHandler,
     updateManagementCoHandler,
     deleteManagementCoHandler,
     getManagementCoHandler,
+    getManagmentCoNoSuspendedHandler,
+    getManagementCoByNameHandler,
     getManagementCoByIdHandler
 };

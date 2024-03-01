@@ -6,13 +6,13 @@ const {
     updateMainPlace,
     deleteMainPlace,
     getAllMainPlace,
+    getMainPlaceByName,
     getMainPlaceById
 
 } = require ('../controllers/mainPlaceControllers');
 
 const createMainPlaceHandler = async (req, res) => {
     const {
-        id,
         name,
         country,
         state,
@@ -23,12 +23,11 @@ const createMainPlaceHandler = async (req, res) => {
         phone,
         email,
         isSuspended,
-        ManagementCoCompanyRUC
+        ManagementCoId
     } = req.body;
 
     try{
         const newMainPlace = await createMainPlace (
-        id,
         name,
         country,
         state,
@@ -39,7 +38,7 @@ const createMainPlaceHandler = async (req, res) => {
         phone,
         email,
         isSuspended,
-        ManagementCoCompanyRUC
+        ManagementCoId
         );
         logger.info('Creación Exitosa de Condominio');
         handleSuccessResponse(res, newMainPlace, 201);
@@ -110,6 +109,18 @@ const getMainPlaceHandler =  async (req, res) => {
 };
 
 
+const getMainPlaceByNameHandler = async (req, res) => {
+    try {
+      const { mainPlaceName } = req.params;
+      const mainPlacesByName = await getMainPlaceByName(mainPlaceName);
+      logger.info('Se trajeron exitosamente los Condominios por nombre');
+      handleSuccessResponse(res, mainPlacesByName);
+    } catch (error) {
+      handleErrorResponse(res, error);
+    }
+  };
+
+
 const getMainPlaceByIdHandler = async (req, res) => {
     const {mainPlaceId} = req.params;
     try {
@@ -127,5 +138,6 @@ module.exports = {
     updateMainPlaceHandler,
     deleteMainPlaceHandler,
     getMainPlaceHandler,
+    getMainPlaceByNameHandler,
     getMainPlaceByIdHandler
 };

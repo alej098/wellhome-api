@@ -1,6 +1,7 @@
 const {ManagementCo} = require("../db");
+const {Op} = require('sequelize');
+const {checkExistence} = require("../utils/utils");
 const logger = require('../utils/logger');
-const { checkExistence } = require("../utils/utils");
 
 const createManagementCo = async (
     country,
@@ -15,6 +16,7 @@ const createManagementCo = async (
     try {
         const newCompany = await ManagementCo.create(
             {
+                id: generateId(country, companyTaxId),
                 country,
                 companyTaxId,
                 companyName,
@@ -22,9 +24,15 @@ const createManagementCo = async (
                 companyPhone,
                 companyEmail,
                 logo, 
-                isSuspended 
+                isSuspended,
             }
         );
+        
+        // Lógica para generar el ID basado en el país y el ID de impuestos
+        function generateId(country, companyTaxId) {
+            return `${country.substring(0, 3)}${companyTaxId}`;
+        }
+
         logger.info('Nueva Compañía creada con éxito');
         return newCompany;
     } catch (error) {
@@ -55,7 +63,7 @@ const updateManagementCo = async (
                 isSuspended
             },
             {where: { 
-                companyTaxId: companyId }}
+                id: companyId }}
             )
         if(!companyById) {
             throw Error ("No se encontraron Compañías")
@@ -94,6 +102,36 @@ const getAllManagementCo = async () =>{
 };
 
 
+const getManagmentCoNoSuspended = async () =>{
+    try {
+        return await ManagementCo.findAll(
+            {where: {isSuspended: false}}
+        );
+    } catch (error) {
+        logger.error(`Error al traer a todas las empresas no suspendidas desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer a todas las Empresas no suspendidas');
+
+    }
+};
+
+
+    const getManagementCoByName = async (companyName) => {
+        try {
+          const companies = await ManagementCo.findAll({
+            where: {
+              companyName: {
+                [Op.iLike]: `%${companyName}%`,
+              },
+            },
+          });
+          return companies;
+        } catch (error) {
+          logger.error(`Error al traer las Empresas Administradoras por nombre desde el controlador: ${error.message}`);
+          throw new Error('Error interno al traer las Empresas Administradoras por nombre');
+        }
+      };
+
+
 const getManagementCoById = async(companyId) =>{
     try {
         const company = await checkExistence(ManagementCo, companyId)
@@ -110,6 +148,8 @@ module.exports ={
     updateManagementCo,
     deleteManagementCo,
     getAllManagementCo,
+    getManagmentCoNoSuspended,
+    getManagementCoByName,
     getManagementCoById
 };
 
