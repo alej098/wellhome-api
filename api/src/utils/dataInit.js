@@ -1,4 +1,6 @@
 const logger = require('./logger');
+const ContactForm = require('../modelsNoSql/contactForm');
+const PreMainPlace = require('../modelsNoSql/PreMainPlace');
 
 const {
     UserRol,
@@ -14,6 +16,59 @@ const {
     User
     
     } = require('../db');
+
+
+async function contactFormInit() {
+    try{
+        logger.info('Initializing ContactForm data...');
+        const contactFormData = {
+
+            "country": "Perú",
+            "foreName": "Felipe",
+            "lastName": "Rodriguez",
+            "email": "felipe@example.com",
+            "phone": "+519000111000",
+            "subject": "Otro asunto",
+            "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+        };
+    
+        const contactFormInstance = new ContactForm(contactFormData);
+        await contactFormInstance.save();
+        logger.info('ContactForm data initialized successfully.');
+
+    } catch (error) {
+        logger.error('Error during ContactForm initialization:', error)
+    }
+};
+
+async function preRegisterInit() {
+    try{
+        logger.info('Initializing PreRegister data...');
+        const preRegisterData = {
+
+            "name": "Condominio Feliz",
+            "country": "Perú",
+            "state": "Arequipa",
+            "city": "Arequipa",
+            "district": "Yanahuara",
+            "placeDescription": "Vive tus sueños",
+            "phone": "+51900000009",
+            "email": "vivefeliz@example.com",
+            "dni": "10000001",
+            "foreName": "Pierre",
+            "lastName": "Alcazar",
+            "ownerPhone" :"+51924707719",
+            "ownerEmail" : "pierre@example.com"
+        };
+    
+        const preRegisterInstance = new PreMainPlace(preRegisterData);
+        await preRegisterInstance.save();
+        logger.info('PreMainPlace data initialized successfully.');
+
+    } catch (error) {
+        logger.error('Error during PreMainPlace initialization:', error)
+    }
+};
 
 async function userRolInit() {
     try {
@@ -542,6 +597,8 @@ async function userInit() {
 };
 
 module.exports = {
+    contactFormInit,
+    preRegisterInit,
     mainPlaceInit,
     managementCoInit,
     userRolInit,
