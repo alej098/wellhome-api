@@ -90,6 +90,10 @@ const preMainPlaceSchema = new Schema({
             message: 'Email address is not valid'
         },
         required: true
+    },
+    ownerPassword: {
+        type: String,
+        required: true
     }
 
 });

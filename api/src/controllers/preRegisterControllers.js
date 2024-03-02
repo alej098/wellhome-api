@@ -14,6 +14,7 @@ const createRegister = async (
     foreName,
     lastName,
     ownerPhone,
+    ownerEmail,
     ownerEmail
 ) => {
     try {
@@ -31,6 +32,7 @@ const createRegister = async (
                 foreName,
                 lastName,
                 ownerPhone,
+                ownerEmail,
                 ownerEmail
             }
         );
