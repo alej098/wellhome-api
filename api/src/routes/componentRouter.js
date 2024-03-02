@@ -1,4 +1,14 @@
-const {Router} = require("express");
+const {Router} = require('express');
+const { verifyToken,
+        isSuperAdmin,
+        isLocalAdmin, 
+        isModerator, 
+        isUser,
+        allAccess,
+        adminLocalAccess,
+        ownerLocalAccess,
+        productOwnerAccess
+    } = require ('../controllers/authTokenControllers');
 
 const {
     createClassComponentHandler,
@@ -29,20 +39,20 @@ componentRouter.post('/class', createClassComponentHandler);
 componentRouter.post('/type', createTypeComponentHandler);
 componentRouter.post('/', createComponentHandler);
 
-componentRouter.put('/class/:idClassComponent', updateClassComponentHandler);
-componentRouter.put('/type/:idTypeComponent', updateTypeComponentHandler);
-componentRouter.put('/:idComponent', updateComponentHandler);
+componentRouter.put('/class/:classComponentId', updateClassComponentHandler);
+componentRouter.put('/type/:typeComponentId', updateTypeComponentHandler);
+componentRouter.put('/:componentId', updateComponentHandler);
 
-componentRouter.delete('/class/:idClassComponent', deleteClassComponentHandler);
-componentRouter.delete('/type/:idTypeComponent', deleteTypeComponentHandler);
-componentRouter.delete('/:idComponent', deleteComponentHandler);
+componentRouter.delete('/class/:classComponentId', deleteClassComponentHandler);
+componentRouter.delete('/type/:typeComponentId', deleteTypeComponentHandler);
+componentRouter.delete('/:componentId', deleteComponentHandler);
 
 componentRouter.get('/class', getClassComponentHandler);
 componentRouter.get('/type', getTypeComponentHandler);
 componentRouter.get('/', getComponentHandler);
 
-componentRouter.get('/class/:idClassComponent', getClassComponentByIdHandler);
-componentRouter.get('/type/:idTypeComponent', getTypeComponentByIdHandler);
-componentRouter.get('/:idComponent', getComponentByIdHandler);
+componentRouter.get('/class/:classComponentId', getClassComponentByIdHandler);
+componentRouter.get('/type/:typeComponentId', getTypeComponentByIdHandler);
+componentRouter.get('/:componentId', getComponentByIdHandler);
 
 module.exports = componentRouter;

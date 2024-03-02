@@ -1,3 +1,6 @@
+const logger = require('../utils/logger');
+const {handleSuccessResponse, handleErrorResponse} = require('../utils/utils');
+
 const {
     createProperty,
     updateProperty,
@@ -17,9 +20,13 @@ const createPropertyHandler = async (req, res) => {
         secondaryGrouperNumber,
         status,
         subStatus,
+        acceptCost,
         isSuspended,
         MainPlaceId,
-        userDni
+        FeeId,
+        UserDni,
+        token
+        
     } = req.body;
     try {
         const newProperty = await createProperty(
@@ -32,13 +39,18 @@ const createPropertyHandler = async (req, res) => {
             secondaryGrouperNumber,
             status,
             subStatus,
+            acceptCost,
             isSuspended,
             MainPlaceId,
-            userDni
+            FeeId,
+            UserDni,
+            token
+            
         )
-        res.status(201).json(newProperty);
+        logger.info('creación Exitosa de Propiedad');
+        handleSuccessResponse(res, {newProperty, token}, 201);
     } catch (error) {
-        res.status(400).json({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
@@ -53,9 +65,11 @@ const updatePropertyHandler = async (req, res) => {
         secondaryGrouperNumber,
         status,
         subStatus,
+        acceptCost,
         isSuspended,
         MainPlaceId,
-        userDni
+        FeeId,
+        UserDni
     } = req.body;
     try {
         const updateNewProperty = await updateProperty(
@@ -68,32 +82,37 @@ const updatePropertyHandler = async (req, res) => {
             secondaryGrouperNumber,
             status,
             subStatus,
+            acceptCost,
             isSuspended,
             MainPlaceId,
-            userDni
+            FeeId,
+            UserDni
         );
-        res.status(200).json(updateNewProperty);
+        logger.info('Actualización Exitosa de la Propiedad');
+        handleSuccessResponse(res, updateNewProperty);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const deletePropertyHandler = async (req, res) => {
     const {propertyId} = req.params;
     try {
-        const deleteProper = await deleteProperty(propertyId);
-        res.status(200).json(deleteProper);
+        const deletedProperty = await deleteProperty(propertyId);
+        logger.info('Se eliminó exitosamente la propiedad');
+        handleSuccessResponse(res, deletedProperty);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const getPropertyHandler = async (req, res) => {
     try {
-        const property = await getProperty()
-        res.status(200).json(property);
+        const properties = await getProperty()
+        logger.info('Se trajeron a todas las Propiedades');
+        handleSuccessResponse(res, properties);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
@@ -101,9 +120,10 @@ const getPropertyByIdHandler = async (req, res) => {
     const {propertyId} = req.params;
     try {
         const propertyById = await getPropertyById(propertyId);
-        res.status(200).json(propertyById);
+        logger.info('Se trajo exitosamente la Propiedad');
+        handleSuccessResponse(res, propertyById);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 

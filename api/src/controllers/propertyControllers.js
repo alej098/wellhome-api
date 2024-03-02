@@ -1,4 +1,7 @@
-const {Property, MainPlace, User} = require ('../db');
+const {Property, MainPlace, User, Fee} = require ('../db');
+const logger = require('../utils/logger');
+const {getArrayByIds, checkExistence} = require('../utils/utils');
+const {generateRandomToken} = require('../utils/security');
 
 const createProperty = async(
     id,
@@ -10,36 +13,58 @@ const createProperty = async(
     secondaryGrouperNumber,
     status,
     subStatus,
+    acceptCost,
     isSuspended,
     MainPlaceId,
-    userDni
-) => {
-
-    let arrayOfUserDni = [];
-    for (const dni of userDni) {
-        let addUserDni = await User.findByPk(dni);
-        arrayOfUserDni.push(addUserDni);
-    }
+    FeeId,
+    UserDni,
+    token
     
-    const newProperty = await Property.create(
-        {
-            id,
-            propertyType,
-            mainGrouper,
-            mainGrouperName,
-            mainGrouperNumber,
-            secondaryGrouper,
-            secondaryGrouperNumber,
-            status,
-            subStatus,
-            isSuspended,
-            MainPlaceId,
-            userDni
+) => {
+    try {
+        let isTokenUnique = false;
+        // Esta lógica para el manejo de colisiones debe cambiar cuando se tenga alta concurrencia
+        while (!isTokenUnique) {
+            token = generateRandomToken();
+            const existingProperty = await Property.findOne({ where: { token } });
+
+            if (!existingProperty) {
+                isTokenUnique = true;
+            } else {
+                token = generateRandomToken();
+            }
         }
-    );
-    await newProperty.setUsers(arrayOfUserDni);
-    return newProperty;
+
+        const arrayOfUserDni = await getArrayByIds(User, UserDni);
+        const newProperty = await Property.create({
+                id,
+                propertyType,
+                mainGrouper,
+                mainGrouperName,
+                mainGrouperNumber,
+                secondaryGrouper,
+                secondaryGrouperNumber,
+                status,
+                subStatus,
+                acceptCost,
+                isSuspended,
+                MainPlaceId,
+                FeeId,
+                UserDni,
+                token
+        
+            }
+        );
+        await newProperty.setUsers(arrayOfUserDni);
+        logger.info('Nueva Propiedad creada con éxito.');
+        return {newProperty, token};
+
+    } catch (error) {
+        logger.error(`Error al crear una nueva Propiedad desde el controlador: ${error.message}`);
+        throw new Error('Error interno al crear una nueva Propiedad');
+    }
 };
+
 
 const updateProperty = async (
     propertyId,
@@ -51,74 +76,93 @@ const updateProperty = async (
     secondaryGrouperNumber,
     status,
     subStatus,
+    acceptCost,
     isSuspended,
     MainPlaceId,
-    userDni
+    FeeId,
+    UserDni
 ) => {
-    const [numUpdated] = await Property.update(
-        {
-            propertyType,
-            mainGrouper,
-            mainGrouperName,
-            mainGrouperNumber,
-            secondaryGrouper,
-            secondaryGrouperNumber,
-            status,
-            subStatus,
-            isSuspended,
-            MainPlaceId,
-            userDni
-        },
-        {where: {id: propertyId}}
-    );
-    if (!numUpdated) {
-        throw Error ('No se encontró la Propiedad requerida');
-    }
+    try {
+        logger.info('Actualizando la propiedad...');
+        const property = await checkExistence(Property, propertyId)
 
-    const updatedProperty = await Property.findByPk(propertyId);
-    await updatedProperty.setUsers([]);
-    if (userDni && userDni.length > 0) {
-        let arrayOfUserDni = [];
-        for (const dni of userDni) {
-            let addUserDni = await User.findByPk(dni);
-            if (addUserDni) {
-                arrayOfUserDni.push(addUserDni);
-            }
-        }
-        await updatedProperty.setUsers(arrayOfUserDni);
+        property.propertyType = propertyType;
+        property.mainGrouper = mainGrouper;
+        property.mainGrouperName =  mainGrouperName;
+        property.mainGrouperNumber = mainGrouperNumber;
+        property.secondaryGrouper = secondaryGrouper;
+        property.secondaryGrouperNumber = secondaryGrouperNumber;
+        property.status = status;
+        property.subStatus = subStatus;
+        property.acceptCost = acceptCost;
+        property.isSuspended = isSuspended;
+        property.MainPlaceId = MainPlaceId;
+        property.FeeId = FeeId;
+        property.UserDni = UserDni;
+
+        await property.save();
+
+        const arrayOfUserDni = await getArrayByIds(User, UserDni);
+        await property.setUsers(arrayOfUserDni);
+        logger.info('Propiedad actualizada con éxito');
+        return property;
+
+    } catch (error) {
+        logger.error(`Error al actualizar una Propiedad desde el controlador: ${error.message}`);
+        throw new Error('Error interno al actualizar una Propiedad');
     }
-    return updatedProperty;
 };
+
 
 const deleteProperty = async (propertyId) => {
-    const deletedProperty = await Property.destroy({
-        where: {id: propertyId}
-    });
-    if(!deletedProperty){
-        throw new Error('No se encontraron Propiedades con ese Id');
+    try {
+        logger.info('Eliminando una Propiedad');
+        const property = await checkExistence (Property, propertyId)
+        await property.destroy();
+        logger.info('Propiedad eliminada con éxito');
+        return {message: 'Propiedad eliminada exitosamente'};
+
+    } catch (error) {
+        logger.error(`Error al eliminar una Propiedad desde el controlador: ${error.message}`);
+        throw new Error('Error interno al eliminar una Propiedad');
     }
-    return 'La propiedad ha sido eliminada';
 };
+
 
 const getProperty = async () => {
-    return await Property.findAll({
-        where: {isSuspended: false},
-        include:[{
-            model: MainPlace,
-            attributes: ['name']
-        }],
-    });
+    try {
+        logger.info('Trayendo todas las Propiedades');
+        return await Property.findAll({
+            where: {isSuspended: false},
+            
+        });
+
+    } catch (error) {
+        logger.error(`Error al traer todas las propiedades desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer a todas las propiedades');
+    }
 };
 
+
 const getPropertyById = async (propertyId) => {
-    const propertyById = await Property.findOne({
-        where: {
-            id: propertyId,
-            isSuspended: false
-        }
-    });
-    if(!propertyById) throw Error('No existen propiedades con ese Id');
-    return propertyById;
+    try {
+        logger.info('Trayendo una Propiedad por Id')
+        const propertyById = await Property.findByPk(propertyId, {
+            include:[{
+                model: MainPlace,
+                attributes: ['name']
+            }],
+            include:[{
+                model: Fee,
+                attributes: ['feeDescription']
+            }]
+        });
+        if(!propertyById) throw Error('No existen propiedades con ese Id');
+        return propertyById;
+    } catch (error) {
+        logger.error(`Error al traer una Propiedad por Id desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer una Propiedad por Id');
+    }
 };
 
 module.exports ={ 

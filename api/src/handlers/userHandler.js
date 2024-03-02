@@ -1,11 +1,15 @@
+const logger = require('../utils/logger.js');
+const {handleSuccessResponse, handleErrorResponse} = require('../utils/utils.js')
+
 const {
     createNewUser,
     updateUser,
     deleteUser,
     getAllUsers,
-    getUserById
+    getUserById,
+    changePassword
 
-} = require ("../controllers/userControllers.js");
+} = require ('../controllers/userControllers.js');
 
 const createUserHandler = async (req, res) => {
     const {
@@ -14,10 +18,15 @@ const createUserHandler = async (req, res) => {
         lastName,
         phone,
         email,
+        password,
         status,
+        isAdmin,
+        acceptCost,
         isSuspended,
-        userTypeId,
-        propertyId
+        MainPlaceId,
+        UserRolId,
+        UserTypeId, //Debe llegar como un array siempre
+        PropertyId  //Debe llegar como un array siempre
     } = req.body;
     
     try {
@@ -27,75 +36,113 @@ const createUserHandler = async (req, res) => {
             lastName,
             phone,
             email,
+            password,
             status,
+            isAdmin,
+            acceptCost,
             isSuspended,
-            userTypeId,
-            propertyId
+            MainPlaceId,
+            UserRolId,
+            UserTypeId,
+            PropertyId
         );
-        
-        res.status(201).json(newUser);
+        logger.info('Creación Exitosa de Usuario');
+        handleSuccessResponse(res, newUser, 201);
     } catch (error) {
-        res.status(400).json({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const updateUserHandler = async (req, res) => {
-    const {idUser} = req.params;
+    const {userId} = req.params;
     const {
         foreName,
         lastName,
         phone,
         email,
+        password,
         status,
+        isAdmin,
+        acceptCost,
         isSuspended,
-        userTypeId,
-        propertyId
+        MainPlaceId,
+        UserRolId,
+        UserTypeId,
+        PropertyId
     } = req.body;
     try {
         const user =  await updateUser (
-            idUser,
+            userId,
             foreName,
             lastName,
             phone,
             email,
+            password,
             status,
+            isAdmin,
+            acceptCost,
             isSuspended,
-            userTypeId,
-            propertyId
+            MainPlaceId,
+            UserRolId,
+            UserTypeId,
+            PropertyId
         );
-        res.status(200).json(user);
+        logger.info('Actualización Exitosa de Usuario');
+        handleSuccessResponse(res, user);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const deleteUserHandler = async (req, res) => {
-    const {idUser} = req.params;
+    const {userId} = req.params;
     try {
-        const deleteUserById = await deleteUser(idUser);
-        res.status(200).json(deleteUserById);
+        const deleteUserById = await deleteUser(userId);
+        logger.info('Se eliminó exitosamente al Usuario');
+        handleSuccessResponse(res, deleteUserById);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 const getUserHandler = async(req, res) => {
     try {
-        const user =  await getAllUsers()
-        res.status(200).json(user);
+        const user =  await getAllUsers();
+        logger.info('Se trajeron a todos los usuarios');
+        handleSuccessResponse(res, user);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
 
 const getUserByIdHandler = async (req, res) => {
-    const {idUser} = req.params;
+    const {userId} = req.params;
     try {
-        const userById = await getUserById(idUser);
-        res.status(200).json(userById);
+        const userById = await getUserById(userId);
+        logger.info('Se trajo exitosamente al Usuario');
+        handleSuccessResponse(res, userById);
     } catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
+    }
+};
+
+const changePasswordHandler = async (req, res) => {
+    const {
+        login,
+        currentPassword,
+        newPassword
+    }= req.body;
+    try {
+            await changePassword(
+            login,
+            currentPassword,
+            newPassword
+        ); 
+        logger.info('Se cambió la contraseña');
+        handleSuccessResponse(res, { message: 'Contraseña cambiada exitosamente' });
+    } catch (error) {
+        handleErrorResponse(res, error);
     }
 };
 
@@ -104,5 +151,6 @@ module.exports = {
     updateUserHandler,
     deleteUserHandler,
     getUserHandler,
-    getUserByIdHandler
+    getUserByIdHandler,
+    changePasswordHandler
 };

@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const securityUtils = require('../utils/security');
 
 module.exports = (sequelize) => {
     const User = sequelize.define('User', {
@@ -25,7 +26,7 @@ module.exports = (sequelize) => {
         phone: {
             type: DataTypes.STRING,
             unique: true,
-            allowNull: true,
+            allowNull: false,
         },
         email: {
             type: DataTypes.STRING,
@@ -35,18 +36,56 @@ module.exports = (sequelize) => {
             },
             allowNull: false,
         },
+        password: {
+            type: DataTypes.TEXT,
+            validate: {
+              len: [7]
+            },
+            allowNull: false,
+          },
         status: {
             type: DataTypes.ENUM(
                 'Habilitado',
                 'Inhabilitado'
             ),
+            defaultValue: 'Habilitado',
             allowNull: false
+        },
+        isAdmin:{
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
+        acceptCost: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
         },
         isSuspended: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
         },
+      
+    },
+        
+    {
+      hooks: {
+          beforeCreate: async (user) => {
+            if (user.password) {
+                  user.password = await securityUtils.hashPassword(user.password);
+            }
+
+          },
+          beforeUpdate: async (user) => {
+              if (user.changed('password')) {
+              // Verifica si la contraseña ha sido modificada antes de aplicar el hasheo
+              user.password = await securityUtils.hashPassword(user.password);
+            }
+          }
+        }
     });
+
+     User.prototype.validPassword = async function(password) {
+      return await bcrypt.compare(password, this.password);
+  };
 
     return User;
 };
