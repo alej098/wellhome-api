@@ -5,7 +5,7 @@ const mainRouter = require('./routes/mainRouter');
 const cookieParser = require('cookie-parser');
 const logger = require ('./utils/logger');
 
-const {FRONT_DOMAIN} = process.env;
+// const {FRONT_DOMAIN} = process.env;
 
 const app = express();
 
