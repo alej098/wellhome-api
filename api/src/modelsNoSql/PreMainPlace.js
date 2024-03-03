@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { INTEGER } = require('sequelize');
 const {Schema} = mongoose;
 
 const preMainPlaceSchema = new Schema({
@@ -40,7 +39,6 @@ const preMainPlaceSchema = new Schema({
     },
     placeDescription: {
         type: String,
-        minlength: 10,
         maxlength: 300
     },
     phone: {
