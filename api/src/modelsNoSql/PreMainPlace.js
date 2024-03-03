@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { INTEGER } = require('sequelize');
 const {Schema} = mongoose;
 
 const preMainPlaceSchema = new Schema({
@@ -43,28 +44,23 @@ const preMainPlaceSchema = new Schema({
         maxlength: 300
     },
     phone: {
-        type: String,
+        type: INTEGER,
         required: true
     },
-    email: {
-        type: String,
-        unique: true,
-        validate: {
-            validator: function (value) {
-                return /^\S+@\S+\.\S+$/.test(value);
-            },
-            message: 'Email address is not valid'
-        },
-        required: true
-    },
+    // email: {
+    //     type: String,
+    //     unique: true,
+    //     validate: {
+    //         validator: function (value) {
+    //             return /^\S+@\S+\.\S+$/.test(value);
+    //         },
+    //         message: 'Email address is not valid'
+    //     },
+    //     required: true
+    // },
 
     //Datos del Owner o "LocalAdmin"
 
-    dni: {
-        type: String,
-        required: true,
-        unique: true
-    },
     foreName: {
         type: String,
         minlength: 2,
@@ -77,8 +73,12 @@ const preMainPlaceSchema = new Schema({
         maxlength: 20,
         required: true
     },
-    ownerPhone: {
+    dni: {
         type: String,
+        required: true,
+    },
+    ownerPhone: {
+        type: INTEGER,
         required: true
     },
     ownerEmail: {
@@ -90,6 +90,18 @@ const preMainPlaceSchema = new Schema({
             message: 'Email address is not valid'
         },
         required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    repeat_password: {
+        type: String,
+        required: true
+    },
+    checkbox_confirm: {
+        type: Boolean,
+        default: false
     }
 
 });

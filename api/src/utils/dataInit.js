@@ -52,13 +52,15 @@ async function preRegisterInit() {
             "city": "Arequipa",
             "district": "Yanahuara",
             "placeDescription": "Vive tus sueños",
-            "phone": "+51900000009",
-            "email": "vivefeliz@example.com",
-            "dni": "10000001",
+            "phone": "51900000009",
             "foreName": "Pierre",
             "lastName": "Alcazar",
-            "ownerPhone" :"+51924707719",
-            "ownerEmail" : "pierre@example.com"
+            "dni": "10000001",
+            "ownerPhone" :"51924707719",
+            "ownerEmail" : "pierre@example.com",
+            "password": "123456789",
+            "repeat_password": "123456789",
+            "checkbox_confirm": "true"
         };
     
         const preRegisterInstance = new PreMainPlace(preRegisterData);

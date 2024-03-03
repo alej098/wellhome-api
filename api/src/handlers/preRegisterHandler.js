@@ -16,12 +16,16 @@ const createPreRegisterFormHandler = async (req, res) =>{
         district,
         placeDescription,
         phone,
-        email,
-        dni,
+        // email,
         foreName,
         lastName,
+        dni,
         ownerPhone,
-        ownerEmail
+        ownerEmail,
+        password,
+        repeat_password,
+        checkbox_confirm
+
     } = req.body;
 
     try{
@@ -33,12 +37,15 @@ const createPreRegisterFormHandler = async (req, res) =>{
             district,
             placeDescription,
             phone,
-            email,
-            dni,
+            // email,
             foreName,
             lastName,
+            dni,
             ownerPhone,
-            ownerEmail
+            ownerEmail,
+            password,
+            repeat_password,
+            checkbox_confirm
         );
         logger.info('Creación Exitosa de Pre-Regisro de Condominio');
         handleSuccessResponse(res, registerForm, 201);
