@@ -44,7 +44,7 @@ const preMainPlaceSchema = new Schema({
         maxlength: 300
     },
     phone: {
-        type: INTEGER,
+        type: Number,
         required: true
     },
     // email: {
@@ -78,7 +78,7 @@ const preMainPlaceSchema = new Schema({
         required: true,
     },
     ownerPhone: {
-        type: INTEGER,
+        type: Number,
         required: true
     },
     ownerEmail: {
