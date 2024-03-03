@@ -46,25 +46,20 @@ const preMainPlaceSchema = new Schema({
         type: String,
         required: true
     },
-    email: {
-        type: String,
-        unique: true,
-        validate: {
-            validator: function (value) {
-                return /^\S+@\S+\.\S+$/.test(value);
-            },
-            message: 'Email address is not valid'
-        },
-        required: true
-    },
+    // email: {
+    //     type: String,
+    //     unique: true,
+    //     validate: {
+    //         validator: function (value) {
+    //             return /^\S+@\S+\.\S+$/.test(value);
+    //         },
+    //         message: 'Email address is not valid'
+    //     },
+    //     required: true
+    // },
 
     //Datos del Owner o "LocalAdmin"
 
-    dni: {
-        type: String,
-        required: true,
-        unique: true
-    },
     foreName: {
         type: String,
         minlength: 2,
@@ -76,6 +71,11 @@ const preMainPlaceSchema = new Schema({
         minlength: 3,
         maxlength: 20,
         required: true
+    },
+    dni: {
+        type: String,
+        required: true,
+        unique: true
     },
     ownerPhone: {
         type: String,
@@ -91,9 +91,17 @@ const preMainPlaceSchema = new Schema({
         },
         required: true
     },
-    ownerPassword: {
+    password: {
         type: String,
         required: true
+    },
+    repeat_password: {
+        type: String,
+        required: true
+    },
+    checkbox_confirm: {
+        type: Boolean,
+        default: false
     }
 
 });

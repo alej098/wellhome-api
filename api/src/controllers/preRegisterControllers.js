@@ -9,13 +9,15 @@ const createRegister = async (
     district,
     placeDescription,
     phone,
-    email,
-    dni,
+    // email,
     foreName,
     lastName,
+    dni,
     ownerPhone,
     ownerEmail,
-    ownerEmail
+    password,
+    repeat_password,
+    checkbox_confirm
 ) => {
     try {
         const newRegister = await PreMainPlace(
@@ -27,13 +29,15 @@ const createRegister = async (
                 district,
                 placeDescription,
                 phone,
-                email,
-                dni,
+                // email,
                 foreName,
                 lastName,
+                dni,
                 ownerPhone,
                 ownerEmail,
-                ownerEmail
+                password,
+                repeat_password,
+                checkbox_confirm
             }
         );
         await newRegister.save();
