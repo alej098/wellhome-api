@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { INTEGER } = require('sequelize');
 const {Schema} = mongoose;
 
 const preMainPlaceSchema = new Schema({
@@ -43,7 +44,7 @@ const preMainPlaceSchema = new Schema({
         maxlength: 300
     },
     phone: {
-        type: String,
+        type: INTEGER,
         required: true
     },
     // email: {
@@ -75,10 +76,9 @@ const preMainPlaceSchema = new Schema({
     dni: {
         type: String,
         required: true,
-        unique: true
     },
     ownerPhone: {
-        type: String,
+        type: INTEGER,
         required: true
     },
     ownerEmail: {
