@@ -19,7 +19,7 @@ app.use(morgan('dev'));
 // Middleware para configurar CORS
 app.use((req, res, next) => {
 
-  const allowedOrigins = [process.env.FRONT_DOMAIN, 'http://localhost:4000'];
+  const allowedOrigins = [process.env.FRONT_DOMAIN_1, process.env.FRONT_DOMAIN_1, 'http://localhost:4000'];
   const origin = req.headers.origin;
 
   if (allowedOrigins.includes(origin)) {
