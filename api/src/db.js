@@ -66,7 +66,7 @@ User.belongsToMany(Property, { through: "UserProperty", timestamps: false, onDel
 Property.belongsToMany(User, { through: "UserProperty", timestamps: false });
 
 try {
-  // Cargar modelos de Mongoose (si tienes modelos en /modelsMongo)
+  
   fs.readdirSync(path.join(__dirname, '/modelsNoSql'))
     .filter((file) => file.endsWith('.js'))
     .forEach((file) => {
