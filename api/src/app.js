@@ -5,8 +5,6 @@ const mainRouter = require('./routes/mainRouter');
 const cookieParser = require('cookie-parser');
 const logger = require ('./utils/logger');
 
-// const {FRONT_DOMAIN} = process.env;
-
 const app = express();
 
 //Middleware para analizar datos en formato JSON y configuraciones CORS
@@ -20,7 +18,7 @@ app.use(morgan('dev'));
 
 // Middleware para configurar CORS
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:4000'); 
+  res.header('Access-Control-Allow-Origin', process.env.FRONT_DOMAIN); 
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
