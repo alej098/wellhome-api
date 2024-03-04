@@ -15,6 +15,9 @@ const {
     updateUserHandler,
     deleteUserHandler,
     getUserHandler,
+    getUserNoSuspendedHandler,
+    getUserByForeNameHandler,
+    getUserByLastNameHandler,
     getUserByIdHandler,
     changePasswordHandler
 } = require ('../handlers/userHandler');
@@ -26,6 +29,9 @@ userRouter.put('/:userId', updateUserHandler);
 userRouter.delete('/:userId', deleteUserHandler);
 
 userRouter.get('/', getUserHandler);
+userRouter.get('/nosuspended', getUserNoSuspendedHandler);
+userRouter.get('/name/:foreName', getUserByForeNameHandler);
+userRouter.get('/lastname/:lastName', getUserByLastNameHandler);
 userRouter.get('/:userId', getUserByIdHandler);
 
 userRouter.patch('/change-password', changePasswordHandler);

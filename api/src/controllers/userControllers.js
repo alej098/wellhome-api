@@ -1,6 +1,7 @@
 const { User, UserType, Property, UserRol } = require('../db');
 const securityUtils = require('../utils/security');
 const {checkExistence, getArrayByIds} = require('../utils/utils');
+const { Op } = require('sequelize');
 const logger = require('../utils/logger');
 
 
@@ -133,6 +134,18 @@ const getAllUsers = async () => {
     try {
         logger.info('Trayendo a todos los usuarios...');
 
+        return await User.findAll();
+    } catch (error) {
+        logger.error(`Error al traer a todos los usuarios desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer a todos los usuarios');
+    }
+};
+
+
+const getAllUsersNoSuspended = async () => {
+    try {
+        logger.info('Trayendo a todos los usuarios Activos...');
+
         return await User.findAll({
             where : {isSuspended: false},
             include: [
@@ -140,17 +153,47 @@ const getAllUsers = async () => {
                     model: UserType,
                     attributes: ['name'],
                 },
-                // {
-                //     model: Property,
-                //     attributes: ['maingrouper', 'mainGrouperName', 'mainGrouperNumber'],
-                // },
             ],
         });
     } catch (error) {
-        logger.error(`Error al traer a todos los usuarios desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todos los usuarios');
+        logger.error(`Error al traer a todos los usuarios Activos desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer a todos los usuarios Activos');
     }
 };
+
+
+const getUserByForeName = async (foreName) => {
+    try {
+      const usersByName = await User.findAll({
+        where: {
+          foreName: {
+            [Op.iLike]: `%${foreName}%`,
+          },
+        },
+      });
+      return usersByName;
+    } catch (error) {
+      logger.error(`Error al traer los usuarios por el nombre desde el controlador: ${error.message}`);
+      throw new Error('Error interno al traer los usuarios por nombre');
+    }
+  };
+
+  const getUserByLastName = async (lastName) => {
+    try {
+      const usersByLastName = await User.findAll({
+        where: {
+            lastName: {
+            [Op.iLike]: `%${lastName}%`,
+          },
+        },
+      });
+      return usersByLastName;
+    } catch (error) {
+      logger.error(`Error al traer los usuarios por el apellido desde el controlador: ${error.message}`);
+      throw new Error('Error interno al traer los usuarios por apellido');
+    }
+  };
+
 
 const getUserById = async (userId) => {
     try {
@@ -209,6 +252,9 @@ module.exports = {
     updateUser, 
     deleteUser,
     getAllUsers,
+    getAllUsersNoSuspended,
+    getUserByForeName,
+    getUserByLastName,
     getUserById,
     changePassword
 };

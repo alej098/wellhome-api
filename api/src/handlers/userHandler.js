@@ -6,6 +6,9 @@ const {
     updateUser,
     deleteUser,
     getAllUsers,
+    getAllUsersNoSuspended,
+    getUserByForeName,
+    getUserByLastName,
     getUserById,
     changePassword
 
@@ -116,6 +119,41 @@ const getUserHandler = async(req, res) => {
 };
 
 
+const getUserNoSuspendedHandler = async(req, res) => {
+    try {
+        const user =  await getAllUsersNoSuspended();
+        logger.info('Se trajeron a todos los usuarios');
+        handleSuccessResponse(res, user);
+    } catch (error) {
+        handleErrorResponse(res, error);
+    }
+};
+
+
+const getUserByForeNameHandler = async (req, res) => {
+    const { foreName } = req.params;
+    try {
+      const usersByForeName = await getUserByForeName(foreName);
+      logger.info('Se trajeron exitosamente los usuarios por nombre');
+      handleSuccessResponse(res, usersByForeName)
+    } catch (error) {
+      handleErrorResponse(res, error);
+    }
+  };
+  
+
+  const getUserByLastNameHandler = async (req, res) => {
+    const { lastName } = req.params;
+    try {
+      const usersByLastName = await getUserByLastName(lastName);
+      logger.info('Se trajeron exitosamente los usuarios por apellido');
+      handleSuccessResponse(res, usersByLastName)
+    } catch (error) {
+      handleErrorResponse(res, error);
+    }
+  };
+
+
 const getUserByIdHandler = async (req, res) => {
     const {userId} = req.params;
     try {
@@ -151,6 +189,9 @@ module.exports = {
     updateUserHandler,
     deleteUserHandler,
     getUserHandler,
+    getUserNoSuspendedHandler,
+    getUserByForeNameHandler,
+    getUserByLastNameHandler,
     getUserByIdHandler,
     changePasswordHandler
 };

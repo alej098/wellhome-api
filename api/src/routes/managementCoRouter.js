@@ -15,6 +15,8 @@ const {
     updateManagementCoHandler,
     deleteManagementCoHandler,
     getManagementCoHandler,
+    getManagmentCoNoSuspendedHandler,
+    getManagementCoByNameHandler,
     getManagementCoByIdHandler
 } = require('../handlers/managementCoHandler');
 
@@ -25,6 +27,8 @@ managementCoRouter.put('/:companyId', updateManagementCoHandler);
 managementCoRouter.delete('/:companyId', deleteManagementCoHandler);
 
 managementCoRouter.get('/', [verifyToken, isUser], getManagementCoHandler);
+managementCoRouter.get('/nosuspended',getManagmentCoNoSuspendedHandler);
+managementCoRouter.get('/name/:companyname', getManagementCoByNameHandler);
 managementCoRouter.get('/:companyId', getManagementCoByIdHandler);
 
 

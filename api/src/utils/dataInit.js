@@ -41,6 +41,7 @@ async function contactFormInit() {
     }
 };
 
+
 async function preRegisterInit() {
     try{
         logger.info('Initializing PreRegister data...');
@@ -71,6 +72,7 @@ async function preRegisterInit() {
         logger.error('Error during PreMainPlace initialization:', error)
     }
 };
+
 
 async function userRolInit() {
     try {
@@ -215,6 +217,7 @@ async function componentClassInit() {
 
 };
 
+
 async function componentTypeInit() {
     try {
         logger.info('Initializing ComponentTypeInit data...');
@@ -263,6 +266,7 @@ async function componentTypeInit() {
     }  
 };
 
+
 async function managementCoInit(){
     try {
         logger.info('Initializing ManagementCo data...');
@@ -278,7 +282,8 @@ async function managementCoInit(){
                 companyPhone: '+51924707719',
                 companyEmail: 'castrumperu@gmail.com',
                 logo: 'https://img.freepik.com/vector-premium/trabajador-oficina-tomando-carpeta-archivo-administracion-gestion-gestion-archivos-icono-base-datos-catalogo-documentos-diseno-plano-ilustracion-vectorial-aislado-sobre-fondo-blanco_153097-1171.jpg',
-                isSuspended: 'false'
+                isSuspended: 'false',
+                id: 'Per20604859205'
             },
             {
                 country: 'Perú',
@@ -288,7 +293,8 @@ async function managementCoInit(){
                 companyPhone: '+51960000000',
                 companyEmail: 'residenciales@example.com',
                 logo: 'https://img.freepik.com/vector-premium/trabajador-oficina-tomando-carpeta-archivo-administracion-gestion-gestion-archivos-icono-base-datos-catalogo-documentos-diseno-plano-ilustracion-vectorial-aislado-sobre-fondo-blanco_153097-1171.jpg',
-                isSuspended: 'false'
+                isSuspended: 'false',
+                id: 'Per20000000002'
             },
         ];
         await ManagementCo.bulkCreate(managementCo);
@@ -319,7 +325,7 @@ async function mainPlaceInit(){
                 phone: '+51950000001',
                 email: 'wellhomeapp@example.com',
                 isSuspended: false,
-                ManagementCoCompanyTaxId: '20604859205'
+                ManagementCoId: 'Per20604859205'
             },
             {
                 id: 'PE-AQP-00001',
@@ -333,7 +339,7 @@ async function mainPlaceInit(){
                 phone: '+51950000002',
                 email: 'resthome@example.com',
                 isSuspended: false,
-                ManagementCoCompanyTaxId: '20604859205'
+                ManagementCoId: 'Per20604859205'
             },
           ];
         await MainPlace.bulkCreate(mainPlace);
@@ -523,6 +529,7 @@ async function propertyInit() {
     }
 };
 
+
 async function userInit() {
     try {
         logger.info('Initializing UserInit data...');
@@ -597,6 +604,7 @@ async function userInit() {
     }
     
 };
+
 
 module.exports = {
     contactFormInit,
