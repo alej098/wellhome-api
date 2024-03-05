@@ -23,12 +23,12 @@ async function contactFormInit() {
         logger.info('Initializing ContactForm data...');
         const contactFormData = {
 
-            "country": "Perú",
+            "country": "PERU",
             "foreName": "Felipe",
             "lastName": "Rodriguez",
             "email": "felipe@example.com",
             "phone": "+519000111000",
-            "subject": "Otro asunto",
+            "subject": "OTRO ASUNTO",
             "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
         };
     
@@ -48,7 +48,7 @@ async function preRegisterInit() {
         const preRegisterData = {
 
             "name": "Condominio Feliz",
-            "country": "Perú",
+            "country": "PERU",
             "state": "Arequipa",
             "city": "Arequipa",
             "district": "Yanahuara",

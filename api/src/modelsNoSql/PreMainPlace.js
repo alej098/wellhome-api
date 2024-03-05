@@ -13,16 +13,16 @@ const preMainPlaceSchema = new Schema({
     country: {
         type: String,
         enum: [
-            'Perú', 
-            'Chile', 
-            'Argentina', 
-            'Bolivia', 
-            'Colombia', 
-            'Ecuador', 
-            'Venezuela', 
-            'Uruguay', 
-            'Paraguay', 
-            'México'],
+            'PERU', 
+            'CHILE', 
+            'ARGENTINA', 
+            'COLOMBIA',
+            'BOLIVIA', 
+            'ECUADOR', 
+            'VENEZUELA', 
+            'URUGUAY', 
+            'PARAGUAY', 
+            'MEXICO'],
         required: true
     },
     state: {
