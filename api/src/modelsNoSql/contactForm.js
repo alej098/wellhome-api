@@ -5,15 +5,17 @@ const contactFormSchema = new Schema({
   country: {
     type: String,
     enum: [
-        'Perú', 
-        'Chile', 
-        'Argentina', 
-        'Bolivia', 
-        'Ecuador', 
-        'Venezuela', 
-        'Uruguay', 
-        'Paraguay', 
-        'México'],
+        'PERU', 
+        'CHILE', 
+        'ARGENTINA', 
+        'COLOMBIA',
+        'BOLIVIA', 
+        'ECUADOR', 
+        'VENEZUELA', 
+        'URUGUAY', 
+        'PARAGUAY', 
+        'MEXICO'],
+
     required: true
   },
   foreName: {
@@ -40,9 +42,9 @@ const contactFormSchema = new Schema({
   subject: {
     type: String,
     enum: [
-        'Quiero implementarlo', 
-        'Necesito más información', 
-        'Otro asunto'],
+        'QUIERO IMPLEMENTARLO', 
+        'NECESITO INFORMACION', 
+        'OTRO ASUNTO'],
     required: true
   },
   message: {
