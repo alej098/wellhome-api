@@ -165,10 +165,35 @@ const getPropertyById = async (propertyId) => {
     }
 };
 
+
+const findPropertyByToken = async (token) => {
+    try {
+        logger.info('Buscando una Propiedad que coincida con el Token')
+        const property = await Property.findOne({
+            where:{
+                token: token,
+                isSuspended: false,
+            },
+            include:
+            [{
+                model: MainPlace,
+                attributes: ['name']
+            }]
+        });
+        if(!property) throw Error ('El token ingresado no coincide con ninguna vivienda registrada');
+        return property;
+        
+    } catch (error) {
+        logger.error(`Error al comparar Tokens desde el controlador: ${error.message}`);
+        throw new Error('Error interno al traer una Propiedad por Token');
+    }
+}
+
 module.exports ={ 
     createProperty,
     updateProperty,
     deleteProperty,
     getProperty,
-    getPropertyById
+    getPropertyById,
+    findPropertyByToken
 };

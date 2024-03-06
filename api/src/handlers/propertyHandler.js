@@ -6,7 +6,8 @@ const {
     updateProperty,
     deleteProperty,
     getProperty,
-    getPropertyById
+    getPropertyById,
+    findPropertyByToken
 } = require('../controllers/propertyControllers');
 
 const createPropertyHandler = async (req, res) => {
@@ -127,10 +128,23 @@ const getPropertyByIdHandler = async (req, res) => {
     }
 };
 
+const findPropertyByTokenHandler = async (req, res) => {
+    const {token} = req.body;
+    console.log(token);
+    try {
+        const propertyByToken = await findPropertyByToken(token);
+        logger.info('Se encontró la Propiedad asociada al token');
+        handleSuccessResponse(res, propertyByToken);
+    } catch (error) {
+        handleErrorResponse(res, error);
+    }
+}
+
 module.exports = {
     createPropertyHandler,
     updatePropertyHandler,
     deletePropertyHandler,
     getPropertyHandler,
-    getPropertyByIdHandler
+    getPropertyByIdHandler,
+    findPropertyByTokenHandler
 };
