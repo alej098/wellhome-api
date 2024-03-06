@@ -166,12 +166,12 @@ const getPropertyById = async (propertyId) => {
 };
 
 
-const findPropertyByToken = async (tokenInput) => {
+const findPropertyByToken = async (token) => {
     try {
         logger.info('Buscando una Propiedad que coincida con el Token')
         const property = await Property.findOne({
             where:{
-                token: tokenInput,
+                token: token,
                 isSuspended: false,
             },
             include:

@@ -129,9 +129,10 @@ const getPropertyByIdHandler = async (req, res) => {
 };
 
 const findPropertyByTokenHandler = async (req, res) => {
-    const {tokenInput} = req.body;
+    const {token} = req.body;
+    console.log(token);
     try {
-        const propertyByToken = await findPropertyByToken(tokenInput);
+        const propertyByToken = await findPropertyByToken(token);
         logger.info('Se encontró la Propiedad asociada al token');
         handleSuccessResponse(res, propertyByToken);
     } catch (error) {
