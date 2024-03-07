@@ -1,4 +1,4 @@
-const { User, UserType, Property, UserRol } = require('../db');
+const { User, UserType, UserClass, Property, UserRol } = require('../db');
 const securityUtils = require('../utils/security');
 const {checkExistence, getArrayByIds} = require('../utils/utils');
 const { Op } = require('sequelize');
@@ -18,10 +18,12 @@ const createNewUser = async (
     isSuspended,
     MainPlaceId,
     UserRolId,
+    UserClassId,
     UserTypeId,
     PropertyId
 ) => {
     try {
+        const arrayOfUserClass = await getArrayByIds(UserClass, UserClassId);
         const arrayOfUserType = await getArrayByIds(UserType, UserTypeId);
         const arrayOfProperty = await getArrayByIds(Property, PropertyId);
 
@@ -43,10 +45,11 @@ const createNewUser = async (
             isSuspended,
             MainPlaceId,
             UserRolId: UserRolId || (defaultUserRole ? defaultUserRole.id : undefined),
+            UserClassId,
             UserTypeId,
             PropertyId
         });
-
+        await newUser.setUserClasses(arrayOfUserClass);
         await newUser.setUserTypes(arrayOfUserType);
         await newUser.setProperties(arrayOfProperty);
         logger.info('Nuevo usuario creado con éxito.');
@@ -73,6 +76,7 @@ const updateUser = async (
     isSuspended,
     MainPlaceId,
     UserRolId,
+    UserClassId,
     UserTypeId,
     PropertyId
 ) => {
@@ -92,14 +96,17 @@ const updateUser = async (
         user.isSuspended = isSuspended;
         user.MainPlaceId = MainPlaceId;
         user.UserRolId = UserRolId;
+        user.UserClassId = UserClassId;
         user.UserTypeId = UserTypeId;
         user.PropertyId = PropertyId;
 
         await user.save();
 
+        const arrayOfUserClass = await getArrayByIds(UserClass, user.UserClassId);
         const arrayOfUserType = await getArrayByIds(UserType, user.UserTypeId);
         const arrayOfProperty = await getArrayByIds(Property, user.PropertyId);
 
+        await user.setUserClasses(arrayOfUserClass);
         await user.setUserTypes(arrayOfUserType);
         await user.setProperties(arrayOfProperty);
 
@@ -149,6 +156,10 @@ const getAllUsersNoSuspended = async () => {
         return await User.findAll({
             where : {isSuspended: false},
             include: [
+                {
+                    model: UserClass,
+                    attributes: ['name'],
+                },
                 {
                     model: UserType,
                     attributes: ['name'],
@@ -200,6 +211,10 @@ const getUserById = async (userId) => {
         logger.info('Trayendo a un usuario por Id...');
         const user = await User.findByPk(userId, {
             include: [
+                {
+                    model: UserClass,
+                    attributes: ['name'],
+                },
                 {
                     model: UserType,
                     attributes: ['name'],

@@ -14,9 +14,9 @@ const {
 } =  require('../controllers/userCatControllers');
 
 const createClassUserHandler = async(req, res) => {
-    const {name, UserTypeId} = req.body;
+    const {name} = req.body;
     try {
-        const newUserClass = await createClassUser(name, UserTypeId)
+        const newUserClass = await createClassUser(name)
         handleSuccessResponse(res, newUserClass, 201);
     } catch (error) {
         handleErrorResponse(res, error);
@@ -24,9 +24,9 @@ const createClassUserHandler = async(req, res) => {
 };
 
 const createTypeUserHandler = async(req, res) => {
-    const {name, UserClassId} = req.body;
+    const {name} = req.body;
     try {
-        const newUserType = await createTypeUser(name, UserClassId)
+        const newUserType = await createTypeUser(name)
         handleSuccessResponse(res, newUserType, 201);
     } catch (error) {
         handleErrorResponse(res, error);
@@ -37,15 +37,13 @@ const updateClassUserHandler = async(req, res) => {
     const {classId} = req.params;
     const {
         name,
-        isSuspended,
-        UserTypeId
+        isSuspended
     } = req.body;
     try {
         const updateUserClass = await updateClassUser(
             classId,
             name, 
-            isSuspended, 
-            UserTypeId
+            isSuspended
             );
         handleSuccessResponse(res, updateUserClass);
     } catch (error) {
@@ -57,15 +55,13 @@ const updateTypeUserHandler = async (req, res) => {
     const {typeId} = req.params;
     const {
         name,
-        isSuspended,
-        UserClassId
+        isSuspended
     } = req.body;
     try {
         const updateUserType = await updateTypeUser(
             typeId,
             name,
-            isSuspended,
-            UserClassId
+            isSuspended
         );
         handleSuccessResponse(res, updateUserType);
     } catch (error) {

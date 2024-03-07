@@ -5,7 +5,7 @@ const {signUp} = require('../controllers/signUpControllers');
 
 const singUpHandler = async (req, res) => {
     const {
-        propertyToken,
+        PropertyId,
         UserTypeId,
         dni,
         foreName,
@@ -13,17 +13,19 @@ const singUpHandler = async (req, res) => {
         phone,
         email,
         password,
+        MainPlaceId,
     } = req.body;
     try {
         const {newUserSignUp, token} = await signUp (
-            propertyToken,
+            PropertyId,
             UserTypeId,
             dni,
             foreName,
             lastName,
             phone,
             email,
-            password
+            password,
+            MainPlaceId,
         );
         logger.info(`Registro exitoso de ${foreName} ${lastName} (${email})`);
         handleSuccessResponse(res, {newUserSignUp,token}, 201);
