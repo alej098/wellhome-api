@@ -120,7 +120,8 @@ async function userClassInit() {
         const userClasses = [
                 'Directivo',
                 'Residente',
-                'Colaborador'
+                'Colaborador',
+                'Externo'
         ].map(name => ({name}));
         await UserClass.bulkCreate(userClasses);
         }
@@ -130,72 +131,99 @@ async function userClassInit() {
     }
 };
 
-
 async function userTypeInit() {
     try {
         logger.info('Initializing UserTypeInit data...');
-
+        
         const count = await UserType.count();
         if (!count) {
-            const userTypes = [
-                {
-                    name: 'Presidente',
-                    UserClassId:[1,2]
-                },
-                {
-                    name: 'Secretario',
-                    UserClassId:[1,2]
-                },
-                {
-                    name: 'Tesorero',
-                    UserClassId: [1, 2]
-                },
-                {
-                    name: 'Administrador Externo',
-                    UserClassId: [1, 3]
-                },
-                {
-                    name: 'Propietario',
-                    UserClassId: [1, 2, 3]
-                },
-                {
-                    name: 'Inquilino',
-                    UserClassId: [2, 3]
-                },
-                {
-                    name: 'Administrador',
-                    UserClassId: [1, 2, 3]
-                },
-                {
-                    name: 'Personal de Vigilancia',
-                    UserClassId: [2, 3]
-                },
-                {
-                    name: 'Personal de Limpieza',
-                    UserClassId: [2, 3]
-                },
-                {
-                    name: 'Personal de Servicios Múltiples',
-                    UserClassId: [2, 3]
-                },
-                {
-                    name: 'Personal de Terceros',
-                    UserClassId: [3]
-                },
-            ];
-            for (const userTypeData of userTypes) {
-                const userClassId = userTypeData.UserClassId;
-                const userClasses = await UserClass.findAll({ where: { id: userClassId } });
+        const userTypes = [
+                'Presidente',
+                'Secretario',
+                'Tesorero',
+                'Administrador',
+                'Propietario',
+                'Inquilino',
+                'Administrador Externo',
+                'Personal de Vigilancia',
+                'Personal de Limpieza',
+                'Personal de Servicios Múltiples',
+                'Personal de Terceros'
 
-                const userType = await UserType.create(userTypeData);
-                await userType.setUserClasses(userClasses);
-            }
+        ].map(name => ({name}));
+        await UserType.bulkCreate(userTypes);
         }
     logger.info('UserTypeInit data initialized successfully.');  
     } catch (error) {
         logger.error('Error during UserTypeInit initialization:', error);
     }
 };
+
+// async function userTypeInit() {
+//     try {
+//         logger.info('Initializing UserTypeInit data...');
+
+//         const count = await UserType.count();
+//         if (!count) {
+//             const userTypes = [
+//                 {
+//                     name: 'Presidente',
+//                     UserClassId:[1,2]
+//                 },
+//                 {
+//                     name: 'Secretario',
+//                     UserClassId:[1,2]
+//                 },
+//                 {
+//                     name: 'Tesorero',
+//                     UserClassId: [1, 2]
+//                 },
+//                 {
+//                     name: 'Administrador Externo',
+//                     UserClassId: [1, 3]
+//                 },
+//                 {
+//                     name: 'Propietario',
+//                     UserClassId: [1, 2, 3]
+//                 },
+//                 {
+//                     name: 'Inquilino',
+//                     UserClassId: [2, 3]
+//                 },
+//                 {
+//                     name: 'Administrador',
+//                     UserClassId: [1, 2, 3]
+//                 },
+//                 {
+//                     name: 'Personal de Vigilancia',
+//                     UserClassId: [2, 3]
+//                 },
+//                 {
+//                     name: 'Personal de Limpieza',
+//                     UserClassId: [2, 3]
+//                 },
+//                 {
+//                     name: 'Personal de Servicios Múltiples',
+//                     UserClassId: [2, 3]
+//                 },
+//                 {
+//                     name: 'Personal de Terceros',
+//                     UserClassId: [3]
+//                 },
+//             ];
+//             for (const userTypeData of userTypes) {
+//                 const userClassId = userTypeData.UserClassId;
+//                 const userClasses = await UserClass.findAll({ where: { id: userClassId } });
+
+//                 const userType = await UserType.create(userTypeData);
+//                 await userType.setUserClasses(userClasses);
+//             }
+//         }
+//     logger.info('UserTypeInit data initialized successfully.');  
+//     } catch (error) {
+//         logger.error('Error during UserTypeInit initialization:', error);
+//     }
+// };
 
 
 async function componentClassInit() {
@@ -550,6 +578,7 @@ async function userInit() {
                 isSuspended: false,
                 MainPlaceId: 'PE-AQP-00000',
                 UserRolId: '03-User',
+                UserClassId: [1],
                 UserTypeId: [1],
                 PropertyId: ['PE-AQP-WH-0001']
             },
@@ -566,6 +595,7 @@ async function userInit() {
                 isSuspended: false,
                 MainPlaceId: 'PE-AQP-00000',
                 UserRolId: '03-User',
+                UserClassId: [2],
                 UserTypeId: [5],
                 PropertyId: ['PE-AQP-WH-0002', 'PE-AQP-WH-0003']
             },
@@ -582,11 +612,15 @@ async function userInit() {
                 isSuspended: false,
                 MainPlaceId: 'PE-AQP-00000',
                 UserRolId: '03-User',
+                UserClassId: [2],
                 UserTypeId: [6],
                 PropertyId: ['PE-AQP-WH-0003']
             },
         ];
         for (const userData of users) {
+            const userClassId = userData.UserClassId;
+            const userClasses = await UserClass.findAll({ where: { id: userClassId } });
+
             const userTypeId = userData.UserTypeId;
             const userTypes = await UserType.findAll({ where: { id: userTypeId } });
 
@@ -594,6 +628,7 @@ async function userInit() {
             const properties = await Property.findAll({ where: { id: propertyIds } });
 
             const user = await User.create(userData);
+            await user.setUserClasses(userClasses);
             await user.setUserTypes(userTypes);
             await user.setProperties(properties);
         }

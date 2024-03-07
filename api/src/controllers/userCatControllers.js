@@ -2,15 +2,10 @@ const {UserClass, UserType} = require('../db');
 const {getArrayByIds, checkExistence} =require('../utils/utils');
 const logger = require('../utils/logger');
 
-const createClassUser = async(name, UserTypeId) =>{
+const createClassUser = async(name) =>{
     try {
-        
-        const arrayOfUserType = await getArrayByIds(UserType, UserTypeId);
 
-        const createClass = await UserClass.create(
-            {name, UserTypeId}
-        )
-        await createClass.setUserTypes(arrayOfUserType);
+        const createClass = await UserClass.create({name})
         logger.info('Nueva Clase de usuario creada con éxito')
         return createClass;
 
@@ -21,15 +16,12 @@ const createClassUser = async(name, UserTypeId) =>{
     
 };
 
-const createTypeUser = async(name, UserClassId) =>{
+const createTypeUser = async(name) =>{
     try {
 
         const arrayOfUserClass = await getArrayByIds(UserClass, UserClassId);
 
-        const createType = await UserType.create(
-            {name, UserClassId}
-        )
-        await createType.setUserClasses(arrayOfUserClass);
+        const createType = await UserType.create({name})
         logger.info('Nuevo Tipo de usuario creado con éxito')
         return createType;
 
@@ -43,19 +35,14 @@ const createTypeUser = async(name, UserClassId) =>{
 const updateClassUser = async (
     classId, 
     name, 
-    isSuspended, 
-    UserTypeId
+    isSuspended
 ) => {
     try {
         const userClass = await checkExistence(UserClass, classId)
         userClass.name = name;
         userClass.isSuspended = isSuspended;
-        userClass.UserTypeId = UserTypeId;
 
         await userClass.save();
-
-        const arrayOfUserType = await getArrayByIds(UserType, UserTypeId);
-        await userClass.setUserTypes(arrayOfUserType);
 
         logger.info('Clase de usuario actualizada con éxito');
         return userClass;
@@ -69,19 +56,14 @@ const updateClassUser = async (
 const updateTypeUser = async(
     typeId, 
     name, 
-    isSuspended, 
-    UserClassId
+    isSuspended
 ) => {
     try {
         const userType = await checkExistence(UserType, typeId)
         userType.name = name;
         userType.isSuspended = isSuspended;
-        userType.UserClassId = UserClassId;
 
         await userType.save();
-
-        const arrayOfUserClass = await getArrayByIds(UserClass, UserClassId);
-        await userType.setUserClasses(arrayOfUserClass);
 
         logger.info('Tipo de usuario actualizada con éxito');
         return userType;
@@ -125,11 +107,7 @@ const deleteTypeUser =  async(typeId) => {
 const getClassUser = async() => {
     try {
         return await UserClass.findAll({
-            where: {isSuspended: false},
-            include: [{
-                model: UserType,
-                attributes: ['name']
-            }],
+            where: {isSuspended: false}
         });
     } catch (error) {
         logger.error(`Error al traer a todas las Clases de usuarios desde el controlador: ${error.message}`);
@@ -141,9 +119,7 @@ const getClassUser = async() => {
 const getTypeUser = async() => {
     try {
         return await UserType.findAll({
-            where: {isSuspended: false},
-            include: [{model: UserClass,
-            attributes: ['name']}]
+            where: {isSuspended: false}
         });
     } catch (error) {
         logger.error(`Error al traer a todos los tipos de usuarios desde el controlador: ${error.message}`);
@@ -158,14 +134,7 @@ const getClassUserById = async(classId) => {
             where: {
                 id: classId,
                 isSuspended: false
-            },
-            include: [{
-                model: UserType,
-                attributes: ['id', 'name'],
-                through: {
-                    attributes: [],
-                }
-            }]
+            }
         });
         if(!classUserById) throw Error('No existen Clases con ese Id');
         return classUserById;
@@ -182,14 +151,7 @@ const getTypeUserById = async(typeId) =>{
             where: {
                 id: typeId,
                 isSuspended: false
-            },
-            include: [{
-                model: UserClass,
-                attributes: ['id', 'name'],
-                through: {
-                    attributes:[]
-                }
-            }]
+            }
         });
         if(!typeUserById) throw Error('No existen Tipos con ese Id');
         return typeUserById;

@@ -4,7 +4,7 @@ const securityUtils = require('../utils/security');
 const { getArrayByIds, validateFunctionalToken } = require('../utils/utils');
 
 const signUp = async(
-    propertyToken,
+    PropertyId,
     UserTypeId,
     dni,
     foreName,
@@ -18,12 +18,15 @@ const signUp = async(
 ) => {
     
     try {
+        const UserClassId = [2];
+        const arrayOfProperty = await getArrayByIds(Property, PropertyId);
         const arrayOfUserType = await getArrayByIds(UserType, UserTypeId);
         const defaultUserRole = UserRolId ? undefined : await UserRol.findOne({
             where: { id: '03-User' },
         });
 
         const newSignUp = {
+            PropertyId,
             UserTypeId,
             dni,
             foreName,
@@ -33,23 +36,26 @@ const signUp = async(
             password,
             MainPlaceId,
             UserRolId: UserRolId || (defaultUserRole ? defaultUserRole.id : undefined),
+            UserClassId
         };
-        if (propertyToken) {
-            const property = await validateFunctionalToken(Property, propertyToken, MainPlace);
+        // if (propertyToken) {
+        //     const property = await validateFunctionalToken(Property, propertyToken, MainPlace);
 
-            newSignUp.MainPlaceId = property.MainPlace.id;
-            newSignUp.PropertyId = [property.id];
+        //     newSignUp.MainPlaceId = property.MainPlace.id;
+        //     newSignUp.PropertyId = [property.id];
             
-        } else {
-            throw new Error('Token de acceso requerido');
-        }
+        // } else {
+        //     throw new Error('Token de acceso requerido');
+        // }
     
         const newUserSignUp = await User.create(newSignUp);
+        await newUserSignUp.setProperties(arrayOfProperty);
+        await newUserSignUp.setUserClasses(UserClassId);
         await newUserSignUp.setUserTypes(arrayOfUserType);
-    
-        if (newSignUp.PropertyId && newSignUp.PropertyId.length > 0) {
-            await newUserSignUp.setProperties(newSignUp.PropertyId);
-        }
+
+        // if (newSignUp.PropertyId && newSignUp.PropertyId.length > 0) {
+        //     await newUserSignUp.setProperties(newSignUp.PropertyId);
+        // }
 
         const token = securityUtils.generateToken({ dni: newUserSignUp.dni }, JWT_SECRET, 86400);
         

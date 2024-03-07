@@ -56,8 +56,11 @@ Component.belongsTo(Fee);
 UserRol.hasMany(User);
 User.belongsTo(UserRol);
 
-UserClass.belongsToMany(UserType, { through: "UserClassType", timestamps: false });
-UserType.belongsToMany(UserClass, { through: "UserClassType", timestamps: false });
+// UserClass.belongsToMany(UserType, { through: "UserClassType", timestamps: false });
+// UserType.belongsToMany(UserClass, { through: "UserClassType", timestamps: false });
+
+UserClass.belongsToMany(User, { through: "UserClassUser", timestamps: false });
+User.belongsToMany(UserClass, { through: "UserClassUser", timestamps: false, onDelete: 'CASCADE'});
 
 UserType.belongsToMany(User, { through: "UserTypeUser", timestamps: false });
 User.belongsToMany(UserType, { through: "UserTypeUser", timestamps: false, onDelete: 'CASCADE'});

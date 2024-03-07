@@ -28,6 +28,7 @@ const createUserHandler = async (req, res) => {
         isSuspended,
         MainPlaceId,
         UserRolId,
+        UserClassId, //Debe llegar como un array siempre
         UserTypeId, //Debe llegar como un array siempre
         PropertyId  //Debe llegar como un array siempre
     } = req.body;
@@ -46,6 +47,7 @@ const createUserHandler = async (req, res) => {
             isSuspended,
             MainPlaceId,
             UserRolId,
+            UserClassId,
             UserTypeId,
             PropertyId
         );
@@ -70,6 +72,7 @@ const updateUserHandler = async (req, res) => {
         isSuspended,
         MainPlaceId,
         UserRolId,
+        UserClassId,
         UserTypeId,
         PropertyId
     } = req.body;
@@ -87,6 +90,7 @@ const updateUserHandler = async (req, res) => {
             isSuspended,
             MainPlaceId,
             UserRolId,
+            UserClassId,
             UserTypeId,
             PropertyId
         );
