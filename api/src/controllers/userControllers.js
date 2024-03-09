@@ -62,7 +62,6 @@ const createNewUser = async (
     }
 };
 
-
 const updateUser = async (
     userId,
     foreName,
@@ -148,7 +147,6 @@ const getAllUsers = async () => {
     }
 };
 
-
 const getAllUsersNoSuspended = async () => {
     try {
         logger.info('Trayendo a todos los usuarios Activos...');
@@ -172,7 +170,6 @@ const getAllUsersNoSuspended = async () => {
     }
 };
 
-
 const getUserByForeName = async (foreName) => {
     try {
       const usersByName = await User.findAll({
@@ -187,24 +184,23 @@ const getUserByForeName = async (foreName) => {
       logger.error(`Error al traer los usuarios por el nombre desde el controlador: ${error.message}`);
       throw new Error('Error interno al traer los usuarios por nombre');
     }
-  };
+};
 
-  const getUserByLastName = async (lastName) => {
-    try {
-      const usersByLastName = await User.findAll({
-        where: {
-            lastName: {
-            [Op.iLike]: `%${lastName}%`,
-          },
+const getUserByLastName = async (lastName) => {
+try {
+    const usersByLastName = await User.findAll({
+    where: {
+        lastName: {
+        [Op.iLike]: `%${lastName}%`,
         },
-      });
-      return usersByLastName;
-    } catch (error) {
-      logger.error(`Error al traer los usuarios por el apellido desde el controlador: ${error.message}`);
-      throw new Error('Error interno al traer los usuarios por apellido');
-    }
-  };
-
+    },
+    });
+    return usersByLastName;
+} catch (error) {
+    logger.error(`Error al traer los usuarios por el apellido desde el controlador: ${error.message}`);
+    throw new Error('Error interno al traer los usuarios por apellido');
+}
+};
 
 const getUserById = async (userId) => {
     try {

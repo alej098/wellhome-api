@@ -8,13 +8,30 @@ module.exports = (sequelize) => {
             allownull: false,
             unique: true
         },
+        country:{
+            type: DataTypes.ENUM(
+                'PERU', 
+                'CHILE', 
+                'ARGENTINA', 
+                'COLOMBIA',
+                'BOLIVIA', 
+                'ECUADOR', 
+                'VENEZUELA', 
+                'URUGUAY', 
+                'PARAGUAY', 
+                'MEXICO'
+            ),
+            allowNull: false
+        },
         propertyType: {
             type: DataTypes.ENUM(
                 'Casa',
                 'Departamento',
                 'Comercio',
                 'Estacionamiento',
-                'Terreno'
+                'Terreno', 
+                'Almacén',
+                'Otro'
             ),
             allownull:false,            
         },

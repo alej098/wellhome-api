@@ -11,16 +11,16 @@ module.exports = (sequelize) => {
         },
         country:{
             type: DataTypes.ENUM(
-                'Perú',
-                'Chile',
-                'Argentina',
-                'Bolivia',
-                'Colombia',
-                'Ecuador',
-                'Venezuela',
-                'Uruguay',
-                'Paraguay',
-                'México'
+                'PERU', 
+                'CHILE', 
+                'ARGENTINA', 
+                'COLOMBIA',
+                'BOLIVIA', 
+                'ECUADOR', 
+                'VENEZUELA', 
+                'URUGUAY', 
+                'PARAGUAY', 
+                'MEXICO'
             ),
             allowNull: false
         },

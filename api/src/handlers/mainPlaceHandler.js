@@ -7,7 +7,9 @@ const {
     deleteMainPlace,
     getAllMainPlace,
     getMainPlaceByName,
-    getMainPlaceById
+    getMainPlaceById,
+    patchMainPlace,
+    logicalDelete
 
 } = require ('../controllers/mainPlaceControllers');
 
@@ -18,6 +20,8 @@ const createMainPlaceHandler = async (req, res) => {
         state,
         city,
         district,
+        address1,
+        address2,
         placeDescription,
         placeImage,
         phone,
@@ -33,6 +37,8 @@ const createMainPlaceHandler = async (req, res) => {
         state,
         city,
         district,
+        address1,
+        address2,
         placeDescription,
         placeImage,
         phone,
@@ -56,6 +62,8 @@ const updateMainPlaceHandler = async (req, res) =>{
         state,
         city,
         district,
+        address1,
+        address2,
         placeDescription,
         placeImage,
         phone,
@@ -71,6 +79,8 @@ const updateMainPlaceHandler = async (req, res) =>{
         state,
         city,
         district,
+        address1,
+        address2,
         placeDescription,
         placeImage,
         phone,
@@ -78,7 +88,7 @@ const updateMainPlaceHandler = async (req, res) =>{
         isSuspended,
         managementCoId
         );
-        logger.info('Creación Exitosa de Condominio');
+        logger.info('Actualización Exitosa de Condominio');
         handleSuccessResponse(res, mainPlace);
     } catch (error) {
         handleErrorResponse(res, error);
@@ -125,7 +135,7 @@ const getMainPlaceByIdHandler = async (req, res) => {
     const {mainPlaceId} = req.params;
     try {
         const mainPlaceById = await getMainPlaceById(mainPlaceId);
-        logger.info('Creación Exitosa de Condominio');
+        logger.info('Se trajo exitosamente el Condominio');
         handleSuccessResponse(res, mainPlaceById);
     } catch (error) {
         handleErrorResponse(res, error);
@@ -133,11 +143,60 @@ const getMainPlaceByIdHandler = async (req, res) => {
 };
 
 
+const patchMainPlaceHandler = async(req, res) =>{
+    const {mainPlaceId} = req.params;
+    const {
+        address1,
+        address2,
+        placeDescription,
+        placeImage,
+        phone,
+        email
+    } = req.body;
+
+    try {
+        const updatedMainPlace = await patchMainPlace(
+            mainPlaceId,
+            address1,
+            address2,
+            placeDescription,
+            placeImage,
+            phone,
+            email
+        )
+        logger.info('Se actualizó exitosamente el MainPlace');
+        handleSuccessResponse(res, updatedMainPlace);
+    } catch (error) {
+        handleErrorResponse(res, error);
+    }
+};
+
+
+const logicalDeleteHandler = async(req, res) =>{
+    const {mainPlaceId} = req.params;
+    const {
+        isSuspended
+    } = req.body;
+
+    try {
+        const mainPlaceDeleted = await logicalDelete(
+            mainPlaceId,
+            isSuspended
+        )
+        logger.info('Se eliminó el condominio (borrado lógico');
+        handleSuccessResponse(res, mainPlaceDeleted);
+    } catch (error) {
+        handleErrorResponse(res, error);
+    }
+};
+
 module.exports = {
     createMainPlaceHandler,
     updateMainPlaceHandler,
     deleteMainPlaceHandler,
     getMainPlaceHandler,
     getMainPlaceByNameHandler,
-    getMainPlaceByIdHandler
+    getMainPlaceByIdHandler,
+    patchMainPlaceHandler,
+    logicalDeleteHandler
 };

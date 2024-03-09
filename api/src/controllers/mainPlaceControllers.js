@@ -8,6 +8,8 @@ const createMainPlace = async (
     state,
     city,
     district,
+    address1,
+    address2,
     placeDescription,
     placeImage,
     phone,
@@ -24,6 +26,8 @@ const createMainPlace = async (
                 state,
                 city,
                 district,
+                address1,
+                address2,
                 placeDescription,
                 placeImage,
                 phone,
@@ -66,6 +70,8 @@ const updateMainPlace =  async (
     state,
     city,
     district,
+    address1,
+    address2,
     placeDescription,
     placeImage,
     phone,
@@ -80,6 +86,8 @@ const updateMainPlace =  async (
                 state,
                 city,
                 district,
+                address1,
+                address2,
                 placeDescription,
                 placeImage,
                 phone,
@@ -147,7 +155,7 @@ const getMainPlaceByName = async (name) => {
       logger.error(`Error al traer los Condominios por nombre desde el controlador: ${error.message}`);
       throw new Error('Error interno al traer los Condominios por nombre');
     }
-  };
+};
 
 
 const getMainPlaceById = async(mainPlaceId) =>{
@@ -163,11 +171,63 @@ const getMainPlaceById = async(mainPlaceId) =>{
     }
 };
 
+
+const patchMainPlace = async (
+    mainPlaceId,
+    address1,
+    address2,
+    placeDescription,
+    placeImage,
+    phone,
+    email
+) => {
+    try {
+        const updatedMainPlace = await checkExistence(MainPlace, mainPlaceId);
+        await updatedMainPlace.update({
+            address1,
+            address2,
+            placeDescription,
+            placeImage,
+            phone,
+            email
+        },
+        {   
+            where :{id: mainPlaceId}
+        })
+        return updatedMainPlace;
+    } catch (error) {
+        logger.error(`Error al tratar de actualizar un Condomino por Id desde el controlador: ${error.message}`);
+        throw new Error('Error interno al tratar de actualizar un Condominio por Id');
+    }
+};
+
+
+const logicalDelete = async (
+    mainPlaceId,
+    isSuspended
+) => {
+    try {
+        const deletedMainPlace = await checkExistence(MainPlace, mainPlaceId);
+        await deletedMainPlace.update({
+            isSuspended
+        },
+        {   
+            where :{id: mainPlaceId}
+        })
+        return deletedMainPlace;
+    } catch (error) {
+        logger.error(`Error al tratar de ejecutar el Borrado Lógico al Condominio: ${error.message}`);
+        throw new Error('Error interno al tratar de aplicar el borrado lógico al condominio');
+    }
+};
+
 module.exports ={
     createMainPlace,
     updateMainPlace,
     deleteMainPlace,
     getAllMainPlace,
     getMainPlaceByName,
-    getMainPlaceById
+    getMainPlaceById,
+    patchMainPlace,
+    logicalDelete
 };

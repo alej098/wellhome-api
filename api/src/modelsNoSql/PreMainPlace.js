@@ -45,19 +45,6 @@ const preMainPlaceSchema = new Schema({
         type: String,
         required: true
     },
-    // email: {
-    //     type: String,
-    //     unique: true,
-    //     validate: {
-    //         validator: function (value) {
-    //             return /^\S+@\S+\.\S+$/.test(value);
-    //         },
-    //         message: 'Email address is not valid'
-    //     },
-    //     required: true
-    // },
-
-    //Datos del Owner o "LocalAdmin"
 
     foreName: {
         type: String,

@@ -5,6 +5,7 @@ const {generateRandomToken} = require('../utils/security');
 
 const createProperty = async(
     id,
+    country,
     propertyType,
     mainGrouper,
     mainGrouperName,
@@ -38,6 +39,7 @@ const createProperty = async(
         const arrayOfUserDni = await getArrayByIds(User, UserDni);
         const newProperty = await Property.create({
                 id,
+                country,
                 propertyType,
                 mainGrouper,
                 mainGrouperName,
@@ -166,6 +168,61 @@ const getPropertyById = async (propertyId) => {
 };
 
 
+const patchProperty = async (
+        propertyId,
+        propertyType,
+        mainGrouper,
+        mainGrouperName,
+        mainGrouperNumber,
+        secondaryGrouper,
+        secondaryGrouperNumber,
+        status,
+        subStatus,
+        acceptCost
+) => {
+    try {
+        const updatedProperty =  await checkExistence(Property, propertyId);
+        await updatedProperty.update({
+            propertyType,
+            mainGrouper,
+            mainGrouperName,
+            mainGrouperNumber,
+            secondaryGrouper,
+            secondaryGrouperNumber,
+            status,
+            subStatus,
+            acceptCost
+        },
+        {
+            where :{id: propertyId}
+        })
+        return updatedProperty;
+    } catch (error) {
+        logger.error(`Error al tratar de actualizar una Propiedad por Id desde el controlador: ${error.message}`);
+        throw new Error('Error interno al tratar de actualizar una Propiedad por Id');
+    }
+};
+
+
+const logicalDelete = async (
+    propertyId,
+    isSuspended
+) => {
+    try {
+        const deletedProperty = await checkExistence(Property, propertyId);
+        await deletedProperty.update({
+            isSuspended
+        },
+        {
+            where :{id: propertyId}
+        })
+        return deletedProperty;
+    } catch (error) {
+        logger.error(`Error al tratar de ejecutar el Borrado Lógico a la propiedad: ${error.message}`);
+        throw new Error('Error interno al tratar de aplicar el borrado lógico a la propiedad');
+    }
+}
+
 const findPropertyByToken = async (token) => {
     try {
         logger.info('Buscando una Propiedad que coincida con el Token')
@@ -195,5 +252,7 @@ module.exports ={
     deleteProperty,
     getProperty,
     getPropertyById,
+    patchProperty,
+    logicalDelete,
     findPropertyByToken
 };
