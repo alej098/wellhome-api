@@ -7,12 +7,15 @@ const {
     deleteProperty,
     getProperty,
     getPropertyById,
+    patchProperty,
+    logicalDelete,
     findPropertyByToken
 } = require('../controllers/propertyControllers');
 
 const createPropertyHandler = async (req, res) => {
     const {
         id,
+        country,
         propertyType,
         mainGrouper,
         mainGrouperName,
@@ -32,6 +35,7 @@ const createPropertyHandler = async (req, res) => {
     try {
         const newProperty = await createProperty(
             id,
+            country,
             propertyType,
             mainGrouper,
             mainGrouperName,
@@ -55,9 +59,11 @@ const createPropertyHandler = async (req, res) => {
     }
 };
 
+
 const updatePropertyHandler = async (req, res) => {
     const {propertyId} =  req.params;
     const {
+        country,
         propertyType,
         mainGrouper,
         mainGrouperName,
@@ -74,6 +80,7 @@ const updatePropertyHandler = async (req, res) => {
     } = req.body;
     try {
         const updateNewProperty = await updateProperty(
+            country,
             propertyId,
             propertyType,
             mainGrouper,
@@ -96,6 +103,7 @@ const updatePropertyHandler = async (req, res) => {
     }
 };
 
+
 const deletePropertyHandler = async (req, res) => {
     const {propertyId} = req.params;
     try {
@@ -107,6 +115,7 @@ const deletePropertyHandler = async (req, res) => {
     }
 };
 
+
 const getPropertyHandler = async (req, res) => {
     try {
         const properties = await getProperty()
@@ -116,6 +125,7 @@ const getPropertyHandler = async (req, res) => {
         handleErrorResponse(res, error);
     }
 };
+
 
 const getPropertyByIdHandler = async (req, res) => {
     const {propertyId} = req.params;
@@ -128,6 +138,61 @@ const getPropertyByIdHandler = async (req, res) => {
     }
 };
 
+
+const patchPropertyHandler =async (req, res) => {
+    const {propertyId} = req.params;
+    const {
+        propertyType,
+        mainGrouper,
+        mainGrouperName,
+        mainGrouperNumber,
+        secondaryGrouper,
+        secondaryGrouperNumber,
+        status,
+        subStatus,
+        acceptCost
+    } = req.body;
+
+    try {
+        const updatedProperty = await patchProperty(
+            propertyId,
+            propertyType,
+            mainGrouper,
+            mainGrouperName,
+            mainGrouperNumber,
+            secondaryGrouper,
+            secondaryGrouperNumber,
+            status,
+            subStatus,
+            acceptCost
+        )
+        logger.info('Se actualizó exitosamente la Propiedad');
+        handleSuccessResponse(res, updatedProperty);
+    } catch (error) {
+        handleErrorResponse(res, error);
+    }
+};
+
+
+const logicalDeleteHandler = async (req, res) =>{
+    const {propertyId} = req.params;
+    const {
+        isSuspended
+    } = req.body;
+
+    try {
+        const propertyDeleted = await logicalDelete(
+            propertyId,
+            isSuspended
+        )
+        logger.info('Se eliminó la propiedad (borrado lógico');
+        handleSuccessResponse(res, propertyDeleted);
+    } catch (error) {
+        handleErrorResponse(res, error);
+    }
+};
+
+
 const findPropertyByTokenHandler = async (req, res) => {
     const {token} = req.body;
     console.log(token);
@@ -138,7 +203,7 @@ const findPropertyByTokenHandler = async (req, res) => {
     } catch (error) {
         handleErrorResponse(res, error);
     }
-}
+};
 
 module.exports = {
     createPropertyHandler,
@@ -146,5 +211,7 @@ module.exports = {
     deletePropertyHandler,
     getPropertyHandler,
     getPropertyByIdHandler,
+    patchPropertyHandler,
+    logicalDeleteHandler,
     findPropertyByTokenHandler
 };

@@ -16,6 +16,8 @@ const {
     deletePropertyHandler,
     getPropertyHandler,
     getPropertyByIdHandler,
+    patchPropertyHandler,
+    logicalDeleteHandler,
     findPropertyByTokenHandler
 } = require('../handlers/propertyHandler');
 
@@ -26,7 +28,10 @@ propertyRouter.put('/:propertyId', updatePropertyHandler);
 propertyRouter.delete('/:propertyId', deletePropertyHandler);
 propertyRouter.get('/', getPropertyHandler);
 propertyRouter.get('/:propertyId', getPropertyByIdHandler);
+propertyRouter.patch('/:propertyId', patchPropertyHandler);
+propertyRouter.patch('/logicaldelete/:propertyId', logicalDeleteHandler);
 
 propertyRouter.post('/token', findPropertyByTokenHandler);
+
 
 module.exports = propertyRouter;

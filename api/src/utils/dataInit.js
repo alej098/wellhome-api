@@ -159,72 +159,6 @@ async function userTypeInit() {
     }
 };
 
-// async function userTypeInit() {
-//     try {
-//         logger.info('Initializing UserTypeInit data...');
-
-//         const count = await UserType.count();
-//         if (!count) {
-//             const userTypes = [
-//                 {
-//                     name: 'Presidente',
-//                     UserClassId:[1,2]
-//                 },
-//                 {
-//                     name: 'Secretario',
-//                     UserClassId:[1,2]
-//                 },
-//                 {
-//                     name: 'Tesorero',
-//                     UserClassId: [1, 2]
-//                 },
-//                 {
-//                     name: 'Administrador Externo',
-//                     UserClassId: [1, 3]
-//                 },
-//                 {
-//                     name: 'Propietario',
-//                     UserClassId: [1, 2, 3]
-//                 },
-//                 {
-//                     name: 'Inquilino',
-//                     UserClassId: [2, 3]
-//                 },
-//                 {
-//                     name: 'Administrador',
-//                     UserClassId: [1, 2, 3]
-//                 },
-//                 {
-//                     name: 'Personal de Vigilancia',
-//                     UserClassId: [2, 3]
-//                 },
-//                 {
-//                     name: 'Personal de Limpieza',
-//                     UserClassId: [2, 3]
-//                 },
-//                 {
-//                     name: 'Personal de Servicios Múltiples',
-//                     UserClassId: [2, 3]
-//                 },
-//                 {
-//                     name: 'Personal de Terceros',
-//                     UserClassId: [3]
-//                 },
-//             ];
-//             for (const userTypeData of userTypes) {
-//                 const userClassId = userTypeData.UserClassId;
-//                 const userClasses = await UserClass.findAll({ where: { id: userClassId } });
-
-//                 const userType = await UserType.create(userTypeData);
-//                 await userType.setUserClasses(userClasses);
-//             }
-//         }
-//     logger.info('UserTypeInit data initialized successfully.');  
-//     } catch (error) {
-//         logger.error('Error during UserTypeInit initialization:', error);
-//     }
-// };
-
 
 async function componentClassInit() {
     try {
@@ -303,7 +237,7 @@ async function managementCoInit(){
         if (!count) {
         const managementCo = [
             {
-                country: 'Perú',
+                country: 'PERU',
                 companyTaxId: '20604859205',
                 companyName: 'Castrum Gestión y Servicios SAC',
                 companyContact: 'Angelo A. Luján',
@@ -311,10 +245,10 @@ async function managementCoInit(){
                 companyEmail: 'castrumperu@gmail.com',
                 logo: 'https://img.freepik.com/vector-premium/trabajador-oficina-tomando-carpeta-archivo-administracion-gestion-gestion-archivos-icono-base-datos-catalogo-documentos-diseno-plano-ilustracion-vectorial-aislado-sobre-fondo-blanco_153097-1171.jpg',
                 isSuspended: 'false',
-                id: 'Per20604859205'
+                id: 'PER20604859205'
             },
             {
-                country: 'Perú',
+                country: 'PERU',
                 companyTaxId: '20000000002',
                 companyName: 'Administradora de Residenciales SAC',
                 companyContact: 'Marchelo Torontino',
@@ -322,7 +256,7 @@ async function managementCoInit(){
                 companyEmail: 'residenciales@example.com',
                 logo: 'https://img.freepik.com/vector-premium/trabajador-oficina-tomando-carpeta-archivo-administracion-gestion-gestion-archivos-icono-base-datos-catalogo-documentos-diseno-plano-ilustracion-vectorial-aislado-sobre-fondo-blanco_153097-1171.jpg',
                 isSuspended: 'false',
-                id: 'Per20000000002'
+                id: 'PER20000000002'
             },
         ];
         await ManagementCo.bulkCreate(managementCo);
@@ -343,31 +277,35 @@ async function mainPlaceInit(){
         const mainPlace = [
             {
                 id: 'PE-AQP-00000',
-                name: 'Condo WellHomeApp',
-                country: 'Perú',
+                name: 'Condoominio El Ensueño',
+                country: 'PERU',
                 state: 'Arequipa',
                 city: 'Arequipa',
                 district: 'Cercado',
-                placeDescription: 'Urbanización Privada',
+                address1: 'Calle Malecón Solesi S/N',
+                address2: 'Cuadra 3',
+                placeDescription: 'Vive tus sueños',
                 placeImage: 'https://images.adsttc.com/media/images/5c7b/5574/284d/d1e0/d300/0126/slideshow/_Featuredimage.jpg?1551586648',
                 phone: '+51950000001',
                 email: 'wellhomeapp@example.com',
                 isSuspended: false,
-                ManagementCoId: 'Per20604859205'
+                ManagementCoId: 'PER20604859205'
             },
             {
                 id: 'PE-AQP-00001',
-                name: 'Residencial RestHome',
-                country: 'Perú',
+                name: 'Residencial El Cortijo',
+                country: 'PERU',
                 state: 'Arequipa',
                 city: 'Arequipa',
                 district: 'Cercado',
+                address1: 'Avenida Los Sauces de Morales 700',
+                address2: '',
                 placeDescription: 'Urbanización Privada',
                 placeImage: 'https://images.adsttc.com/media/images/5c7b/5574/284d/d1e0/d300/0126/slideshow/_Featuredimage.jpg?1551586648',
                 phone: '+51950000002',
                 email: 'resthome@example.com',
                 isSuspended: false,
-                ManagementCoId: 'Per20604859205'
+                ManagementCoId: 'PER20604859205'
             },
           ];
         await MainPlace.bulkCreate(mainPlace);
@@ -513,6 +451,7 @@ async function propertyInit() {
         const property = [
             {
                 id: 'PE-AQP-WH-0001',
+                country: 'PERU',
                 propertyType: 'Casa',
                 mainGrouper: 'Calle',
                 mainGrouperName: 'Los Gladiolos',
@@ -525,6 +464,7 @@ async function propertyInit() {
             },
             {
                 id: 'PE-AQP-WH-0002',
+                country: 'PERU',
                 propertyType: 'Casa',
                 mainGrouper: 'Calle',
                 mainGrouperName: 'Los Gladiolos',
@@ -537,6 +477,7 @@ async function propertyInit() {
             },
             {
                 id: 'PE-AQP-WH-0003',
+                country: 'PERU',
                 propertyType: 'Casa',
                 mainGrouper: 'Calle',
                 mainGrouperName: 'Los Gladiolos',

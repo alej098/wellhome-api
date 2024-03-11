@@ -6,8 +6,9 @@ const checkExistence = async (Model, id) => {
     const existence = await Model.findByPk(id);
 
     if (!existence) {
-        logger.error(`No se encontró registro con ID: ${id}`);
-        throw new Error(`No se encontró registro con ID: ${id}`);
+        const errorMessage = `No se eocntro el ID ${id} en el Modelo ${Model}`;
+        logger.error(errorMessage);
+        throw new Error(errorMessage);
     }
     return existence;
 };

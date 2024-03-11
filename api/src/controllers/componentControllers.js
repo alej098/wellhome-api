@@ -7,24 +7,32 @@ const createNewClass = async(name) => {
         const createClass = await ComponentClass.create(
             {name}
         );
-        logger.info('Nueva Clase de Componente creada con éxito.');
+        logger.info(`Se creó la Clase: ${name}`);
         return createClass;
     } catch (error) {
-        logger.error(`Error al crear una nueva Clase de Componente desde el controlador: ${error.message}`);
-        throw new Error('Error interno al crear una nueva Clase de Componente');
+        const errorMessage =`Error en createNewClass Controller, no se pudo crear el ${name}: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
-
+ 
 const createNewType = async (name, ComponentClassId) => {
     try {
         const createType = await ComponentType.create(
             {name, ComponentClassId}
         );
-        logger.info('Nuevo Tipo de Componente creado con éxito.');
+        logger.info(`Se creó el Tipo: ${name}`);
         return createType;
     } catch (error) {
-        logger.error(`Error al crear un nuevo Tipo de Componente desde el controlador: ${error.message}`);
-        throw new Error('Error interno al crear un nuevo Tipo de Componente');
+        const errorMessage =`Error en createNewType Controller, no se pudo crear el ${name}: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -51,11 +59,15 @@ const createNewComponent = async(
                 FeedId
             }
         );
-        logger.info('Nuevo Componente creado con éxito.');
+        logger.info(`El componente ${name}, se creó exitosamente.`);
         return createComponent;
     } catch (error) {
-        logger.error(`Error al crear un nuevo Componente desde el controlador: ${error.message}`);
-        throw new Error('Error interno al crear un nuevo Componente');
+        const errorMessage =`Error en createNewComponent Controller, no se pudo crear el ${name}: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
    
 };
@@ -66,23 +78,25 @@ const updateClassComponent = async(
     isSuspended
 ) => {
     try {
-        const classComponent = await ComponentClass.update(
+        const classComponent = await checkExistence(ComponentClass, classComponentId);
+        await classComponent.update(
             {
                 name,
                 isSuspended
             },
-            {where:{id: classComponentId}}
-        )
-        if(!classComponent) {
-            throw Error ('No se encontraron Clases de Componentes')
-        }   else {
-            const updatedClassComponent = await ComponentClass.findByPk(classComponentId);
-            logger.info('Clase de Componente actualizada con éxito.');
-            return updatedClassComponent;
-        }
+            {where:{id: classComponentId}
+            })
+
+            logger.info(`Clase de Componente ${name} fue actualizada con éxito`);
+            return classComponent;
+            
     } catch (error) {
-        logger.error(`Error al actualizar una Clase de Componente desde el controlador: ${error.message}`);
-        throw new Error('Error interno al actualizar una Clase de Componente');
+        const errorMessage =`Error en updateClassComponent Controller, no se pudo actualizar el ${name}: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -93,7 +107,8 @@ const updateTypeComponent = async(
     ComponentClassId
 ) => {
     try {
-        const typeComponent = await ComponentType.update(
+        const typeComponent = await checkExistence(ComponentType, typeComponentId);
+        await typeComponent.update(
             {
                 name,
                 isSuspended,
@@ -101,16 +116,17 @@ const updateTypeComponent = async(
             },
             {where:{id: typeComponentId}}
         )
-        if(!typeComponent) {
-            throw Error ('No se encontraron tipos de componentes')
-        }   else {
-            const updatedTypeComponent = await ComponentType.findByPk(typeComponentId);
-            logger.info('Tipo de Componente actualizado con éxito.');
-            return updatedTypeComponent;
-        } 
+
+        logger.info(`Tipo de Componente ${name} fue actualizado con éxito`);
+        return typeComponent;
+        
     } catch (error) {
-        logger.error(`Error al actualizar un Tipo de Componente desde el controlador: ${error.message}`);
-        throw new Error('Error interno al actualizar un Tipo de Componente');
+        const errorMessage =`Error en updateTypeComponent Controller, no se pudo actualizar el ${name}: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -127,7 +143,8 @@ const updateComponent = async (
     FeedId
 ) => {
     try {
-        const component = await Component.update(
+        const component = await checkExistence(Component, componentId);
+        await component.update(
             {
                 name,
                 code,
@@ -143,16 +160,15 @@ const updateComponent = async (
                 where:{id: componentId}
             }
         )
-        if(!component) {
-            throw Error ('No se encontró el componente')
-        }   else {
-            const updatedComponent = await Component.findByPk(componentId);
-            logger.info('Componente actualizado con éxito.');
-            return updatedComponent;
-        }
+        logger.info(`El componente ${name} fue actualizado con éxito`);
+        return component;
     } catch (error) {
-        logger.error(`Error al actualizar un Componente desde el controlador: ${error.message}`);
-        throw new Error('Error interno al actualizar un Componente');
+        const errorMessage =`Error en updateTypeComponent Controller, no se pudo actualizar el ${name}: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -160,11 +176,15 @@ const deleteClassComponent = async(classComponentId) =>{
     try {
         const deletedClass = await checkExistence(ComponentClass, classComponentId)
         await deletedClass.destroy();
-        logger.info('Clase de Componente eliminada con éxito');
+        logger.info('Clase de Componente eliminada con éxito.');
         return { message: "Clase de Componente eliminada exitosamente" };
     } catch (error) {
-        logger.error(`Error al eliminar una Clase de Componente desde el controlador: ${error.message}`);
-        throw new Error('Error interno al eliminar una Clase de Componente');
+        const errorMessage =`Error en deleteClassComponent Controller, no se pudo eliminar el componente: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -175,8 +195,12 @@ const deleteTypeComponent = async (typeComponentId) => {
         logger.info('Tipo de Componente eliminado con éxito.');
         return { message: "Tipo de Componente eliminado exitosamente" };
     } catch (error) {
-        logger.error(`Error al eliminar un Tipo de Componente desde el controlador: ${error.message}`);
-        throw new Error('Error interno al eliminar un Tipo de Componente');
+        const errorMessage =`Error en deleteTypeComponent Controller, no se pudo eliminar: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -187,8 +211,12 @@ const deleteComponent = async(componentId) => {
         logger.info('Componente eliminado con éxito.');
         return { message: "Componente eliminado exitosamente" };
     } catch (error) {
-        logger.error(`Error al eliminar un Componente desde el controlador: ${error.message}`);
-        throw new Error('Error interno al eliminar un Componente');
+        const errorMessage =`Error en deleteComponent Controller, no se pudo eliminar el componente: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -200,8 +228,12 @@ const getAllClassComponent = async() => {
             }
         });
     } catch (error) {
-        logger.error(`Error al traer a todas las Clases de Componente desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todas las Clases de Componente');
+        const errorMessage =`Error en getAllClassComponent Controller: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -217,8 +249,12 @@ const getAllTypeComponent = async() => {
             }],
         });
     } catch (error) {
-        logger.error(`Error al traer a todos los Tipos de Componente desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todos los Tipos de Componente');
+        const errorMessage =`Error en getAllTypeComponent Controller: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -242,8 +278,12 @@ const getAllComponent = async() => {
             }],
         });
     } catch (error) {
-        logger.error(`Error al traer a todos los Componentes desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todos los Componentes');
+        const errorMessage =`Error en getAllComponent Controller: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -255,11 +295,15 @@ const getClassComponentById = async (classComponentId) => {
                 isSuspended: false
             }
         });
-        if(!classComponentById) throw Error('No existen Clases con ese Id');
+        if(!classComponentById) throw Error(`No se encontró la Clase de Componente con Id ${classComponentId}`);
         return classComponentById;
     } catch (error) {
-        logger.error(`Error al traer una Clase de Componente por Id desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer una Clase de Componente por Id');
+        const errorMessage =`Error en getClassComponentById Controller: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -271,11 +315,15 @@ const getTypeComponentById = async (typeComponentId) => {
                 isSuspended: false
             }
         });
-        if(!typeComponentById) throw Error('No existen Tipos con ese Id');
+        if(!typeComponentById) throw Error(`No se encontró el Tipo de Componente con Id ${typeComponentId}`);
         return typeComponentById;
     } catch (error) {
-        logger.error(`Error al traer un Tipo de Componente por Id desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer un Tipo de Componente por Id');
+        const errorMessage =`Error en getTypeComponentById Controller: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -287,11 +335,15 @@ const getComponentById = async(componentId) => {
                 isSuspended: false
             }
         });
-        if(!componentById) throw Error('No existen componentes con ese Id');
+        if(!componentById) throw Error(`No se encontró el Componente con Id ${componentId}`);
         return componentById;
     } catch (error) {
-        logger.error(`Error al traer un Componente por Id desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer un Componente por Id');
+        const errorMessage =`Error en getComponentById Controller: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
     
 };

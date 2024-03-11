@@ -16,7 +16,11 @@ const {
     deleteMainPlaceHandler,
     getMainPlaceHandler,
     getMainPlaceByNameHandler,
-    getMainPlaceByIdHandler
+    getMainPlaceByIdHandler,
+
+    patchMainPlaceHandler,
+    logicalDeleteHandler
+
 } = require ('../handlers/mainPlaceHandler');
 
 const mainPlaceRouter = Router();
@@ -29,6 +33,8 @@ mainPlaceRouter.get('/', getMainPlaceHandler);
 mainPlaceRouter.get('/name/:mainPlaceName', getMainPlaceByNameHandler); //Es necesaria esta ruta adicional? /name/:name
 mainPlaceRouter.get('/:mainPlaceId', getMainPlaceByIdHandler);
 
+mainPlaceRouter.patch('/:mainPlaceId', patchMainPlaceHandler);
+mainPlaceRouter.patch('/logicaldelete/:mainPlaceId', logicalDeleteHandler);
 
 
 module.exports =  mainPlaceRouter;

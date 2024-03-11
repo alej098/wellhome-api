@@ -18,16 +18,16 @@ module.exports = (sequelize) => {
         },
         country:{
             type: DataTypes.ENUM(
-                'Perú',
-                'Chile',
-                'Argentina',
-                'Bolivia',
-                'Colombia',
-                'Ecuador',
-                'Venezuela',
-                'Uruguay',
-                'Paraguay',
-                'México'
+                'PERU', 
+                'CHILE', 
+                'ARGENTINA', 
+                'COLOMBIA',
+                'BOLIVIA', 
+                'ECUADOR', 
+                'VENEZUELA', 
+                'URUGUAY', 
+                'PARAGUAY', 
+                'MEXICO'
             ),
             allowNull: false
         },
@@ -43,12 +43,20 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        address1: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        address2: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
         placeDescription: {
             type: DataTypes.STRING,
             validate: {
                 len: [10, 300]
             },
-            allowNull: false
+            allowNull: true
         },
         placeImage: {
             type:DataTypes.STRING,
@@ -61,7 +69,7 @@ module.exports = (sequelize) => {
         phone: {
             type: DataTypes.STRING,
             unique: true,
-            allowNull: true
+            allowNull: false
         },
         email: {
             type: DataTypes.STRING,
@@ -69,7 +77,7 @@ module.exports = (sequelize) => {
             validate: {
               isEmail: true,
             },
-            allowNull: false,
+            allowNull: true,
         },
         isSuspended: {
             type: DataTypes.BOOLEAN,
