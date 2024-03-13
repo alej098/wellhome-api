@@ -62,8 +62,12 @@ const createProperty = async(
         return {newProperty, token};
 
     } catch (error) {
-        logger.error(`Error al crear una nueva Propiedad desde el controlador: ${error.message}`);
-        throw new Error('Error interno al crear una nueva Propiedad');
+        const errorMessage = `Error en createProperty Controller, no se pudo crear la propiedad ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -110,8 +114,12 @@ const updateProperty = async (
         return property;
 
     } catch (error) {
-        logger.error(`Error al actualizar una Propiedad desde el controlador: ${error.message}`);
-        throw new Error('Error interno al actualizar una Propiedad');
+        const errorMessage = `Error en updateProperty Controller, no se pudo actualizar la propiedad ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -125,8 +133,12 @@ const deleteProperty = async (propertyId) => {
         return {message: 'Propiedad eliminada exitosamente'};
 
     } catch (error) {
-        logger.error(`Error al eliminar una Propiedad desde el controlador: ${error.message}`);
-        throw new Error('Error interno al eliminar una Propiedad');
+        const errorMessage = `Error en deleteProperty Controller, no se pudo eliminar la propiedad ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -135,13 +147,17 @@ const getProperty = async () => {
     try {
         logger.info('Trayendo todas las Propiedades');
         return await Property.findAll({
-            where: {isSuspended: false},
+            where: {isSuspended: false,},
             
         });
 
     } catch (error) {
-        logger.error(`Error al traer todas las propiedades desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todas las propiedades');
+        const errorMessage = `Error en getProperty Controller, no se pudo traer todas las propiedades ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -162,11 +178,14 @@ const getPropertyById = async (propertyId) => {
         if(!propertyById) throw Error('No existen propiedades con ese Id');
         return propertyById;
     } catch (error) {
-        logger.error(`Error al traer una Propiedad por Id desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer una Propiedad por Id');
+        const errorMessage = `Error en getPropertyById Controller, no se pudo traer la propiedad por id ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
-
 
 const patchProperty = async (
         propertyId,
@@ -198,8 +217,12 @@ const patchProperty = async (
         })
         return updatedProperty;
     } catch (error) {
-        logger.error(`Error al tratar de actualizar una Propiedad por Id desde el controlador: ${error.message}`);
-        throw new Error('Error interno al tratar de actualizar una Propiedad por Id');
+        const errorMessage = `Error en patchProperty Controller, no se pudo actualizar la propiedad ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -218,10 +241,14 @@ const logicalDelete = async (
         })
         return deletedProperty;
     } catch (error) {
-        logger.error(`Error al tratar de ejecutar el Borrado Lógico a la propiedad: ${error.message}`);
-        throw new Error('Error interno al tratar de aplicar el borrado lógico a la propiedad');
+        const errorMessage = `Error en logicalDelete Controller, no se pudo utilizar el borrado logico ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-}
+};
 
 const findPropertyByToken = async (token) => {
     try {
@@ -241,10 +268,14 @@ const findPropertyByToken = async (token) => {
         return property;
         
     } catch (error) {
-        logger.error(`Error al comparar Tokens desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer una Propiedad por Token');
+        const errorMessage = `Error en findPropertyByToken Controller, no se pudo encontrar el token en los registros ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-}
+};
 
 module.exports ={ 
     createProperty,
