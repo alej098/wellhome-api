@@ -1,6 +1,7 @@
 const ContactForm = require('../modelsNoSql/contactForm');
 const logger = require('../utils/logger');
 
+
 const createContactForm = async(
     country,
     foreName,
@@ -26,8 +27,12 @@ const createContactForm = async(
         logger.info('Nuevo Formulario de Contacto creado con éxito');
         return newContactForm; 
     } catch (error) {
-        logger.error(`Error al llenar el Formulario de Contacto desde el controlador: ${error.message}`);
-        throw newError('Error creando el formulario de contacto');
+        const errorMessage = `Error en createContactForm Controller, no se pudo crear el contacto ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -37,8 +42,12 @@ const getContactForm = async() =>{
        const contactForms = await ContactForm.find();
        return contactForms; 
     } catch (error) {
-        logger.error(`Error al traer a todos los registros del Formulario de Contacto desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todos los registros del Formulario de Contacto');
+        const errorMessage = `Error en getContactForm Controller, no se pudo traer los contactos ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -49,8 +58,12 @@ const deleteContactForm = async(contactFormId) =>{
         return deletedForm;
 
     } catch (error) {
-        logger.error(`Error al eliminar un registro del Formulario de Contacto desde el controlador: ${error.message}`);
-        throw new Error('Error interno al eliminar un registro del Formulario de Contacto');
+        const errorMessage = `Error en deleteContactForm Controller, no se pudo eliminar este contacto ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
