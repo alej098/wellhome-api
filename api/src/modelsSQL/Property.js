@@ -42,6 +42,7 @@ module.exports = (sequelize) => {
                 'Jirón',
                 'Manzana',
                 'Quinta',
+                'Pasaje',
                 'Edificio'
             ),
             allownull:false,            
@@ -65,7 +66,8 @@ module.exports = (sequelize) => {
         status: {
             type: DataTypes.ENUM(
                 'Ocupado',
-                'Desocupado'
+                'Desocupado',
+                'Construcción'
             ),
             defaultValue: 'Ocupado',
             allownull: false
