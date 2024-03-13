@@ -28,10 +28,13 @@ const userLogin = async (login, password) => {
         return {user, token};
 
     } catch (error) {
-        logger.error(`Error durante el proceso de login: ${error.message}`);
-        throw new Error(`Error durante el proceso de login: ${error.message}`);
+        const errorMessage = `Error en userLogin Controller, no se pudo iniciar sesion ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
-}
+    };
 
 module.exports = {userLogin};
