@@ -57,10 +57,15 @@ const createNewUser = async (
         return newUser;
 
     } catch (error) {
-        logger.error(`Error al crear un nuevo usuario desde el controlador: ${error.message}`);
-        throw new Error('Error interno al crear un nuevo usuario');
+        const errorMessage = `Error en createNewUser Controller, no se pudo crear el usuario ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
+
 
 const updateUser = async (
     userId,
@@ -113,10 +118,13 @@ const updateUser = async (
         return user;
 
     } catch (error) {
-        logger.error(`Error al actualizar un usuario desde el controlador: ${error.message}`);
-        throw new Error('Error interno al actualizar usuario');
+        const errorMessage = `Error en updateUser Controller, no se pudo actualizar el usuario ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
 };
 
 const deleteUser = async (userId) => {
@@ -130,10 +138,13 @@ const deleteUser = async (userId) => {
         return { message: "Usuario eliminado exitosamente" };
 
     } catch (error) {
-        logger.error(`Error al eliminar un usuario desde el controlador: ${error.message}`);
-        throw new Error('Error interno al eliminar usuario');
+        const errorMessage = `Error en deleteUser Controller, no se pudo eliminar el usuario ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-   
 };
 
 const getAllUsers = async () => {
@@ -142,8 +153,12 @@ const getAllUsers = async () => {
 
         return await User.findAll();
     } catch (error) {
-        logger.error(`Error al traer a todos los usuarios desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todos los usuarios');
+        const errorMessage = `Error en getAllUsers  Controller, no se pudo traer a todos los usuarios ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -165,8 +180,12 @@ const getAllUsersNoSuspended = async () => {
             ],
         });
     } catch (error) {
-        logger.error(`Error al traer a todos los usuarios Activos desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todos los usuarios Activos');
+        const errorMessage = `Error en getAllUsersNoSuspended Controller, no se pudo traer los usuarios no suspendidos ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -179,10 +198,17 @@ const getUserByForeName = async (foreName) => {
           },
         },
       });
+      if (usersByName.length === 0) {
+        throw new Error("No se encontraron usuarios con ese nombre");
+    }
       return usersByName;
     } catch (error) {
-      logger.error(`Error al traer los usuarios por el nombre desde el controlador: ${error.message}`);
-      throw new Error('Error interno al traer los usuarios por nombre');
+        const errorMessage = `Error en getUserByForeName Controller, no se pudo traer el usuario por el nombre ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -195,12 +221,21 @@ try {
         },
     },
     });
+    if (usersByLastName.length === 0) {
+        throw new Error("No se encontraron usuarios con ese apellido");
+    }
     return usersByLastName;
 } catch (error) {
-    logger.error(`Error al traer los usuarios por el apellido desde el controlador: ${error.message}`);
-    throw new Error('Error interno al traer los usuarios por apellido');
+    const errorMessage = `Error en getUserByLastName Controller, no se pudo traer el usuario por el apellido ${error.message}`;
+    logger.error(errorMessage);
+    if (error.stack) {
+        logger.error(error.stack);
+    }
+    throw new Error(errorMessage);
 }
 };
+
+
 
 const getUserById = async (userId) => {
     try {
@@ -219,7 +254,7 @@ const getUserById = async (userId) => {
                     model: Property,
                     attributes: ['mainGrouper', 'mainGrouperName', 'mainGrouperNumber'],
                 },
-            ],
+            ]
         });
 
         if (!user) {
@@ -228,10 +263,14 @@ const getUserById = async (userId) => {
 
         return user;
     } catch (error) {
-        logger.error(`Error al traer a un usuario por Id desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a un usuario por Id');
+        const errorMessage = `Error en getUserById Controller, no se pudo traer el usuario por el id ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-};
+    };
 
 const changePassword = async (login, currentPassword, newPassword) => {
     try {
@@ -253,10 +292,14 @@ const changePassword = async (login, currentPassword, newPassword) => {
         
         return user;
     } catch (error) {
-        logger.error(`Error cambiando la Contraseña desde el Controlador: ${error.message}`);
-        throw new Error('Error interno al cambiar la contraseña');
+        const errorMessage = `Error en changePassword  Controller, no se pudo cambiar la contraseña ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-};
+    };
 
 module.exports = {
     createNewUser,
