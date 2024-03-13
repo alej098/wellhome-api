@@ -10,13 +10,17 @@ const createClassUser = async(name) =>{
         return createClass;
 
     } catch (error) {
-        logger.error(`Error al crear una clase de usuario desde el controlador: ${error.message}`);
-        throw new Error('Error interno al crear una clase de usuario');
+        const errorMessage = `Error en createContactForm Controller, no se pudo crear la clase de usuario ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
 };
 
-const createTypeUser = async(name) =>{
+
+const createTypeUser = async(name, UserClassId) =>{
     try {
 
         const arrayOfUserClass = await getArrayByIds(UserClass, UserClassId);
@@ -26,10 +30,13 @@ const createTypeUser = async(name) =>{
         return createType;
 
     } catch (error) {
-        logger.error(`Error al crear un tipo de usuario desde el controlador: ${error.message}`);
-        throw new Error('Error interno al crear un tipo de usuario');
+        const errorMessage = `Error en createTypeUser Controller, no se pudo crear un tipo de usuario ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
 };
 
 const updateClassUser = async (
@@ -48,8 +55,12 @@ const updateClassUser = async (
         return userClass;
 
     } catch (error) {
-        logger.error(`Error al actualizar la clase de usuario desde el controlador: ${error.message}`);
-        throw new Error('Error interno al actualizar la clase de usuario');
+        const errorMessage = `Error en updateClassUser Controller, no se pudo actualizar la clase de usuario ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -69,10 +80,13 @@ const updateTypeUser = async(
         return userType;
 
     } catch (error) {
-        logger.error(`Error al actualizar el Tipo de usuario desde el controlador: ${error.message}`);
-        throw new Error('Error interno al actualizar el Tipo de usuario');
+        const errorMessage = `Error en updateTypeUser Controller, no se pudo actualizar el tipo de usuario ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-        
 };
 
 const deleteClassUser = async(classId) => {
@@ -84,8 +98,12 @@ const deleteClassUser = async(classId) => {
         return {message: "Clase de Usuario eiminada exitosamente"};
 
     } catch (error) {
-        logger.error(`Error al eliminar una Clase de usuario desde el controlador: ${error.message}`);
-        throw new Error('Error interno al eliminar una Clase de usuario');
+        const errorMessage = `Error en deleteClassUser Controller, no se pudo eliminar la clase de usuario ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -98,10 +116,13 @@ const deleteTypeUser =  async(typeId) => {
         return {message: "Tipo de Usuario eiminado exitosamente"};
 
     } catch (error) {
-        logger.error(`Error al eliminar un Tipo de usuario desde el controlador: ${error.message}`);
-        throw new Error('Error interno al eliminar un Tipo de usuario');
+        const errorMessage = `Error en deleteTypeUser Controller, no se pudo eliminar el tipo de usuario ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
 };
 
 const getClassUser = async() => {
@@ -110,22 +131,28 @@ const getClassUser = async() => {
             where: {isSuspended: false}
         });
     } catch (error) {
-        logger.error(`Error al traer a todas las Clases de usuarios desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todas las Clases de usuarios');
+        const errorMessage = `Error en getClassUser Controller, no se pudo traer a todos las clases de usuario ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
 };
 
 const getTypeUser = async() => {
     try {
         return await UserType.findAll({
-            where: {isSuspended: false}
+            where: {isSuspended: false,}
         });
     } catch (error) {
-        logger.error(`Error al traer a todos los tipos de usuarios desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todos los tipos de usuarios');
+        const errorMessage = `Error en getTypeUser Controller, no se pudo traer a todos los tipos de usuario ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
 };
 
 const getClassUserById = async(classId) => {
@@ -139,10 +166,13 @@ const getClassUserById = async(classId) => {
         if(!classUserById) throw Error('No existen Clases con ese Id');
         return classUserById;
     } catch (error) {
-        logger.error(`Error al traer a una Clase de usuario por Id desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a una Clase de usuario por Id');
+        const errorMessage = `Error en getClassUserById Controller, no se pudo traer la clase por id ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
 };
 
 const getTypeUserById = async(typeId) =>{
@@ -156,11 +186,14 @@ const getTypeUserById = async(typeId) =>{
         if(!typeUserById) throw Error('No existen Tipos con ese Id');
         return typeUserById;
     } catch (error) {
-        logger.error(`Error al traer a un Tipo de usuario por Id desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a un Tipo de usuario por Id');
+        const errorMessage = `Error en etTypeUserById Controller, no se pudo traer los tipos por id ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
-}
+};
 
 module.exports = {
     createClassUser,
