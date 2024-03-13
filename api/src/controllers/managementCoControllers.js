@@ -36,8 +36,12 @@ const createManagementCo = async (
         logger.info('Nueva Compañía creada con éxito');
         return newCompany;
     } catch (error) {
-        logger.error(`Error al crear una nueva Empresa Administradora desde el controlador: ${error.message}`);
-        throw new Error('Error interno al crear una nueva Empresa Administradora');
+        const errorMessage = `Error en createManagementCo Controller, no se pudo crear la compañia ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -73,8 +77,12 @@ const updateManagementCo = async (
             return updatedCompany;
         }
     } catch (error) {
-        logger.error(`Error al actualizar una Empresa desde el controlador: ${error.message}`);
-        throw new Error('Error interno al actualizar una Empresa');
+        const errorMessage = `Error en updateManagementCo Controller, no se pudo actualizar la compañia ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -86,8 +94,12 @@ const deleteManagementCo = async (companyId) => {
         logger.info('Empresa eliminada con éxito');
         return{message: 'La empresa se eliminó exitosamente'};
     } catch (error) {
-        logger.error(`Error al eliminar una Empresa desde el controlador: ${error.message}`);
-        throw new Error('Error interno al eliminar la Empresa');
+        const errorMessage = `Error en deleteManagementCo Controller, no se pudo eliminar la compañia ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -96,26 +108,32 @@ const getAllManagementCo = async () =>{
     try {
         return await ManagementCo.findAll();
     } catch (error) {
-        logger.error(`Error al traer a todas las empresas desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todas las Empresas');
+        const errorMessage = `Error en getAllManagementCo Controller, no se pudo traer a todas las compañias ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
-
 
 const getManagmentCoNoSuspended = async () =>{
     try {
         return await ManagementCo.findAll(
-            {where: {isSuspended: false}}
+            {where: {isSuspended: false,}}
         );
     } catch (error) {
-        logger.error(`Error al traer a todas las empresas no suspendidas desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todas las Empresas no suspendidas');
-
+        const errorMessage = `Error en getManagmentCoNoSuspended Controller, no se pudo traer a todas las compañias no suspendidas ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
 
-    const getManagementCoByName = async (companyName) => {
+const getManagementCoByName = async (companyName) => {
         try {
           const companies = await ManagementCo.findAll({
             where: {
@@ -124,12 +142,19 @@ const getManagmentCoNoSuspended = async () =>{
               },
             },
           });
+          if (companies.length === 0) {
+            throw new Error(errorMessage);
+        }
           return companies;
         } catch (error) {
-          logger.error(`Error al traer las Empresas Administradoras por nombre desde el controlador: ${error.message}`);
-          throw new Error('Error interno al traer las Empresas Administradoras por nombre');
+            const errorMessage = `Error en getManagementCoByName Controller, no se pudo traer la compañia por nombre ${error.message}`;
+            logger.error(errorMessage);
+            if (error.stack) {
+                logger.error(error.stack);
+            }
+            throw new Error(errorMessage);
         }
-      };
+    };
 
 
 const getManagementCoById = async(companyId) =>{
@@ -137,10 +162,13 @@ const getManagementCoById = async(companyId) =>{
         const company = await checkExistence(ManagementCo, companyId)
         return company;
     } catch (error) {
-        logger.error(`Error al traer una Empresa por Id desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer una Empresa por Id');
+        const errorMessage = `Error en getManagementCoById Controller, no se pudo traer la compañia por id ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
 };
 
 module.exports ={
