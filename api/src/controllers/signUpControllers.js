@@ -2,6 +2,7 @@ const {User, UserClass, UserType, UserRol, Property, MainPlace} = require('../db
 const {JWT_SECRET} = process.env;
 const securityUtils = require('../utils/security');
 const { getArrayByIds, validateFunctionalToken } = require('../utils/utils');
+const logger = require('../utils/logger');
 
 const signUp = async(
     PropertyId,
@@ -62,10 +63,13 @@ const signUp = async(
         return {newUserSignUp, token};
 
     } catch (error) {
-        console.error(`Error durante el registro: ${error.message}`);
-        throw new Error('Error durante el registro de usuario'); 
+        const errorMessage = `Error en signUp Controller, no se pudo ingresar ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
 };
 
 module.exports={signUp};
