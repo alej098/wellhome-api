@@ -2,6 +2,7 @@ const {MainPlace} = require('../db');
 const logger = require('../utils/logger');
 const { checkExistence } = require('../utils/utils');
 
+
 const createMainPlace = async (
     name,
     country,
@@ -57,8 +58,12 @@ const createMainPlace = async (
 
         return newMainPlace;
     } catch (error) {
-        logger.error(`Error al crear un nuevo Condominio desde el controlador: ${error.message}`);
-        throw new Error('Error interno al crear un nuevo Condominio');
+        const errorMessage = `Error en createMainPlace Controller, no se pudo crear el condominio ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -105,10 +110,13 @@ const updateMainPlace =  async (
             return updatedMainPlace;
         } 
     } catch (error) {
-        logger.error(`Error al actualizar el Condominio desde el controlador: ${error.message}`);
-        throw new Error('Error interno al actualizar el Condominio');
+        const errorMessage = `Error en updateMainPlace Controller, no se pudo actualizar el condominio ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
 };
 
 
@@ -119,10 +127,13 @@ const deleteMainPlace = async (mainPlaceId) => {
         logger.info ('Condominio eliminado con éxito')
         return { message: "Condominio eliminado exitosamente" };
     } catch (error) {
-        logger.error(`Error al eliminar el Condominio desde el controlador: ${error.message}`);
-        throw new Error('Error interno al eliminar Condominio');
+        const errorMessage = `Error en deleteMainPlace Controller, no se pudo eliminar el condominio ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-   
 };
 
 
@@ -134,11 +145,15 @@ const getAllMainPlace = async () =>{
             },
         });
     } catch (error) {
-        logger.error(`Error al traer todos los Condominios desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todos los Condominios');
+        const errorMessage = `Error en getAllMainPlace Controller, no se pudo traer el condominio ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    
 };
+
 
 
 const getMainPlaceByName = async (name) => {
@@ -152,8 +167,12 @@ const getMainPlaceByName = async (name) => {
       });
       return mainPlaces;
     } catch (error) {
-      logger.error(`Error al traer los Condominios por nombre desde el controlador: ${error.message}`);
-      throw new Error('Error interno al traer los Condominios por nombre');
+        const errorMessage = `Error en getMainPlaceByName Controller, no se pudo traer por nombre el condominio ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -166,8 +185,12 @@ const getMainPlaceById = async(mainPlaceId) =>{
         if (!place) throw Error("No existe el Condominio")
         return place;
     } catch (error) {
-        logger.error(`Error al traer un Condomino por Id desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer un Condominio por Id');
+        const errorMessage = `Error en getMainPlaceById Controller, no se pudo traer por id el condominio ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -196,8 +219,12 @@ const patchMainPlace = async (
         })
         return updatedMainPlace;
     } catch (error) {
-        logger.error(`Error al tratar de actualizar un Condomino por Id desde el controlador: ${error.message}`);
-        throw new Error('Error interno al tratar de actualizar un Condominio por Id');
+        const errorMessage = `Error en patchMainPlace Controller, no se pudo editar el condominio ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -216,8 +243,12 @@ const logicalDelete = async (
         })
         return deletedMainPlace;
     } catch (error) {
-        logger.error(`Error al tratar de ejecutar el Borrado Lógico al Condominio: ${error.message}`);
-        throw new Error('Error interno al tratar de aplicar el borrado lógico al condominio');
+        const errorMessage = `Error en logicalDelete Controller ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
