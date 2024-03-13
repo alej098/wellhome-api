@@ -5,6 +5,7 @@ const {
     getAllFee
 
 } = require ('../controllers/feeControllers.js');
+const { handleErrorResponse} = require('../utils/utils.js');
 
 const createFeeHandler = async (req, res) => {
     const {
@@ -23,7 +24,7 @@ const createFeeHandler = async (req, res) => {
         );
         res.status(201).json(newFee);
     }   catch (error) {
-        res.status(400).json({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
@@ -45,7 +46,7 @@ const updateFeeHandler = async(req, res) =>{
         );
         res.status(200).json(fee);
     }   catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
@@ -55,7 +56,7 @@ const deleteFeeHandler = async (req, res) => {
         const destroyFee = await deleteFee(feeId);
         res.status(200).json(destroyFee);
     }   catch(error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 
@@ -64,7 +65,7 @@ const getFeeHandler =  async(req, res) => {
         const fee = await getAllFee()
         res.status(200).json(fee);
     }   catch (error) {
-        res.status(400).send({error: error.message});
+        handleErrorResponse(res, error);
     }
 };
 

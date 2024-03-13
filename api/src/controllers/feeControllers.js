@@ -1,59 +1,89 @@
 const {Fee, MainPlace} = require ('../db');
+const logger = require('../utils/logger');
 
-const createFee = async(
+const createFee = async (
     feeDescription,
     currency,
     amount,
     MainPlaceId
 ) => {
-    const createNewFee = await Fee.create(
-        {
+    try {
+        const createNewFee = await Fee.create({
             feeDescription,
             currency,
             amount,
             MainPlaceId
+        });
+        return createNewFee;
+    } catch (error) {
+        const errorMessage = `Error en createFee Controller, no se pudo crear la tarifa: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
         }
-    )
-    return createNewFee;
-};
-
-const updateFee = async(
-    feeId,
-    feeDescription,
-    currency,
-    amount,
-    MainPlaceId
-) => {
-    const fee = await Fee.update(
-        {
-            feeDescription,
-            currency,
-            amount,
-            MainPlaceId
-        },
-        {where:{id: feeId}}
-    )
-    if (!fee) {
-        throw Error ('No se encontraron tarifas')
-    }   else {
-        const updatedFee  = await Fee.findByPk(feeId)
-        return updatedFee;
+        throw new Error(errorMessage);
     }
 };
 
-const deleteFee = async(feeId) => {
-    const deletedFee = await Fee.destroy({
-        where: {id: feeId}
-    });
-    if (!deletedFee) {
-        throw new Error ('No existen tarifas con ese Id');
+const updateFee = async (feeId, feeDescription, currency, amount, MainPlaceId) => {
+    try {
+        const fee = await Fee.update(
+            {
+                feeDescription,
+                currency,
+                amount,
+                MainPlaceId
+            },
+            { where: { id: feeId } }
+        );
+        if (!fee) {
+            throw new Error('No se encontraron tarifas para actualizar');
+        } else {
+            const updatedFee = await Fee.findByPk(feeId);
+            return updatedFee;
+        }
+    } catch (error) {
+        const errorMessage = `Error en el controlador updateFee: ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
-    return 'La tarifa se ha eliminado';
+};
+
+const deleteFee = async (feeId) => {
+    try {
+        const deletedFee = await Fee.destroy({
+            where: { id: feeId }
+        });
+        if (!deletedFee) {
+            throw new Error('No existen tarifas con ese Id');
+        }
+        return 'La tarifa se ha eliminado';
+    } catch (error) {
+        const errorMessage = `Error en el controlador deleteFee: no se pudo eliminar la tarifa ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
+    }
 };
 
 const getAllFee =  async() => {
-    return await Fee.findAll()
+    try {
+         return await Fee.findAll()
+    } catch (error) {
+        const errorMessage = `Error en el controlador getAllFee: no se pudieron traer las tarifas ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
+    }
 };
+
 
 module.exports = {
     createFee,
