@@ -44,8 +44,12 @@ const createRegister = async (
         logger.info('Nuevo Pre-Registro de condominio creado con éxito');
         return newRegister;
     } catch (error) {
-        logger.error(`Error al llenar el Formulario de Pre-Registro de condominio desde el controlador: ${error.message}`);
-        throw new Error('Error creando el formulario de Pre-Registro de condominio');
+        const errorMessage = `Error en createRegister Controller, no se pudo crear el pre Registro ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
@@ -55,11 +59,14 @@ const getRegister = async () =>{
         const allMainPlace = await PreMainPlace.find();
         return allMainPlace;
     } catch (error) {
-        logger.error(`Error al traer a todos los Pre-Registros de condominios desde el controlador: ${error.message}`);
-        throw new Error('Error interno al traer a todos los Pre-Registros de condominios');
+        const errorMessage = `Error en getRegister Controller, no se pudo traer los pre Registro ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
-
 
 const deleteRegister = async(preRegisterId) =>{
     try {
@@ -67,8 +74,12 @@ const deleteRegister = async(preRegisterId) =>{
         logger.info('Pre-Registro de Condominio eliminado con éxito');
         return deletedRegister;
     } catch (error) {
-        logger.error(`Error al eliminar un Pre-Registro de Condominio desde el controlador: ${error.message}`);
-        throw new Error('Error interno al eliminar un Pre-Registro de Condominio');
+        const errorMessage = `Error en deleteRegister Controller, no se pudo eliminar el pre Registro ${error.message}`;
+        logger.error(errorMessage);
+        if (error.stack) {
+            logger.error(error.stack);
+        }
+        throw new Error(errorMessage);
     }
 };
 
