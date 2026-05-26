@@ -3,6 +3,10 @@ const {Op} = require('sequelize');
 const {checkExistence} = require("../utils/utils");
 const logger = require('../utils/logger');
 
+const generateId = (country, companyTaxId) => {
+    return `${country ? country.substring(0, 3) : 'UNK'}${companyTaxId || ''}`;
+};
+
 const createManagementCo = async (
     country,
     companyTaxId,
@@ -27,11 +31,6 @@ const createManagementCo = async (
                 isSuspended,
             }
         );
-        
-        // Lógica para generar el ID basado en el país y el ID de impuestos
-        function generateId(country, companyTaxId) {
-            return `${country.substring(0, 3)}${companyTaxId}`;
-        }
 
         logger.info('Nueva Compañía creada con éxito');
         return newCompany;
@@ -143,7 +142,7 @@ const getManagementCoByName = async (companyName) => {
             },
           });
           if (companies.length === 0) {
-            throw new Error(errorMessage);
+            throw new Error(`No se encontraron compañías con el nombre: ${companyName}`);
         }
           return companies;
         } catch (error) {
