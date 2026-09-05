@@ -7,10 +7,16 @@ const {
     deleteRegister
 } = require('../controllers/preRegisterControllers');
 
+const normalizeCountry = (country) => {
+    if (!country || typeof country !== 'string') return country;
+    const upper = country.trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const allowed = ['PERU', 'CHILE', 'ARGENTINA', 'COLOMBIA', 'BOLIVIA', 'ECUADOR', 'VENEZUELA', 'URUGUAY', 'PARAGUAY', 'MEXICO'];
+    return allowed.includes(upper) ? upper : 'PERU';
+};
+
 const createPreRegisterFormHandler = async (req, res) =>{
     const { 
         name,
-        country,
         state,
         city,
         district,
@@ -27,6 +33,7 @@ const createPreRegisterFormHandler = async (req, res) =>{
         checkbox_confirm
 
     } = req.body;
+    const country = normalizeCountry(req.body.country);
 
     try{
         const registerForm = await createRegister (
