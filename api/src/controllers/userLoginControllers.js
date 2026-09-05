@@ -1,5 +1,5 @@
 require('dotenv').config();
-const {User} =  require ("../db");
+const {User, UserType} =  require ("../db");
 const logger = require('../utils/logger');
 const {JWT_SECRET} = process.env;
 const securityUtils = require('../utils/security')
@@ -10,7 +10,12 @@ const userLogin = async (login, password) => {
             where:{
                 email: login,
                 isSuspended: false,
-            }
+            },
+            include: [{
+                model: UserType,
+                attributes: ['id', 'name'],
+                through: { attributes: [] },
+            }],
         });
         if (!user) {
             throw new Error('Usuario no encontrado');      
@@ -23,6 +28,9 @@ const userLogin = async (login, password) => {
         }
 
         const token = securityUtils.generateToken({ dni: user.dni }, JWT_SECRET, 86400);
+        if (user.dataValues) {
+            delete user.dataValues.password;
+        }
         logger.info(`Inicio de sesión exitoso para el usuario con email: ${login}`);
 
         return {user, token};
